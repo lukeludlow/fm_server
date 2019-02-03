@@ -10,29 +10,29 @@ create table user (
     firstname varchar(255) not null,
     lastname varchar(255) not null,
     gender char(1) not null,  /* f or m */
-    person_id varchar(255) not null
+    person_id integer not null
 );
 
 create table auth_token (
-    token varchar(255) not null,
+    token integer not null,
     username varchar(255) not null
 );
 
 create table people (
-    person_id varchar(255) not null,
+    person_id integer not null,
     descendant varchar(255),  /* username */
     firstname varchar(255) not null,
     lastname varchar(255) not null,
     gender char(1) not null,
-    father_id varchar(255),
-    mother_id varchar(255),
-    spouse_id varchar(255)
+    father_id integer,
+    mother_id integer,
+    spouse_id integer
 );
 
 create table event (
-    event_id varchar(255) not null,
+    event_id integer not null,
     descendant varchar(255),  /* username */
-    person_id varchar(255) not null,
+    person_id integer not null,
     latitude Decimal(9,6) not null,   /* ###.###### */
     longitude Decimal(9,6) not null,  /* ###.###### */
     country varchar(255) not null,
