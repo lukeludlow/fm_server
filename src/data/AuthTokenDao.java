@@ -1,5 +1,8 @@
 package data;
 
+import org.sqlite.
+import java.sql.*;
+
 import model.AuthToken;
 
 /**
@@ -7,16 +10,18 @@ import model.AuthToken;
  * used to connect to database and do stuff with model objects
  */
 public class AuthTokenDao {
-    /** default constructor */
-    public AuthTokenDao() {
+    private sqlite.DB
+    public void add(AuthToken a) {
+
     }
-    /**
-     * generate new token with random int value
-     * also inserts it into database
-     * @param username user (username) to which this token belongs to
-     * @return new AuthToken
-     */
-    public AuthToken generateAuthToken(String username) {
-        return new AuthToken();
+    public AuthToken getByToken(String token) {
+        return null;
     }
+    public AuthToken getByUser(String username) {
+        return null;
+    }
+    public void clearAuthTokens() {
+
+    }
+
 }

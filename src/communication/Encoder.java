@@ -1,4 +1,4 @@
 package communication;
 
-public class WebHandler {
+public class Encoder {
 }

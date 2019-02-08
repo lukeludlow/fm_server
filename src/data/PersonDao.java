@@ -3,17 +3,18 @@ package data;
 import model.Person;
 
 /**
- * person data access object
- * used to connect to database and do stuff with model objects
+ * person database access object
  */
 public class PersonDao {
 
+    public Person add(Person p) {
+        return null;
+    }
+    public Person get(String personID) {
+       return null;
+    }
+    public void clearUsers() {
 
-
-
-
-    public Person generatePerson() {
-        return new Person();
     }
 
 }
