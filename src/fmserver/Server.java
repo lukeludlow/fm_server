@@ -3,7 +3,7 @@ package fmserver;
 /**
  * family map server
  *
- * this is the main server class
+ * the main driver class
  * @author luke ludlow
  */
 public class Server {

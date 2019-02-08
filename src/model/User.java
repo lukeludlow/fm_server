@@ -17,10 +17,9 @@ public class User {
     /** user's gender, either "f" or "m" */
     private String gender;
     /** unique person ID assigned to this user's generated person object */
-    private int personID;
+    private String personID;
 
-    /** parameterized constructor */
-    public User(String username, String password, String email, String firstname, String lastname, String gender, int personID) {
+    public User(String username, String password, String email, String firstname, String lastname, String gender, String personID) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -29,7 +28,6 @@ public class User {
         this.gender = gender;
         this.personID = personID;
     }
-    /** default constructor */
     public User() { return; }
 
     public String getUsername() { return username; }
@@ -44,6 +42,6 @@ public class User {
     public void setLastname(String lastname) { this.lastname = lastname; }
     public String getGender() { return gender; }
     public void setGender(String gender) { this.gender = gender; }
-    public int getPersonID() { return personID; }
-    public void setPersonID(int personID) { this.personID = personID; }
+    public String getPersonID() { return personID; }
+    public void setPersonID(String personID) { this.personID = personID; }
 }

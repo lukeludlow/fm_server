@@ -1,9 +1,6 @@
-package dao;
+package data;
 
-import model.AuthToken;
 import model.Person;
-
-import java.sql.*;
 
 /**
  * person data access object

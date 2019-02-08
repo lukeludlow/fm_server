@@ -1,7 +1,6 @@
-package dao;
+package data;
 
 import model.AuthToken;
-import java.sql.*;
 
 /**
  * authtoken data access object
