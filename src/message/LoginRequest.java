@@ -1,5 +1,8 @@
 package message;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * Login Request Body:
  * {
@@ -7,12 +10,9 @@ package message;
  * "password": "mysecret" // Non-empty string
  * }
  */
+@Data
+@NoArgsConstructor
 public class LoginRequest {
     private String username;
     private String password;
-
-    public LoginRequest(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
 }

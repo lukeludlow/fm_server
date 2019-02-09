@@ -1,5 +1,8 @@
 package message;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * Event Success Response Body:
  * {
@@ -14,6 +17,8 @@ package message;
  * "year": 1912, // Year the event occurred (integer)
  * }
  */
+@Data
+@NoArgsConstructor
 public class EventResponse {
     private String descendant;
     private String eventid;
@@ -24,16 +29,4 @@ public class EventResponse {
     private String city;
     private String eventType;
     private int year;
-
-    public EventResponse(String descendant, String eventid, String personid, double latitude, double longitude, String country, String city, String eventType, int year) {
-        this.descendant = descendant;
-        this.eventid = eventid;
-        this.personid = personid;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.country = country;
-        this.city = city;
-        this.eventType = eventType;
-        this.year = year;
-    }
 }

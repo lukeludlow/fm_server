@@ -10,7 +10,7 @@ public class EventService {
     /**
      * returns the single Event object with the specified ID.
      * @param e event request
-     * @return event result
+     * @return event response
      */
     public EventResponse event(EventRequest e) {
         return null;

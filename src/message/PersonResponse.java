@@ -1,5 +1,8 @@
 package message;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * Person Success Response Body:
  * {
@@ -13,6 +16,8 @@ package message;
  * "spouse":"f42126c8" // ID of person’s spouse [OPTIONAL, can be missing]
  * }
  */
+@Data
+@NoArgsConstructor
 public class PersonResponse {
     private String descendant;
     private String personid;
@@ -22,15 +27,4 @@ public class PersonResponse {
     private String fatherid;
     private String motherid;
     private String spouseid;
-
-    public PersonResponse(String descendant, String personid, String firstname, String lastname, String gender, String fatherid, String motherid, String spouseid) {
-        this.descendant = descendant;
-        this.personid = personid;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.gender = gender;
-        this.fatherid = fatherid;
-        this.motherid = motherid;
-        this.spouseid = spouseid;
-    }
 }

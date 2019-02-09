@@ -1,5 +1,7 @@
 package message;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import model.Event;
 
 /**
@@ -8,10 +10,8 @@ import model.Event;
  * "data": [ Array of Event objects ]
  * }
  */
+@Data
+@NoArgsConstructor
 public class HistoryResponse {
     private model.Event[] data;
-
-    public HistoryResponse(Event[] data) {
-        this.data = data;
-    }
 }

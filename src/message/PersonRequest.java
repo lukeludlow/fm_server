@@ -1,5 +1,8 @@
 package message;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * Person Request Body:
  * {
@@ -7,12 +10,9 @@ package message;
  * "authtoken": "xxxxxxxx"
  * }
  */
+@Data
+@NoArgsConstructor
 public class PersonRequest {
     private String personid;
     private String authtoken;
-
-    public PersonRequest(String personid, String authtoken) {
-        this.personid = personid;
-        this.authtoken = authtoken;
-    }
 }

@@ -1,5 +1,7 @@
 package message;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import model.Person;
 
 /**
@@ -8,10 +10,8 @@ import model.Person;
  * "data": [ Array of Person objects ]
  * }
  */
+@Data
+@NoArgsConstructor
 public class FamilyResponse {
     private model.Person[] data;
-
-    public FamilyResponse(Person[] data) {
-        this.data = data;
-    }
 }

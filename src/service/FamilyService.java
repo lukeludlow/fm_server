@@ -10,8 +10,8 @@ public class FamilyService {
     /**
      * returns ALL family members of the current user. the current user is
      * determined from the provided auth token.
-     * @param f
-     * @return
+     * @param f family request
+     * @return family response
      */
     public FamilyResponse family(FamilyRequest f) {
         return null;

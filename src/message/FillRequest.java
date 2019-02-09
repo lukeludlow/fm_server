@@ -1,5 +1,8 @@
 package message;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * Fill Request Body:
  * {
@@ -7,12 +10,9 @@ package message;
  * "generations": 3 // number of generations to generate
  * }
  */
+@Data
+@NoArgsConstructor
 public class FillRequest {
     private String username;
     private int generations;
-
-    public FillRequest(String username, int generations) {
-        this.username = username;
-        this.generations = generations;
-    }
 }
