@@ -1,19 +1,51 @@
 package data;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import model.User;
 
+/**
+ * user database access object
+ */
+@Data
+@NoArgsConstructor
 public class UserDao {
-    public void add(User u) {
+    /** database connection */
+    private Database db;
 
+    /**
+     * add user to database
+     * @param u new user
+     * @return true on success
+     */
+    public boolean add(User u) {
+        return false;
     }
+
+    /**
+     * get user from database
+     * @param username user account's username
+     * @return user object. null if not found.
+     */
     public User get(String username) {
         return null;
     }
-    // login is basically just get user by username and password
-    public User login(String username, String password) {
-        return null;
-    }
-    public void clearUsers() {
 
+    /**
+     * delete user from database
+     * @param username user account's username
+     * @return true on success
+     */
+    public boolean delete(String username) {
+        return false;
+    }
+
+    /**
+     * delete user from database
+     * @param u user object
+     * @return true on success
+     */
+    public boolean delete(User u) {
+        return false;
     }
 }

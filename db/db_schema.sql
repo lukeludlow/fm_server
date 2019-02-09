@@ -6,7 +6,7 @@ drop table if exists event;
 */
 
 create table if not exists user (
-    username   varchar(255)  primary key not null,
+    username   varchar(255)  not null primary key,
     password   varchar(255)  not null,
     email      varchar(255)  not null,
     firstname  varchar(255)  not null,
@@ -21,7 +21,7 @@ create table if not exists auth_token (
 );
 
 create table if not exists people (
-    person_id  varchar(255)  primary key not null,
+    person_id  varchar(255)  not null primary key,
     descendant varchar(255),           /* username */
     firstname  varchar(255)  not null,
     lastname   varchar(255)  not null,
@@ -32,7 +32,7 @@ create table if not exists people (
 );
 
 create table if not exists event (
-    event_id   varchar(255)  primary key not null,
+    event_id   varchar(255)  not null primary key,
     descendant varchar(255),           /* username */
     person_id  varchar(255)  not null,
     latitude   varchar(255)  not null, /* ###.###### */
