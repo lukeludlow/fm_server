@@ -16,7 +16,7 @@ public class AuthTokenDao {
     private data.Database db;
 
     /**
-     * add token to database
+     * insert token to database
      *
      * @param a new authtoken
      * @return true on success
@@ -26,7 +26,7 @@ public class AuthTokenDao {
     }
 
     /**
-     * get token from database
+     * find token from database
      *
      * @param token token key
      * @return authtoken object. null if not found.
@@ -36,7 +36,7 @@ public class AuthTokenDao {
     }
 
     /**
-     * get all tokens belonging to this user
+     * find all tokens belonging to this user
      *
      * @param username username
      * @return array of authtoken objects. null if not found.

@@ -16,7 +16,7 @@ public class PersonDao {
     private Database db;
 
     /**
-     * add person to database
+     * insert person to database
      *
      * @param p new person
      * @return true on success
@@ -26,7 +26,7 @@ public class PersonDao {
     }
 
     /**
-     * get person from database
+     * find person from database
      *
      * @param personID person's unique id
      * @return person object. null if not found.

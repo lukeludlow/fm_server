@@ -16,7 +16,7 @@ public class EventDao {
     private Database db;
 
     /**
-     * add event to database
+     * insert event to database
      *
      * @param e new event
      * @return true on success
@@ -26,7 +26,7 @@ public class EventDao {
     }
 
     /**
-     * get event from database
+     * find event from database
      *
      * @param eventID event's unique id
      * @return event object. null if not found.

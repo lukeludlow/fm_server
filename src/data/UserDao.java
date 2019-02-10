@@ -23,12 +23,12 @@ public class UserDao {
     private Database db;
 
     /**
-     * add user to database
+     * insert user into database
      *
      * @param u new user
      * @return true on success
      */
-    public boolean add(User u) throws DatabaseException {
+    public boolean insert(User u) throws DatabaseException {
         boolean commit = true;
         try {
             String sql = "insert into user " +
@@ -51,12 +51,12 @@ public class UserDao {
     }
 
     /**
-     * get user from database
+     * find user from database
      *
      * @param username user account's username
      * @return user object. null if not found.
      */
-    public User get(String username) throws DatabaseException {
+    public User find(String username) throws DatabaseException {
         try {
             String sql = "select * from user where username = ?;";
             PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
@@ -76,7 +76,7 @@ public class UserDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("sql error encountered while getting event");
+            throw new DatabaseException("sql error encountered while finding user");
         }
         return null;
     }
@@ -85,19 +85,19 @@ public class UserDao {
      * delete user from database
      *
      * @param username user account's username
-     * @return true on success
+     * @return true if the entry is found and deleted
      */
-    public boolean delete(String username) {
-        return false;
-    }
-
-    /**
-     * delete user from database
-     *
-     * @param u user object
-     * @return true on success
-     */
-    public boolean delete(User u) {
-        return false;
+    public boolean delete(String username) throws DatabaseException {
+        int deleteCount = 0;
+        try {
+            String sql = "delete from user where username = ?;";
+            PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
+            statement.setString(1, username);
+            deleteCount = statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException("sql error encountered while deleting user");
+        }
+        return (deleteCount > 0) ? true : false;
     }
 }
