@@ -3,6 +3,9 @@ package data;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * connects to sqlite database file. all the data access objects utilize this database object.
@@ -12,17 +15,56 @@ import java.sql.Connection;
 public class Database {
     /** sql connection to sqlite database file */
     private Connection connection;
-    private static final String DRIVER_NAME = "org.sqlite.JDBC";
-    private static final String DB_NAME = "fms.sqlite";
+    private static final String DRIVER = "org.sqlite.JDBC";
     /** connect url. "driver + path/to/database". path is relative to project root. */
-    private static final String DB_URL = "jdbc:sqlite:db/fms.sqlite";
+    private static final String URL = "jdbc:sqlite:db/fms.sqlite";
+
+
+    // set up database driver
+    static {
+        try {
+            Class.forName(DRIVER);
+        }
+        catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * open connection to the fms.sqlite database
      * @return new sql connection
      */
-    public Connection connect() {
-        return null;
+    public Connection connect() throws DatabaseException {
+        try {
+            connection = DriverManager.getConnection(URL);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException("unable to open connection to database");
+        }
+        return connection;
+    }
+
+    /**
+     * either commit or rollback and then close connection
+     * @param commit commit transaction or nah
+     * @throws DatabaseException if things break
+     */
+    public void closeConnection(boolean commit) throws DatabaseException {
+        try {
+            if (commit) {
+                connection.commit();
+            }
+            else {
+                connection.rollback();
+            }
+            connection.close();
+            connection = null;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException("unable to close database connection");
+        }
     }
 
     /**
@@ -37,8 +79,32 @@ public class Database {
      * create all tables (if they exist)
      * @return true on success
      */
-    public boolean initAll() {
-        return false;
+    public void initAll() throws DatabaseException {
+        connect();
+        try {
+            Statement statement = connection.createStatement();
+            String sql = "create table if not exists user " +
+                    "(" +
+                    "username   varchar(255)  not null primary key, " +
+                    "password   varchar(255)  not null, " +
+                    "email      varchar(255)  not null, " +
+                    "firstname  varchar(255)  not null, " +
+                    "lastname   varchar(255)  not null, " +
+                    "gender     varchar(255)  not null, " +
+                    "person_id  varchar(255)  not null  " +
+                    ")";
+            statement.execute(sql);
+            // if we made it this far, we're safe and can commit
+            closeConnection(true);
+        }
+        catch (DatabaseException e) {
+            closeConnection(false);
+            throw e;
+        }
+        catch (SQLException e) {
+            closeConnection(false);
+            throw new DatabaseException("sql error encountered while creating tables");
+        }
     }
 
     /**
@@ -74,7 +140,22 @@ public class Database {
      * drop all tables (if they exist)
      * @return true on success
      */
-    public boolean clearAll() {
+    public boolean clearAll() throws DatabaseException {
+        connect();
+        try {
+            Statement statement = connection.createStatement();
+            String sql = "delete from user";
+            statement.execute(sql);
+            closeConnection(true);
+        }
+        catch (DatabaseException e) {
+            closeConnection(false);
+            throw e;
+        }
+        catch (SQLException e) {
+            closeConnection(false);
+            throw new DatabaseException("sql error encountered while clearing tables");
+        }
         return false;
     }
 
