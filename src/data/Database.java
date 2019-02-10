@@ -216,11 +216,16 @@ public class Database {
      * delete all info from all tables
      */
     public void clearAll() throws DatabaseException {
-
         connect();
         try {
             Statement statement = connection.createStatement();
             String sql = "delete from user";
+            statement.execute(sql);
+            sql = "delete from people";
+            statement.execute(sql);
+            sql = "delete from event";
+            statement.execute(sql);
+            sql = "delete from auth_token";
             statement.execute(sql);
             closeConnection(true);
         } catch (DatabaseException e) {
@@ -230,7 +235,6 @@ public class Database {
             closeConnection(false);
             throw new DatabaseException("sql error encountered while clearing tables");
         }
-
     }
 
     /**
