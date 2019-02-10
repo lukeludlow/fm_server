@@ -6,7 +6,7 @@ import model.Person;
 
 /**
  * Family Success Response Body:
- *  {
+ * {
  * "data": [ Array of Person objects ]
  * }
  */

@@ -10,11 +10,14 @@ import model.Person;
 @Data
 @NoArgsConstructor
 public class PersonDao {
-    /** database connection */
+    /**
+     * database connection
+     */
     private Database db;
 
     /**
      * add person to database
+     *
      * @param p new person
      * @return true on success
      */
@@ -24,15 +27,17 @@ public class PersonDao {
 
     /**
      * get person from database
+     *
      * @param personID person's unique id
      * @return person object. null if not found.
      */
     public Person get(String personID) {
-       return null;
+        return null;
     }
 
     /**
      * delete person from database
+     *
      * @param personID person's unique id
      * @return true on success
      */
@@ -42,6 +47,7 @@ public class PersonDao {
 
     /**
      * delete person from database
+     *
      * @param p person object
      * @return true on success
      */

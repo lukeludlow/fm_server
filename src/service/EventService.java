@@ -9,6 +9,7 @@ import message.EventResponse;
 public class EventService {
     /**
      * returns the single Event object with the specified ID.
+     *
      * @param e event request
      * @return event response
      */

@@ -9,8 +9,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class AuthToken {
-    /** authorization token generated at login */
+    /**
+     * authorization token generated at login
+     */
     private String token;
-    /** user (username) to which this token belongs to */
+    /**
+     * user (username) to which this token belongs to
+     */
     private String username;
 }

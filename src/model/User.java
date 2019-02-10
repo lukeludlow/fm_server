@@ -11,18 +11,32 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-    /** unique username */
+    /**
+     * unique username
+     */
     private String username;
-    /** user's password */
+    /**
+     * user's password
+     */
     private String password;
-    /** user's email address */
+    /**
+     * user's email address
+     */
     private String email;
-    /** user's first name */
+    /**
+     * user's first name
+     */
     private String firstname;
-    /** user's last name */
+    /**
+     * user's last name
+     */
     private String lastname;
-    /** user's gender, either "f" or "m" */
+    /**
+     * user's gender, either "f" or "m"
+     */
     private String gender;
-    /** unique person ID assigned to this user's generated person object */
+    /**
+     * unique person ID assigned to this user's generated person object
+     */
     private String personID;
 }

@@ -10,11 +10,14 @@ import model.Event;
 @Data
 @NoArgsConstructor
 public class EventDao {
-    /** database connection */
+    /**
+     * database connection
+     */
     private Database db;
 
     /**
      * add event to database
+     *
      * @param e new event
      * @return true on success
      */
@@ -24,6 +27,7 @@ public class EventDao {
 
     /**
      * get event from database
+     *
      * @param eventID event's unique id
      * @return event object. null if not found.
      */
@@ -33,6 +37,7 @@ public class EventDao {
 
     /**
      * delete event from database
+     *
      * @param eventID event's unique id
      * @return true on success
      */
@@ -42,6 +47,7 @@ public class EventDao {
 
     /**
      * delete event from database
+     *
      * @param e event object
      * @return true on success
      */

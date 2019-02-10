@@ -2,6 +2,7 @@ package data;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -13,10 +14,14 @@ import java.sql.Statement;
 @Data
 @NoArgsConstructor
 public class Database {
-    /** sql connection to sqlite database file */
+    /**
+     * sql connection to sqlite database file
+     */
     private Connection connection;
     private static final String DRIVER = "org.sqlite.JDBC";
-    /** connect url. "driver + path/to/database". path is relative to project root. */
+    /**
+     * connect url. "driver + path/to/database". path is relative to project root.
+     */
     private static final String URL = "jdbc:sqlite:db/fms.sqlite";
 
 
@@ -24,21 +29,21 @@ public class Database {
     static {
         try {
             Class.forName(DRIVER);
-        }
-        catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     /**
      * open connection to the fms.sqlite database
+     *
      * @return new sql connection
      */
     public Connection connect() throws DatabaseException {
         try {
             connection = DriverManager.getConnection(URL);
-        }
-        catch (SQLException e) {
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
             e.printStackTrace();
             throw new DatabaseException("unable to open connection to database");
         }
@@ -47,6 +52,7 @@ public class Database {
 
     /**
      * either commit or rollback and then close connection
+     *
      * @param commit commit transaction or nah
      * @throws DatabaseException if things break
      */
@@ -54,14 +60,12 @@ public class Database {
         try {
             if (commit) {
                 connection.commit();
-            }
-            else {
+            } else {
                 connection.rollback();
             }
             connection.close();
             connection = null;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             throw new DatabaseException("unable to close database connection");
         }
@@ -69,6 +73,7 @@ public class Database {
 
     /**
      * import given json dataset
+     *
      * @return true on success
      */
     public boolean importData() {
@@ -77,6 +82,7 @@ public class Database {
 
     /**
      * create all tables (if they exist)
+     *
      * @return true on success
      */
     public void initAll() throws DatabaseException {
@@ -96,12 +102,10 @@ public class Database {
             statement.execute(sql);
             // if we made it this far, we're safe and can commit
             closeConnection(true);
-        }
-        catch (DatabaseException e) {
+        } catch (DatabaseException e) {
             closeConnection(false);
             throw e;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             closeConnection(false);
             throw new DatabaseException("sql error encountered while creating tables");
         }
@@ -109,27 +113,34 @@ public class Database {
 
     /**
      * create table if not exists user
+     *
      * @return true on success
      */
     public boolean initUsers() {
         return false;
     }
+
     /**
      * create table if not exists person
+     *
      * @return true on success
      */
     public boolean initPeople() {
         return false;
     }
+
     /**
      * create table if not exists event
+     *
      * @return true on success
      */
     public boolean initEvents() {
         return false;
     }
+
     /**
      * create table if not exists authtoken
+     *
      * @return true on success
      */
     public boolean initAuthTokens() {
@@ -138,6 +149,7 @@ public class Database {
 
     /**
      * drop all tables (if they exist)
+     *
      * @return true on success
      */
     public boolean clearAll() throws DatabaseException {
@@ -147,12 +159,10 @@ public class Database {
             String sql = "delete from user";
             statement.execute(sql);
             closeConnection(true);
-        }
-        catch (DatabaseException e) {
+        } catch (DatabaseException e) {
             closeConnection(false);
             throw e;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             closeConnection(false);
             throw new DatabaseException("sql error encountered while clearing tables");
         }
@@ -161,27 +171,34 @@ public class Database {
 
     /**
      * drop table if exists user
+     *
      * @return true on success
      */
     public boolean clearUsers() {
         return false;
     }
+
     /**
      * drop table if exists person
+     *
      * @return true on success
      */
     public boolean clearPeople() {
         return false;
     }
+
     /**
      * drop table if exists event
+     *
      * @return true on success
      */
     public boolean clearEvents() {
         return false;
     }
+
     /**
      * drop table if exists authtoken
+     *
      * @return true on success
      */
     public boolean clearAuthTokens() {

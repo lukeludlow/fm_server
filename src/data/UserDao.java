@@ -1,5 +1,6 @@
 package data;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import model.User;
@@ -14,12 +15,16 @@ import java.sql.Statement;
  */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserDao {
-    /** database connection */
+    /**
+     * database connection
+     */
     private Database db;
 
     /**
      * add user to database
+     *
      * @param u new user
      * @return true on success
      */
@@ -38,8 +43,7 @@ public class UserDao {
             statement.setString(6, u.getGender());
             statement.setString(7, u.getPersonID());
             statement.executeUpdate();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             commit = false;
             throw new DatabaseException("sql error encountered while inserting user into database");
         }
@@ -48,6 +52,7 @@ public class UserDao {
 
     /**
      * get user from database
+     *
      * @param username user account's username
      * @return user object. null if not found.
      */
@@ -69,8 +74,7 @@ public class UserDao {
                 );
                 return u;
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             throw new DatabaseException("sql error encountered while getting event");
         }
@@ -79,6 +83,7 @@ public class UserDao {
 
     /**
      * delete user from database
+     *
      * @param username user account's username
      * @return true on success
      */
@@ -88,6 +93,7 @@ public class UserDao {
 
     /**
      * delete user from database
+     *
      * @param u user object
      * @return true on success
      */

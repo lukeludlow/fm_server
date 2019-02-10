@@ -9,6 +9,7 @@ import message.LoginResponse;
 public class LoginService {
     /**
      * logs in the user and returns an auth token.
+     *
      * @param l login request
      * @return login response
      */

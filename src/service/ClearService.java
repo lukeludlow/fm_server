@@ -9,9 +9,10 @@ public class ClearService {
     /**
      * deletes ALL data from the database, including user accounts, auth tokens, and
      * generated person and event data.
+     *
      * @return clear response
      */
-    public ClearResponse clear () {
+    public ClearResponse clear() {
         return null;
     }
 }

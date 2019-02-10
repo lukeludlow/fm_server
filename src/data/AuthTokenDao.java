@@ -10,11 +10,14 @@ import model.AuthToken;
 @Data
 @NoArgsConstructor
 public class AuthTokenDao {
-    /** database connection */
-    private Database db;
+    /**
+     * database connection
+     */
+    private data.Database db;
 
     /**
      * add token to database
+     *
      * @param a new authtoken
      * @return true on success
      */
@@ -24,14 +27,17 @@ public class AuthTokenDao {
 
     /**
      * get token from database
+     *
      * @param token token key
      * @return authtoken object. null if not found.
      */
     public AuthToken getByToken(String token) {
         return null;
     }
+
     /**
      * get all tokens belonging to this user
+     *
      * @param username username
      * @return array of authtoken objects. null if not found.
      */
@@ -41,6 +47,7 @@ public class AuthTokenDao {
 
     /**
      * delete token from database
+     *
      * @param a authtoken object
      * @return true on success
      */
@@ -50,6 +57,7 @@ public class AuthTokenDao {
 
     /**
      * delete token from database
+     *
      * @param token token key
      * @return true on success
      */
@@ -59,6 +67,7 @@ public class AuthTokenDao {
 
     /**
      * delete all tokens belonging to this user
+     *
      * @param username username
      * @return true on success
      */
