@@ -4,11 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import model.User;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * user database access object
@@ -28,9 +26,9 @@ public class UserDao {
      * @param u new user
      * @return true on success
      */
-    public boolean insert(User u) throws DatabaseException {
-        boolean commit = true;
+    public void insert(User u) throws DatabaseException {
         try {
+            this.db.connect();
             String sql = "insert into user " +
                     "(username, password, email, firstname, lastname, gender, person_id) " +
                     "values (?,?,?,?,?,?,?)";
@@ -43,11 +41,14 @@ public class UserDao {
             statement.setString(6, u.getGender());
             statement.setString(7, u.getPersonID());
             statement.executeUpdate();
+            db.closeConnection(true);
         } catch (SQLException e) {
-            commit = false;
+            db.closeConnection(false);
             throw new DatabaseException("sql error encountered while inserting user into database");
+        } catch (DatabaseException e) {
+            db.closeConnection(false);
+            throw e;
         }
-        return commit;
     }
 
     /**
@@ -58,6 +59,7 @@ public class UserDao {
      */
     public User find(String username) throws DatabaseException {
         try {
+            this.db.connect();
             String sql = "select * from user where username = ?;";
             PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
             statement.setString(1, username);
@@ -72,11 +74,17 @@ public class UserDao {
                         rs.getString("gender"),
                         rs.getString("person_id")
                 );
+                db.closeConnection(true);
                 return u;
+            } else {
+                db.closeConnection(true);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            db.closeConnection(false);
             throw new DatabaseException("sql error encountered while finding user");
+        } catch (DatabaseException e) {
+            db.closeConnection(false);
+            throw e;
         }
         return null;
     }
@@ -90,13 +98,18 @@ public class UserDao {
     public boolean delete(String username) throws DatabaseException {
         int deleteCount = 0;
         try {
+            this.db.connect();
             String sql = "delete from user where username = ?;";
             PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
             statement.setString(1, username);
             deleteCount = statement.executeUpdate();
+            db.closeConnection(true);
         } catch (SQLException e) {
-            e.printStackTrace();
+            db.closeConnection(false);
             throw new DatabaseException("sql error encountered while deleting user");
+        } catch (DatabaseException e) {
+            db.closeConnection(false);
+            throw e;
         }
         return (deleteCount > 0) ? true : false;
     }

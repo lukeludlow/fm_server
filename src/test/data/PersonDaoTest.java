@@ -4,12 +4,10 @@ import data.Database;
 import data.DatabaseException;
 import data.PersonDao;
 import model.Person;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.Assert.*;
 
 public class PersonDaoTest {
@@ -34,13 +32,10 @@ public class PersonDaoTest {
     @DisplayName("insert success")
     public void testInsert() throws Exception {
         try {
-            db.connect();
             pDao.insert(luke);
             findLuke = pDao.find("1");
-            db.closeConnection(true);
-        }
-        catch (DatabaseException e) {
-            db.closeConnection(false);
+        } catch (DatabaseException e) {
+            System.err.println(e);
         }
         assertNotNull(findLuke);
         assertEquals(luke, findLuke);
@@ -48,19 +43,26 @@ public class PersonDaoTest {
 
     @Test
     @DisplayName("insert fail")
+    @SuppressWarnings("Duplicates")
     public void testInsertFail() throws Exception {
         boolean insertSuccess = true;
         try {
-            db.connect();
             pDao.insert(luke);
+            // person must be unique, so adding it again should fail
             pDao.insert(luke);
-            db.closeConnection(true);
-        }
-        catch (DatabaseException e) {
-            db.closeConnection(false);
+        } catch (DatabaseException e) {
             insertSuccess = false;
+            // this is supposed to fail so don't print the exception
+            //System.err.println(e);
         }
         assertFalse(insertSuccess);
+        try {
+            // insert commits transaction immediately, so the original luke will still be found
+            findLuke = pDao.find(luke.getPersonID());
+        } catch (DatabaseException e) {
+            System.err.println(e);
+        }
+        assertEquals(luke, findLuke);
     }
 
     @Test
@@ -71,17 +73,14 @@ public class PersonDaoTest {
         Person findp2 = null;
         Person findp3 = null;
         try {
-            db.connect();
             pDao.insert(luke);
             findLuke = pDao.find("1");
             pDao.insert(p2);
             findp2 = pDao.find(p2.getPersonID());
             pDao.insert(p3);
             findp3 = pDao.find(p3.getPersonID());
-            db.closeConnection(true);
-        }
-        catch (DatabaseException e) {
-            db.closeConnection(false);
+        } catch (DatabaseException e) {
+            System.out.println(e);
         }
         assertNotNull(findLuke);
         assertNotNull(p2);
@@ -95,12 +94,9 @@ public class PersonDaoTest {
     @DisplayName("find fail")
     public void testFindFail() throws Exception {
         try {
-            db.connect();
             findLuke = pDao.find("1");
-            db.closeConnection(true);
-        }
-        catch (DatabaseException e) {
-            db.closeConnection(false);
+        } catch (DatabaseException e) {
+            System.err.println(e);
         }
         assertNull(findLuke);
     }
@@ -110,14 +106,11 @@ public class PersonDaoTest {
     public void testDelete() throws Exception {
         boolean deleteSuccess = false;
         try {
-            db.connect();
             pDao.insert(luke);
             deleteSuccess = pDao.delete("1");
             findLuke = pDao.find("1");
-            db.closeConnection(true);
-        }
-        catch (DatabaseException e) {
-            db.closeConnection(false);
+        } catch (DatabaseException e) {
+            System.err.println(e);
         }
         assertNull(findLuke);
         assertTrue(deleteSuccess);
@@ -128,12 +121,9 @@ public class PersonDaoTest {
     public void testDeleteFail() throws Exception {
         boolean deleteSuccess = false;
         try {
-            db.connect();
             deleteSuccess = pDao.delete("1");
-            db.closeConnection(true);
-        }
-        catch (DatabaseException e) {
-            db.closeConnection(false);
+        } catch (DatabaseException e) {
+            System.err.println(e);
         }
         assertFalse(deleteSuccess);
     }

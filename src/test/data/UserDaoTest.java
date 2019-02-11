@@ -4,8 +4,6 @@ import data.Database;
 import data.DatabaseException;
 import data.UserDao;
 import model.User;
-import java.sql.Connection;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,16 +12,20 @@ import static org.junit.Assert.*;
 
 public class UserDaoTest {
     Database db;
-    User insertLuke;
-    User anotherUser;
     UserDao uDao;
+    User luke;
+    User anotherUser;
+    User findLuke;
+    User findAnother;
 
     @BeforeEach
     public void setUp() throws Exception {
         db = new Database();
         uDao = new UserDao(db);
-        insertLuke = new User("lukeludlow", "password", "luke@luke.com","luke","ludlow","m","123");
+        luke = new User("lukeludlow", "password", "luke@luke.com","luke","ludlow","m","123");
         anotherUser = new User("abc", "password", "abc@abc.com","a","c","f","321");
+        findLuke = null;
+        findAnother = null;
     }
     @AfterEach
     public void tearDown() throws Exception {
@@ -33,106 +35,77 @@ public class UserDaoTest {
     @Test
     @DisplayName("insert success")
     public void testInsert() throws Exception {
-        User findLuke = null;
         try {
-            db.connect();
-            uDao.insert(insertLuke);
-            findLuke = uDao.find(insertLuke.getUsername());
-            db.closeConnection(true);
-        }
-        catch (DatabaseException e) {
-            db.closeConnection(false);
+            uDao.insert(luke);
+            findLuke = uDao.find(luke.getUsername());
+        } catch (DatabaseException e) {
+            System.err.println(e);
         }
         assertNotNull(findLuke);
-        assertEquals(insertLuke, findLuke);
+        assertEquals(luke, findLuke);
     }
 
     @Test
     @DisplayName("insert 2 users")
     public void testInsert2() throws Exception {
-        User findLuke = null;
-        User findAnother = null;
         try {
-            db.connect();
-            uDao.insert(insertLuke);
+            uDao.insert(luke);
             uDao.insert(anotherUser);
-            findLuke = uDao.find(insertLuke.getUsername());
+            findLuke = uDao.find(luke.getUsername());
             findAnother = uDao.find(anotherUser.getUsername());
-            db.closeConnection(true);
-        }
-        catch (DatabaseException e) {
-            db.closeConnection(false);
+        } catch (DatabaseException e) {
+            System.err.println(e);
         }
         assertNotNull(findLuke);
         assertNotNull(findAnother);
-        assertEquals(insertLuke, findLuke);
+        assertEquals(luke, findLuke);
         assertEquals(anotherUser, findAnother);
     }
 
     @Test
     @DisplayName("insert fail")
+    @SuppressWarnings("Duplicates")
     public void testInsertFail() throws Exception {
-        boolean didItWork = true;
+        boolean insertSuccess = true;
         try {
-            Connection connection = db.connect();
-            uDao = new UserDao(db);
-            uDao.insert(insertLuke);
-            // username must be unique, so adding it again should fail
-            uDao.insert(insertLuke);
-            // shouldn't even hit this block
-            db.closeConnection(true);
+            uDao.insert(luke);
+            // user must be unique, so adding it again should fail
+            uDao.insert(luke);
+        } catch (DatabaseException e) {
+            insertSuccess = false;
+            // this is supposed to fail so don't print the exception
+            //System.err.println(e);
         }
-        catch (DatabaseException e) {
-            db.closeConnection(false);
-            didItWork = false;
-        }
-        // check that we really did fail and hit the catch block
-        assertFalse(didItWork);
-
-        // bc database encountered an error, both changes should have been rolled back
-        // so double check that it was not inserted
-        User getUser = insertLuke;
+        assertFalse(insertSuccess);
         try {
-            Connection connection = db.connect();
-            uDao = new UserDao(db);
-            // getUser should be now be null bc it wasn't found
-            getUser = uDao.find(insertLuke.getUsername());
-            db.closeConnection(true);
+            // insert commits transaction immediately, so the original luke will still be found
+            findLuke = uDao.find(luke.getUsername());
+        } catch (DatabaseException e) {
+            System.err.println(e);
         }
-        catch (DatabaseException e) {
-            db.closeConnection(false);
-        }
-        assertNull(getUser);
+        assertEquals(luke, findLuke);
     }
 
     @Test
     @DisplayName("find success")
     public void testFind() throws Exception {
-        User findLuke = null;
         try {
-            db.connect();
-            uDao.insert(insertLuke);
+            uDao.insert(luke);
             findLuke = uDao.find("lukeludlow");
-            db.closeConnection(true);
-        }
-        catch (DatabaseException e) {
-            db.closeConnection(false);
+        } catch (DatabaseException e) {
+            System.err.println(e);
         }
         assertNotNull(findLuke);
-        assertEquals(insertLuke, findLuke);
+        assertEquals(luke, findLuke);
     }
 
     @Test
     @DisplayName("find fail")
     public void testFindFail() throws Exception {
-        User findLuke = null;
         try {
-            db.connect();
             findLuke = uDao.find("lukeludlow");
-            db.closeConnection(true);
-        }
-        catch (DatabaseException e) {
-            db.closeConnection(false);
+        } catch (DatabaseException e) {
+            System.err.println(e);
         }
         assertNull(findLuke);
     }
@@ -140,19 +113,13 @@ public class UserDaoTest {
     @Test
     @DisplayName("find fail 2")
     public void testFindFail2() throws Exception {
-        User findLuke = null;
         try {
-            db.connect();
-            uDao.insert(insertLuke);
+            uDao.insert(luke);
             findLuke = uDao.find("lukeludlow");
-            db.closeConnection(true);
             db.clearAll();
-            db.connect();
             findLuke = uDao.find("lukeludlow");
-            db.closeConnection(true);
-        }
-        catch (DatabaseException e) {
-            db.closeConnection(false);
+        } catch (DatabaseException e) {
+            System.err.println(e);
         }
         assertNull(findLuke);
     }
@@ -160,17 +127,13 @@ public class UserDaoTest {
     @Test
     @DisplayName("delete success")
     public void testDelete() throws Exception {
-        User findLuke = null;
         boolean deleteSuccess = false;
         try {
-            db.connect();
-            uDao.insert(insertLuke);
+            uDao.insert(luke);
             deleteSuccess = uDao.delete("lukeludlow");
             findLuke = uDao.find("lukeludlow");
-            db.closeConnection(true);
-        }
-        catch (DatabaseException e) {
-            db.closeConnection(false);
+        } catch (DatabaseException e) {
+            System.err.println(e);
         }
         assertNull(findLuke);
         assertTrue(deleteSuccess);
@@ -181,16 +144,11 @@ public class UserDaoTest {
     public void testDeleteFail() throws Exception {
         boolean deleteSuccess = false;
         try {
-            db.connect();
             deleteSuccess = uDao.delete("lukeludlow");
-            db.closeConnection(true);
-        }
-        catch (DatabaseException e) {
-            db.closeConnection(false);
+        } catch (DatabaseException e) {
+            System.err.println(e);
         }
         assertFalse(deleteSuccess);
     }
-
-
 
 }

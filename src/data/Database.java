@@ -24,8 +24,7 @@ public class Database {
     static {
         try {
             Class.forName(DRIVER);
-        }
-        catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -61,12 +60,10 @@ public class Database {
             }
             connection.close();
             connection = null;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             //e.printStackTrace();
             throw new DatabaseException("unable to close database connection");
-        }
-        catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             //e.printStackTrace();
             throw new DatabaseException("tried to close a null connection");
         }
@@ -90,8 +87,7 @@ public class Database {
             initPeople();
             initEvents();
             initAuthTokens();
-        }
-        catch (DatabaseException e) {
+        } catch (DatabaseException e) {
             System.err.println("init tables failed!");
             System.err.println(e);
         }
