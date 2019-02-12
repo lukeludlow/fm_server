@@ -1,77 +1,132 @@
 package data;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import model.AuthToken;
 
-/**
- * authtoken database access object
- */
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class AuthTokenDao {
-    /**
-     * database connection
-     */
     private data.Database db;
 
-    /**
-     * insert token to database
-     *
-     * @param a new authtoken
-     * @return true on success
-     */
-    public boolean add(AuthToken a) {
-        return false;
+    public void insert(AuthToken a) throws DatabaseException {
+        try {
+            this.db.connect();
+            String sql = "insert into auth_token " +
+                    "(token, username) " +
+                    "values (?,?)";
+            PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
+            statement.setString(1, a.getToken());
+            statement.setString(2, a.getUsername());
+            statement.executeUpdate();
+            db.closeConnection(true);
+        } catch (SQLException ex) {
+            db.closeConnection(false);
+            throw new DatabaseException("sql error encountered while inserting authtoken into database");
+        } catch (DatabaseException ex) {
+            db.closeConnection(false);
+            throw ex;
+        }
     }
 
-    /**
-     * find token from database
-     *
-     * @param token token key
-     * @return authtoken object. null if not found.
-     */
-    public AuthToken getByToken(String token) {
+    public AuthToken findByToken(String token) throws DatabaseException {
+        try {
+            this.db.connect();
+            String sql = "select * from auth_token where token = ?;";
+            PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
+            statement.setString(1, token);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                AuthToken a = new AuthToken(
+                        rs.getString("token"),
+                        rs.getString("username")
+                );
+                db.closeConnection(true);
+                return a;
+            } else {
+                db.closeConnection(true);
+            }
+        } catch (SQLException ex) {
+            db.closeConnection(false);
+            throw new DatabaseException("sql error encountered while finding authtoken by token in database");
+        } catch (DatabaseException ex) {
+            db.closeConnection(false);
+            throw ex;
+        }
         return null;
     }
 
-    /**
-     * find all tokens belonging to this user
-     *
-     * @param username username
-     * @return array of authtoken objects. null if not found.
-     */
-    public AuthToken[] getByUser(String username) {
-        return null;
+    public AuthToken[] findByUser(String username) throws DatabaseException {
+        try {
+            this.db.connect();
+            String sql = "select * from auth_token where username = ?;";
+            PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
+            statement.setString(1, username);
+            ResultSet rs = statement.executeQuery();
+            ArrayList<AuthToken> tokens = new ArrayList<>();
+            while (rs.next()) {
+                AuthToken a = new AuthToken(
+                        rs.getString("token"),
+                        rs.getString("username")
+                );
+                tokens.add(a);
+            }
+            db.closeConnection(true);
+            AuthToken[] response = new AuthToken[tokens.size()];
+            response = tokens.toArray(response);
+            return response;
+        } catch (SQLException ex) {
+            db.closeConnection(false);
+            throw new DatabaseException("sql error encountered while finding authtoken by token");
+        } catch (DatabaseException ex) {
+            db.closeConnection(false);
+            throw ex;
+        }
     }
 
-    /**
-     * delete token from database
-     *
-     * @param a authtoken object
-     * @return true on success
-     */
-    public boolean delete(AuthToken a) {
-        return false;
+    public boolean deleteByToken(String token) throws DatabaseException {
+        int deleteCount = 0;
+        try {
+            this.db.connect();
+            String sql = "delete from auth_token where token = ?;";
+            PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
+            statement.setString(1, token);
+            deleteCount = statement.executeUpdate();
+            db.closeConnection(true);
+        } catch (SQLException e) {
+            db.closeConnection(false);
+            throw new DatabaseException("sql error encountered while deleting token");
+        } catch (DatabaseException e) {
+            db.closeConnection(false);
+            throw e;
+        }
+        return (deleteCount > 0) ? true : false;
     }
 
-    /**
-     * delete token from database
-     *
-     * @param token token key
-     * @return true on success
-     */
-    public boolean deleteByToken(String token) {
-        return false;
+    public boolean deleteByUser(String username) throws DatabaseException {
+        int deleteCount = 0;
+        try {
+            this.db.connect();
+            String sql = "delete from auth_token where username = ?;";
+            PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
+            statement.setString(1, username);
+            deleteCount = statement.executeUpdate();
+            db.closeConnection(true);
+        } catch (SQLException e) {
+            db.closeConnection(false);
+            throw new DatabaseException("sql error encountered while deleting token");
+        } catch (DatabaseException e) {
+            db.closeConnection(false);
+            throw e;
+        }
+        return (deleteCount > 0) ? true : false;
     }
 
-    /**
-     * delete all tokens belonging to this user
-     *
-     * @param username username
-     * @return true on success
-     */
-    public boolean deleteByUser(String username) {
-        return false;
-    }
 }

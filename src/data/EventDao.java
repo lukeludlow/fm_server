@@ -1,57 +1,100 @@
 package data;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import model.Event;
 
-/**
- * event database access object
- */
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class EventDao {
-    /**
-     * database connection
-     */
     private Database db;
 
-    /**
-     * insert event to database
-     *
-     * @param e new event
-     * @return true on success
-     */
-    public boolean add(Event e) {
-        return false;
+    public void insert(Event e) throws DatabaseException {
+        try {
+            this.db.connect();
+            String sql = "insert into event " +
+                    "(event_id, descendant, person_id, latitude, longitude, country, city, event_type, year) " +
+                    "values (?,?,?,?,?,?,?,?,?)";
+            PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
+            statement.setString(1, e.getEventID());
+            statement.setString(2, e.getDescendant());
+            statement.setString(3, e.getPersonID());
+            statement.setDouble(4, e.getLatitude());
+            statement.setDouble(5, e.getLongitude());
+            statement.setString(6, e.getCountry());
+            statement.setString(7, e.getCity());
+            statement.setString(8, e.getEventID());
+            statement.setInt(9, e.getYear());
+            statement.executeUpdate();
+            db.closeConnection(true);
+        } catch (SQLException ex) {
+            db.closeConnection(false);
+            throw new DatabaseException("sql error encountered while inserting event into database");
+        } catch (DatabaseException ex) {
+            db.closeConnection(false);
+            throw ex;
+        }
     }
 
-    /**
-     * find event from database
-     *
-     * @param eventID event's unique id
-     * @return event object. null if not found.
-     */
-    public Event get(String eventID) {
+    public Event find(String eventID) throws DatabaseException{
+        try {
+            this.db.connect();
+            String sql = "select * from event where event_id = ?;";
+            PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
+            statement.setString(1, eventID);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                Event e = new Event(
+                        rs.getString("event_id"),
+                        rs.getString("descendant"),
+                        rs.getString("person_id"),
+                        rs.getDouble("latitude"),
+                        rs.getDouble("longitude"),
+                        rs.getString("country"),
+                        rs.getString("city"),
+                        rs.getString("event_type"),
+                        rs.getInt("year")
+                );
+                db.closeConnection(true);
+                return e;
+            } else {
+                db.closeConnection(true);
+            }
+        } catch (SQLException e) {
+            db.closeConnection(false);
+            throw new DatabaseException("sql error encountered while finding event");
+        } catch (DatabaseException e) {
+            db.closeConnection(false);
+            throw e;
+        }
         return null;
     }
 
-    /**
-     * delete event from database
-     *
-     * @param eventID event's unique id
-     * @return true on success
-     */
-    public boolean delete(String eventID) {
-        return false;
+    public boolean delete(String eventID) throws DatabaseException {
+        int deleteCount = 0;
+        try {
+            this.db.connect();
+            String sql = "delete from event where event_id = ?;";
+            PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
+            statement.setString(1, eventID);
+            deleteCount = statement.executeUpdate();
+            db.closeConnection(true);
+        } catch (SQLException e) {
+            db.closeConnection(false);
+            throw new DatabaseException("sql error encountered while deleting event");
+        } catch (DatabaseException e) {
+            db.closeConnection(false);
+            throw e;
+        }
+        return (deleteCount > 0) ? true : false;
     }
 
-    /**
-     * delete event from database
-     *
-     * @param e event object
-     * @return true on success
-     */
-    public boolean delete(Event e) {
-        return false;
-    }
 }
+
+

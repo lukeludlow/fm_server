@@ -193,7 +193,7 @@ public class Database {
             Statement statement = connection.createStatement();
             String sql = "create table if not exists auth_token " +
                     "(" +
-                    "token      varchar(255)  not null, " +
+                    "token      varchar(255)  not null primary key, " +
                     "username   varchar(255)  not null  " +
                     ");";
             statement.execute(sql);

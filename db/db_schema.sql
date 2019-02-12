@@ -16,7 +16,7 @@ create table if not exists user (
 );
 
 create table if not exists auth_token (
-    token      varchar(255)  not null,
+    token      varchar(255)  not null primary key,
     username   varchar(255)  not null
 );
 
