@@ -22,9 +22,7 @@ public class UserDao {
 
     /**
      * insert user into database
-     *
      * @param u new user
-     * @return true on success
      */
     public void insert(User u) throws DatabaseException {
         try {
@@ -52,8 +50,15 @@ public class UserDao {
     }
 
     /**
+     * insert many users into database
+     * @param users list of new users
+     */
+    public void insertMany(User[] users) throws DatabaseException {
+        // TODO
+    }
+
+    /**
      * find user from database
-     *
      * @param username user account's username
      * @return user object. null if not found.
      */
@@ -90,8 +95,17 @@ public class UserDao {
     }
 
     /**
+     * find many users in the database
+     * @param usernames list of accounts to find
+     * @return list of found users. length is the same as input length, entries can be null if not found
+     */
+    public User[] findMany(String[] usernames) throws DatabaseException {
+        // TODO
+        return null;
+    }
+
+    /**
      * delete user from database
-     *
      * @param username user account's username
      * @return true if the entry is found and deleted
      */
@@ -112,5 +126,15 @@ public class UserDao {
             throw e;
         }
         return (deleteCount > 0) ? true : false;
+    }
+
+    /**
+     * delete many users from database
+     * @param usernames list of users to delete
+     * @return number of users deleted
+     */
+    public int deleteMany(String[] usernames) throws DatabaseException {
+        // TODO
+        return 0;
     }
 }

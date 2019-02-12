@@ -31,7 +31,6 @@ public class Database {
 
     /**
      * open connection to the fms.sqlite database
-     *
      * @return new sql connection
      */
     public Connection connect() throws DatabaseException {
@@ -47,7 +46,6 @@ public class Database {
 
     /**
      * either commit or rollback and then close connection
-     *
      * @param commit commit transaction or nah
      * @throws DatabaseException if things break
      */
@@ -71,7 +69,6 @@ public class Database {
 
     /**
      * import given json dataset
-     *
      * @return true on success
      */
     public boolean importData() {
