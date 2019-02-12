@@ -1,7 +1,9 @@
-package message;
+package message.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import model.Event;
 
 /**
  * Event Success Response Body:
@@ -19,14 +21,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class EventResponse {
-    private String descendant;
-    private String eventid;
-    private String personid;
-    private double latitude;
-    private double longitude;
-    private String country;
-    private String city;
-    private String eventType;
-    private int year;
+@AllArgsConstructor
+public class EventResponse extends AbstractResponse {
+    private Event event;
 }

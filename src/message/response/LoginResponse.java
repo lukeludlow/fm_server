@@ -1,7 +1,10 @@
-package message;
+package message.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import model.AuthToken;
+import model.Person;
 
 /**
  * Login Success Response Body:
@@ -13,8 +16,8 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class LoginResponse {
-    private String authtoken;
-    private String username;
-    private String personid;
+@AllArgsConstructor
+public class LoginResponse extends AbstractResponse {
+    private AuthToken authtoken;
+    private Person person;
 }

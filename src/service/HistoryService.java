@@ -1,7 +1,7 @@
 package service;
 
-import message.HistoryRequest;
-import message.HistoryResponse;
+import message.request.HistoryRequest;
+import message.response.HistoryResponse;
 
 /**
  * history service : web api method /event

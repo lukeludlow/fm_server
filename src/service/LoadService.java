@@ -1,7 +1,7 @@
 package service;
 
-import message.LoadRequest;
-import message.LoadResponse;
+import message.request.LoadRequest;
+import message.response.LoadResponse;
 
 /**
  * load service : web api method /load

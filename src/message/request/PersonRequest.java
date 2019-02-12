@@ -1,18 +1,18 @@
-package message;
+package message.request;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Event Request Body:
+ * Person Request Body:
  * {
- * "eventid": "xxxxxxxx",
+ * "personid": "xxxxxxxx"
  * "authtoken": "xxxxxxxx"
  * }
  */
 @Data
 @NoArgsConstructor
-public class EventRequest {
-    private String eventid;
+public class PersonRequest {
+    private String personid;
     private String authtoken;
 }

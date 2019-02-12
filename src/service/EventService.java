@@ -1,7 +1,7 @@
 package service;
 
-import message.EventRequest;
-import message.EventResponse;
+import message.request.EventRequest;
+import message.response.EventResponse;
 
 /**
  * event service : web api method /event/[eventID]

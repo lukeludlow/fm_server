@@ -1,5 +1,6 @@
-package message;
+package message.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import model.Person;
@@ -12,6 +13,7 @@ import model.Person;
  */
 @Data
 @NoArgsConstructor
-public class FamilyResponse {
-    private model.Person[] data;
+@AllArgsConstructor
+public class FamilyResponse extends AbstractResponse {
+    private Person[] data;
 }

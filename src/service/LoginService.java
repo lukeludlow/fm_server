@@ -1,7 +1,7 @@
 package service;
 
-import message.LoginRequest;
-import message.LoginResponse;
+import message.request.LoginRequest;
+import message.response.LoginResponse;
 
 /**
  * login service : web api method /user/login

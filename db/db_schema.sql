@@ -22,7 +22,7 @@ create table if not exists auth_token (
 
 create table if not exists people (
     person_id  varchar(255)  not null primary key,
-    descendant varchar(255),           /* username */
+    descendant varchar(255)  not null, /* username */
     firstname  varchar(255)  not null,
     lastname   varchar(255)  not null,
     gender     varchar(255)  not null,
@@ -33,7 +33,7 @@ create table if not exists people (
 
 create table if not exists event (
     event_id   varchar(255)  not null primary key,
-    descendant varchar(255),           /* username */
+    descendant varchar(255)  not null, /* username */
     person_id  varchar(255)  not null,
     latitude   varchar(255)  not null, /* ###.###### */
     longitude  varchar(255)  not null, /* ###.###### */

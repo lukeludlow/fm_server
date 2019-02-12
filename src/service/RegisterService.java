@@ -1,7 +1,7 @@
 package service;
 
-import message.RegisterRequest;
-import message.RegisterResponse;
+import message.request.RegisterRequest;
+import message.response.RegisterResponse;
 
 /**
  * register service : web api method /user/register

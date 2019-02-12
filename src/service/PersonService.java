@@ -1,7 +1,7 @@
 package service;
 
-import message.PersonRequest;
-import message.PersonResponse;
+import message.request.PersonRequest;
+import message.response.PersonResponse;
 
 /**
  * person service : web api method /person/[personID]

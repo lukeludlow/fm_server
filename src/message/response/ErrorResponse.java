@@ -1,5 +1,6 @@
-package message;
+package message.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class ErrorResponse {
+@AllArgsConstructor
+public class ErrorResponse extends AbstractResponse {
     private String errorMessage;
 }

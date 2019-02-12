@@ -1,7 +1,10 @@
-package message;
+package message.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import model.Person;
+import model.Event;
 
 /**
  * Fill Success Response Body:
@@ -11,6 +14,9 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class FillResponse {
+@AllArgsConstructor
+public class FillResponse extends AbstractResponse {
     private String successMessage;
+    private Person[] people;
+    private Event[] events;
 }

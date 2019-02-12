@@ -1,7 +1,9 @@
-package message;
+package message.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import model.Person;
 
 /**
  * Person Success Response Body:
@@ -18,13 +20,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class PersonResponse {
-    private String descendant;
-    private String personid;
-    private String firstname;
-    private String lastname;
-    private String gender;
-    private String fatherid;
-    private String motherid;
-    private String spouseid;
+@AllArgsConstructor
+public class PersonResponse extends AbstractResponse {
+    private Person person;
 }

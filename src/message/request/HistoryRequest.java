@@ -1,4 +1,4 @@
-package message;
+package message.request;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

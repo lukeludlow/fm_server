@@ -1,5 +1,6 @@
-package message;
+package message.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import model.Event;
@@ -12,6 +13,7 @@ import model.Event;
  */
 @Data
 @NoArgsConstructor
-public class HistoryResponse {
-    private model.Event[] data;
+@AllArgsConstructor
+public class HistoryResponse extends AbstractResponse {
+    private Event[] data;
 }

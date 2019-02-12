@@ -1,6 +1,6 @@
 package service;
 
-import message.ClearResponse;
+import message.response.ClearResponse;
 
 /**
  * clear service : web api method /clear

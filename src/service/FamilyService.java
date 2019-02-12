@@ -1,7 +1,7 @@
 package service;
 
-import message.FamilyRequest;
-import message.FamilyResponse;
+import message.request.FamilyRequest;
+import message.response.FamilyResponse;
 
 /**
  * family service : web api method /person

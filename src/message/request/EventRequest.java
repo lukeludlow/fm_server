@@ -1,16 +1,18 @@
-package message;
+package message.request;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Family Request Body:
+ * Event Request Body:
  * {
+ * "eventid": "xxxxxxxx",
  * "authtoken": "xxxxxxxx"
  * }
  */
 @Data
 @NoArgsConstructor
-public class FamilyRequest {
+public class EventRequest {
+    private String eventid;
     private String authtoken;
 }
