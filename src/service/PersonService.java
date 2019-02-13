@@ -1,7 +1,7 @@
 package service;
 
-import message.request.PersonRequest;
-import message.response.PersonResponse;
+import message.PersonRequest;
+import message.PersonResponse;
 
 /**
  * person service : web api method /person/[personID]
@@ -9,9 +9,6 @@ import message.response.PersonResponse;
 public class PersonService {
     /**
      * returns the single person object with the specified id.
-     *
-     * @param p person request
-     * @return person response
      */
     public PersonResponse person(PersonRequest p) {
         return null;

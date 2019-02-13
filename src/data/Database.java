@@ -8,15 +8,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- * connects to sqlite database file. all the data access objects utilize this database object.
- */
 @Data
 @NoArgsConstructor
 public class Database {
-    /** sql connection to sqlite database file */
     private Connection connection;
-    /** connect url. "driver + path/to/database". path is relative to project root. */
     private static final String URL = "jdbc:sqlite:db/fms.sqlite";
     private static final String DRIVER = "org.sqlite.JDBC";
 
@@ -44,11 +39,6 @@ public class Database {
         return connection;
     }
 
-    /**
-     * either commit or rollback and then close connection
-     * @param commit commit transaction or nah
-     * @throws DatabaseException if things break
-     */
     public void closeConnection(boolean commit) throws DatabaseException {
         try {
             if (commit) {
@@ -67,17 +57,10 @@ public class Database {
         }
     }
 
-    /**
-     * import given json dataset
-     * @return true on success
-     */
     public boolean importData() {
         return false;
     }
 
-    /**
-     * create all tables (if they exist)
-     */
     public void initAll() {
         try {
             initUsers();
@@ -90,9 +73,6 @@ public class Database {
         }
     }
 
-    /**
-     * create table if not exists user
-     */
     public void initUsers() throws DatabaseException {
         connect();
         try {
@@ -119,9 +99,6 @@ public class Database {
         }
     }
 
-    /**
-     * create table if not exists person
-     */
     public void initPeople() throws DatabaseException {
         connect();
         try {
@@ -150,9 +127,6 @@ public class Database {
         }
     }
 
-    /**
-     * create table if not exists event
-     */
     public void initEvents() throws DatabaseException {
         connect();
         try {
@@ -181,9 +155,6 @@ public class Database {
         }
     }
 
-    /**
-     * create table if not exists authtoken
-     */
     public void initAuthTokens() throws DatabaseException {
         connect();
         try {
@@ -205,9 +176,6 @@ public class Database {
         }
     }
 
-    /**
-     * delete all info from all tables
-     */
     public void clearAll() throws DatabaseException {
         connect();
         try {
@@ -230,30 +198,18 @@ public class Database {
         }
     }
 
-    /**
-     * drop table if exists user
-     */
     public boolean clearUsers() {
         return false;
     }
 
-    /**
-     * drop table if exists person
-     */
     public boolean clearPeople() {
         return false;
     }
 
-    /**
-     * drop table if exists event
-     */
     public boolean clearEvents() {
         return false;
     }
 
-    /**
-     * drop table if exists authtoken
-     */
     public boolean clearAuthTokens() {
         return false;
     }

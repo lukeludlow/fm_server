@@ -8,22 +8,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * user database access object
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDao {
-    /**
-     * database connection
-     */
     private Database db;
 
-    /**
-     * insert user into database
-     * @param u new user
-     */
     public void insert(User u) throws DatabaseException {
         try {
             this.db.connect();
@@ -49,19 +39,10 @@ public class UserDao {
         }
     }
 
-    /**
-     * insert many users into database
-     * @param users list of new users
-     */
     public void insertMany(User[] users) throws DatabaseException {
         // TODO
     }
 
-    /**
-     * find user from database
-     * @param username user account's username
-     * @return user object. null if not found.
-     */
     public User find(String username) throws DatabaseException {
         try {
             this.db.connect();
@@ -94,21 +75,11 @@ public class UserDao {
         return null;
     }
 
-    /**
-     * find many users in the database
-     * @param usernames list of accounts to find
-     * @return list of found users. length is the same as input length, entries can be null if not found
-     */
     public User[] findMany(String[] usernames) throws DatabaseException {
         // TODO
         return null;
     }
 
-    /**
-     * delete user from database
-     * @param username user account's username
-     * @return true if the entry is found and deleted
-     */
     public boolean delete(String username) throws DatabaseException {
         int deleteCount = 0;
         try {
@@ -128,11 +99,6 @@ public class UserDao {
         return (deleteCount > 0) ? true : false;
     }
 
-    /**
-     * delete many users from database
-     * @param usernames list of users to delete
-     * @return number of users deleted
-     */
     public int deleteMany(String[] usernames) throws DatabaseException {
         // TODO
         return 0;

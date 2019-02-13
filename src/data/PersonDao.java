@@ -8,22 +8,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * person database access object
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class PersonDao {
-    /**
-     * database connection
-     */
     private Database db;
 
-    /**
-     * insert person to database
-     * @param p new person
-     */
     public void insert(Person p) throws DatabaseException {
         try {
             this.db.connect();
@@ -50,19 +40,10 @@ public class PersonDao {
         }
     }
 
-    /**
-     * insert many people into database
-     * @param people list of new people
-     */
     public void insertMany(Person[] people) throws DatabaseException {
         // TODO
     }
 
-    /**
-     * find person from database
-     * @param personID person's unique id
-     * @return person object. null if not found.
-     */
     public Person find(String personID) throws DatabaseException {
         try {
             this.db.connect();
@@ -97,21 +78,11 @@ public class PersonDao {
         return null;
     }
 
-    /**
-     * find many people in the database
-     * @param IDs list of people to find
-     * @return list of found people. length is the same as input length, entries can be null if not found
-     */
     public Person[] findMany(String[] IDs) throws DatabaseException {
         // TODO
         return null;
     }
 
-    /**
-     * delete person from database
-     * @param personID person's unique id
-     * @return true if the entry is found and deleted
-     */
     public boolean delete(String personID) throws DatabaseException {
         int deleteCount = 0;
         try {
@@ -131,11 +102,6 @@ public class PersonDao {
         return (deleteCount > 0) ? true : false;
     }
 
-    /**
-     * delete many people from database
-     * @param IDs list of people to delete
-     * @return number of people deleted
-     */
     public int deleteMany(String[] IDs) throws DatabaseException {
         // TODO
         return 0;

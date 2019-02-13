@@ -9,22 +9,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * event database access object
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventDao {
-    /**
-     * database connection
-     */
     private Database db;
 
-    /**
-     * insert event into database
-     * @param e new event
-     */
     public void insert(Event e) throws DatabaseException {
         try {
             this.db.connect();
@@ -52,19 +42,10 @@ public class EventDao {
         }
     }
 
-    /**
-     * insert many events into database
-     * @param events list of new events
-     */
     public void insertMany(Event[] events) throws DatabaseException {
         // TODO
     }
 
-    /**
-     * find event from database
-     * @param eventID event's unique ID
-     * @return event object. null if not found.
-     */
     public Event find(String eventID) throws DatabaseException{
         try {
             this.db.connect();
@@ -99,21 +80,11 @@ public class EventDao {
         return null;
     }
 
-    /**
-     * find many events in the database
-     * @param IDs list of events to find
-     * @return list of found events. length is the same as input length, entries can be null if not found
-     */
     public Event[] findMany(String[] IDs) throws DatabaseException {
         // TODO
         return null;
     }
 
-    /**
-     * delete event from database
-     * @param eventID event's unique ID
-     * @return true if the entry is found and deleted
-     */
     public boolean delete(String eventID) throws DatabaseException {
         int deleteCount = 0;
         try {
@@ -133,11 +104,6 @@ public class EventDao {
         return (deleteCount > 0) ? true : false;
     }
 
-    /**
-     * delete many events from database
-     * @param IDs list of events to delete
-     * @return number of events deleted
-     */
     public int deleteMany(String IDs) throws DatabaseException {
         // TODO
         return 0;

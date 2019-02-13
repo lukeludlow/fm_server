@@ -14,19 +14,9 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @AllArgsConstructor
 
-/**
- * authtoken database access object
- */
 public class AuthTokenDao {
-    /**
-     * database connection
-     */
     private data.Database db;
 
-    /**
-     * insert authtoken into database
-     * @param a new authtoken
-     */
     public void insert(AuthToken a) throws DatabaseException {
         try {
             this.db.connect();
@@ -47,19 +37,10 @@ public class AuthTokenDao {
         }
     }
 
-    /**
-     * insert many authtokens into database
-     * @param tokens list of new authtokens
-     */
     public void insertMany(AuthToken[] tokens) throws DatabaseException {
         // TODO
     }
 
-    /**
-     * find authtoken from database
-     * @param token unique token
-     * @return authtoken object. null if not found.
-     */
     public AuthToken findByToken(String token) throws DatabaseException {
         try {
             this.db.connect();
@@ -87,21 +68,11 @@ public class AuthTokenDao {
         return null;
     }
 
-    /**
-     * find many tokens in the database
-     * @param tokens list of tokens to find
-     * @return list of found authtokens. length is same as input length, entries can be null if not found
-     */
     public AuthToken[] findManyByToken(String tokens) throws DatabaseException {
         // TODO
         return null;
     }
 
-    /**
-     * find all the tokens that belong to a user
-     * @param username user that owns authtokens
-     * @return list of found authtokens
-     */
     public AuthToken[] findManyByUser(String username) throws DatabaseException {
         try {
             this.db.connect();
@@ -130,11 +101,6 @@ public class AuthTokenDao {
         }
     }
 
-    /**
-     * delete token from database
-     * @param token unique token to delete
-     * @return true if the entry is found and deleted
-     */
     public boolean deleteByToken(String token) throws DatabaseException {
         int deleteCount = 0;
         try {
@@ -154,21 +120,11 @@ public class AuthTokenDao {
         return (deleteCount > 0) ? true : false;
     }
 
-    /**
-     * delete many tokens from database
-     * @param tokens list of tokens to delete
-     * @return number of tokens deleted
-     */
     public int deleteManyByToken(String[] tokens) throws DatabaseException {
         // TODO
         return 0;
     }
 
-    /**
-     * delete all the tokens that belong to a user
-     * @param username user that owns authtokens
-     * @return number of tokens deleted
-     */
     public int deleteManyByUser(String username) throws DatabaseException {
         int deleteCount = 0;
         try {
