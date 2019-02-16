@@ -22,16 +22,6 @@ public abstract class Dao<T> {
     protected String findSql;
     protected String deleteSql;
 
-    public Dao(Class<T> type) {
-        this.type = type;
-        this.db = new Database();
-    }
-
-    public Dao(Class<T> type, Database db) {
-        this.type = type;
-        this.db = db;
-    }
-
     public void insert(T t) throws DatabaseException {
         try {
             this.db.connect();
@@ -68,8 +58,6 @@ public abstract class Dao<T> {
         }
     }
 
-    public abstract T getObject(ResultSet rs) throws SQLException;
-
     // delete UNIQUE element. return 1 if found and deleted.
     public int delete(String primaryKey) throws DatabaseException {
         int deleteCount = 0;
@@ -88,36 +76,34 @@ public abstract class Dao<T> {
         return deleteCount;
     }
 
+    // create object from ResultSet. must be overriden to work with that particular type
+    public abstract T getObject(ResultSet rs) throws SQLException;
+
     public PreparedStatement prepareInsertStatement(T t) throws SQLException, IllegalAccessException {
         String sql = this.insertSql;
         PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
         setStatementValues(statement, t);
         return statement;
     }
-
     public PreparedStatement prepareFindStatement(String primaryKey) throws SQLException {
         String sql = this.findSql;
         PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
         statement.setString(1, primaryKey);
         return statement;
     }
-
     public PreparedStatement prepareDeleteStatement(String primaryKey) throws SQLException {
         String sql = this.deleteSql;
         PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
         statement.setObject(1, primaryKey);
         return statement;
     }
-
     public void setStatementValues(PreparedStatement statement, T t) throws SQLException, IllegalAccessException {
         Field[] fields = this.type.getDeclaredFields();
         int i = 1;
         for (Field f : fields) {
-            System.out.printf("statement.setObject(%d, %s)\n", i,runGetter(f, t));
             statement.setObject(i++, runGetter(f, t));
         }
     }
-
     public Object runGetter(Field field, T t) {
         for (Method method : this.type.getMethods()) {
             if ((method.getName().startsWith("get")) && (method.getName().length() == (field.getName().length() + 3))) {
@@ -131,6 +117,15 @@ public abstract class Dao<T> {
             }
         }
         return null;
+    }
+
+    public Dao(Class<T> type) {
+        this.type = type;
+        this.db = new Database();
+    }
+    public Dao(Class<T> type, Database db) {
+        this.type = type;
+        this.db = db;
     }
 
 }

@@ -2,7 +2,6 @@ package data;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -11,6 +10,7 @@ import java.sql.Statement;
 @Data
 @NoArgsConstructor
 public class Database {
+
     private Connection connection;
     private static final String URL = "jdbc:sqlite:db/fms.sqlite";
     private static final String DRIVER = "org.sqlite.JDBC";
@@ -58,6 +58,7 @@ public class Database {
     }
 
     public boolean importData() {
+        // TODO
         return false;
     }
 
@@ -67,9 +68,9 @@ public class Database {
             initPeople();
             initEvents();
             initAuthTokens();
-        } catch (DatabaseException e) {
+        } catch (DatabaseException ex) {
             System.err.println("init tables failed!");
-            System.err.println(e);
+            System.err.println(ex);
         }
     }
 

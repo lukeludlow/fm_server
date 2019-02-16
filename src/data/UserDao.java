@@ -1,7 +1,6 @@
 package data;
 
 import model.User;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -19,13 +18,13 @@ public class UserDao extends Dao<User> {
         this.insertSql = "insert into user " +
                 "(username, password, email, firstname, lastname, gender, person_id) " +
                 "values (?,?,?,?,?,?,?)";
-        this.findSql = "select * from user where username = ?;";
-        this.deleteSql = "delete from user where username = ?;";
+        this.findSql = "select * from user where username = ?";
+        this.deleteSql = "delete from user where username = ?";
     }
     @Override
     public User getObject(ResultSet rs) throws SQLException {
         if (rs.next()) {
-            User u = new User(
+            return new User(
                     rs.getString("username"),
                     rs.getString("password"),
                     rs.getString("email"),
@@ -34,7 +33,6 @@ public class UserDao extends Dao<User> {
                     rs.getString("gender"),
                     rs.getString("person_id")
             );
-            return u;
         }
         return null;
     }
