@@ -5,6 +5,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AuthTokenDaoTest {
@@ -57,7 +60,6 @@ class AuthTokenDaoTest {
                     authtokenDao.insert(bitcoin);
                 });
     }
-
     @Test
     @DisplayName("find success")
     void testFind() throws Exception {
@@ -97,7 +99,6 @@ class AuthTokenDaoTest {
         findBitcoin = authtokenDao.find("xX_authtoken_Xx");
         assertNull(findBitcoin);
     }
-
     @Test
     @DisplayName("delete success")
     void testDelete() throws Exception {
@@ -114,5 +115,42 @@ class AuthTokenDaoTest {
     void testDeleteFail() throws Exception {
         authtokenDao.delete(bitcoin.getToken());
     }
-
+    @Test
+    @DisplayName("find many (all tokens belonging to a user)")
+    void testFindMany() throws Exception {
+        AuthToken t2 = new AuthToken("2", "lukeludlow");
+        AuthToken t3 = new AuthToken("3", "lukeludlow");
+        authtokenDao.insert(bitcoin);
+        authtokenDao.insert(t2);
+        authtokenDao.insert(t3);
+        List<AuthToken> tokens = authtokenDao.findMany(bitcoin.getUsername());
+        assertEquals(3, tokens.size());
+        assertEquals(bitcoin, tokens.get(0));
+        assertEquals(t2, tokens.get(1));
+        assertEquals(t3, tokens.get(2));
+    }
+    @Test
+    @DisplayName("find many fail")
+    void testFindManyFail() throws Exception {
+        List<AuthToken> tokens = authtokenDao.findMany(bitcoin.getUsername());
+        assertEquals(0, tokens.size());
+    }
+    @Test
+    @DisplayName("delete many (delete all tokens belonging to a user)")
+    void testDeleteMany() throws Exception {
+        AuthToken t2 = new AuthToken("2", "lukeludlow");
+        AuthToken t3 = new AuthToken("3", "lukeludlow");
+        authtokenDao.insert(bitcoin);
+        authtokenDao.insert(t2);
+        authtokenDao.insert(t3);
+        List<AuthToken> tokens = authtokenDao.findMany(bitcoin.getUsername());
+        assertEquals(3, tokens.size());
+        assertEquals(bitcoin, tokens.get(0));
+        assertEquals(t2, tokens.get(1));
+        assertEquals(t3, tokens.get(2));
+        int deleteCount = authtokenDao.deleteMany(bitcoin.getUsername());
+        tokens = authtokenDao.findMany(bitcoin.getUsername());
+        assertEquals(3, deleteCount);
+        assertEquals(0, tokens.size());
+    }
 }

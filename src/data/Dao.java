@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -20,7 +22,9 @@ public abstract class Dao<T> {
     protected Database db;
     protected String insertSql;
     protected String findSql;
+    protected String findManySql;
     protected String deleteSql;
+    protected String deleteManySql;
 
     public void insert(T t) throws DatabaseException {
         try {
@@ -58,6 +62,29 @@ public abstract class Dao<T> {
         }
     }
 
+    public List<T> findMany(String key) throws DatabaseException {
+        List<T> items = new ArrayList<>();
+        try {
+            this.db.connect();
+            PreparedStatement statement = prepareFindManyStatement(key);
+            ResultSet rs = statement.executeQuery();
+            T foundObject = null;
+            foundObject = getObject(rs);
+            while (foundObject != null) {
+                items.add(foundObject);
+                foundObject = getObject(rs);
+            }
+            db.closeConnection(true);
+            return items;
+        } catch (SQLException ex) {
+            db.closeConnection(false);
+            throw new DatabaseException("sql error encountered while finding in database");
+        } catch (DatabaseException ex) {
+            db.closeConnection(false);
+            throw ex;
+        }
+    }
+
     // delete UNIQUE element. return 1 if found and deleted.
     public int delete(String primaryKey) throws DatabaseException {
         int deleteCount = 0;
@@ -76,6 +103,25 @@ public abstract class Dao<T> {
         return deleteCount;
     }
 
+
+    public int deleteMany(String key) throws DatabaseException {
+        int deleteCount = 0;
+        try {
+            this.db.connect();
+            PreparedStatement statement = prepareDeleteManyStatement(key);
+            deleteCount = statement.executeUpdate();
+            db.closeConnection(true);
+        } catch (SQLException e) {
+            db.closeConnection(false);
+            throw new DatabaseException("sql error encountered while deleting in database");
+        } catch (DatabaseException e) {
+            db.closeConnection(false);
+            throw e;
+        }
+        return deleteCount;
+    }
+
+
     // create object from ResultSet. must be overriden to work with that particular type
     public abstract T getObject(ResultSet rs) throws SQLException;
 
@@ -91,10 +137,22 @@ public abstract class Dao<T> {
         statement.setString(1, primaryKey);
         return statement;
     }
+    public PreparedStatement prepareFindManyStatement(String key) throws SQLException {
+        String sql = this.findManySql;
+        PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
+        statement.setString(1, key);
+        return statement;
+    }
     public PreparedStatement prepareDeleteStatement(String primaryKey) throws SQLException {
         String sql = this.deleteSql;
         PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
         statement.setObject(1, primaryKey);
+        return statement;
+    }
+    public PreparedStatement prepareDeleteManyStatement(String key) throws SQLException {
+        String sql = this.deleteManySql;
+        PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
+        statement.setObject(1, key);
         return statement;
     }
     public void setStatementValues(PreparedStatement statement, T t) throws SQLException, IllegalAccessException {

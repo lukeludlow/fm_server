@@ -1,10 +1,15 @@
 package data;
 
 import model.Person;
+import model.Person;
+import model.Person;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersonDaoTest {
@@ -97,7 +102,6 @@ class PersonDaoTest {
         findLuke = personDao.find("xX_person_Xx");
         assertNull(findLuke);
     }
-
     @Test
     @DisplayName("delete success")
     void testDelete() throws Exception {
@@ -114,5 +118,42 @@ class PersonDaoTest {
     void testDeleteFail() throws Exception {
         personDao.delete(luke.getPersonID());
     }
-
+    @Test
+    @DisplayName("find many (all people belonging to a descendant/user)")
+    void testFindMany() throws Exception {
+        Person p2 = new Person("2", "lukeludlow", "p", "2", "m", "none", "none", "none");
+        Person p3 = new Person("3", "lukeludlow", "p", "3", "m", "none", "none", "none");
+        personDao.insert(luke);
+        personDao.insert(p2);
+        personDao.insert(p3);
+        List<Person> people = personDao.findMany(luke.getDescendant());
+        assertEquals(3, people.size());
+        assertEquals(luke, people.get(0));
+        assertEquals(p2, people.get(1));
+        assertEquals(p3, people.get(2));
+    }
+    @Test
+    @DisplayName("find many fail")
+    void testFindManyFail() throws Exception {
+        List<Person> people = personDao.findMany(luke.getDescendant());
+        assertEquals(0, people.size());
+    }
+    @Test
+    @DisplayName("delete many (delete all people belonging to a descendant/user)")
+    void testDeleteMany() throws Exception {
+        Person p2 = new Person("2", "lukeludlow", "p", "2", "m", "none", "none", "none");
+        Person p3 = new Person("3", "lukeludlow", "p", "3", "m", "none", "none", "none");
+        personDao.insert(luke);
+        personDao.insert(p2);
+        personDao.insert(p3);
+        List<Person> people = personDao.findMany(luke.getDescendant());
+        assertEquals(3, people.size());
+        assertEquals(luke, people.get(0));
+        assertEquals(p2, people.get(1));
+        assertEquals(p3, people.get(2));
+        int deleteCount = personDao.deleteMany(luke.getDescendant());
+        people = personDao.findMany(luke.getDescendant());
+        assertEquals(3, deleteCount);
+        assertEquals(0, people.size());
+    }
 }

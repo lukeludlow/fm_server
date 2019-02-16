@@ -1,10 +1,14 @@
 package data;
 
 import model.Event;
+import model.Event;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class EventDaoTest {
@@ -97,7 +101,6 @@ class EventDaoTest {
         findBirthday = eventDao.find("xX_event_Xx");
         assertNull(findBirthday);
     }
-
     @Test
     @DisplayName("delete success")
     void testDelete() throws Exception {
@@ -114,5 +117,42 @@ class EventDaoTest {
     void testDeleteFail() throws Exception {
         eventDao.delete(birthday.getEventID());
     }
-
+    @Test
+    @DisplayName("find many (all events belonging to a descendant/user)")
+    void testFindMany() throws Exception {
+        Event e2 = new Event("101", "lukeludlow", "nunya01",10.1,-10.1, "japan", "tokyo", "birth", 3019);
+        Event e3 = new Event("102", "lukeludlow", "nunya02",10.2,-10.2, "japan2", "tokyo", "birth", 3012);
+        eventDao.insert(birthday);
+        eventDao.insert(e2);
+        eventDao.insert(e3);
+        List<Event> events = eventDao.findMany(birthday.getDescendant());
+        assertEquals(3, events.size());
+        assertEquals(birthday, events.get(0));
+        assertEquals(e2, events.get(1));
+        assertEquals(e3, events.get(2));
+    }
+    @Test
+    @DisplayName("find many fail")
+    void testFindManyFail() throws Exception {
+        List<Event> events = eventDao.findMany(birthday.getDescendant());
+        assertEquals(0, events.size());
+    }
+    @Test
+    @DisplayName("delete many (delete all events belonging to a descendant/user)")
+    void testDeleteMany() throws Exception {
+        Event e2 = new Event("101", "lukeludlow", "nunya01",10.1,-10.1, "japan", "tokyo", "birth", 3019);
+        Event e3 = new Event("102", "lukeludlow", "nunya02",10.2,-10.2, "japan2", "tokyo", "birth", 3012);
+        eventDao.insert(birthday);
+        eventDao.insert(e2);
+        eventDao.insert(e3);
+        List<Event> events = eventDao.findMany(birthday.getDescendant());
+        assertEquals(3, events.size());
+        assertEquals(birthday, events.get(0));
+        assertEquals(e2, events.get(1));
+        assertEquals(e3, events.get(2));
+        int deleteCount = eventDao.deleteMany(birthday.getDescendant());
+        events = eventDao.findMany(birthday.getDescendant());
+        assertEquals(3, deleteCount);
+        assertEquals(0, events.size());
+    }
 }

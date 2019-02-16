@@ -1,8 +1,12 @@
 package data;
 
 import model.AuthToken;
+
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AuthTokenDao extends Dao<AuthToken> {
     public AuthTokenDao() {
@@ -19,7 +23,9 @@ public class AuthTokenDao extends Dao<AuthToken> {
                 "(token, username) " +
                 "values (?,?)";
         this.findSql = "select * from auth_token where token = ?";
+        this.findManySql = "select * from auth_token where username = ?";
         this.deleteSql = "delete from auth_token where token = ?";
+        this.deleteManySql = "delete from auth_token where username = ?";
     }
     @Override
     public AuthToken getObject(ResultSet rs) throws SQLException {
@@ -31,5 +37,4 @@ public class AuthTokenDao extends Dao<AuthToken> {
         }
         return null;
     }
-
 }

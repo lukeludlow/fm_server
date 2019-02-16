@@ -19,7 +19,9 @@ public class EventDao extends Dao<Event> {
                 "(event_id, descendant, person_id, latitude, longitude, country, city, event_type, year) " +
                 "values (?,?,?,?,?,?,?,?,?)";
         this.findSql = "select * from event where event_id = ?";
+        this.findManySql = "select * from event where descendant = ?";
         this.deleteSql = "delete from event where event_id = ?";
+        this.deleteManySql = "delete from event where descendant = ?";
     }
     @Override
     public Event getObject(ResultSet rs) throws SQLException {
