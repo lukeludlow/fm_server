@@ -2,15 +2,17 @@ package data;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import static org.junit.Assert.*;
 
-public class DatabaseTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class DatabaseTest {
 
     @Test
     @DisplayName("connect success")
-    public void testConnect() throws Exception {
+    void testConnect() throws Exception {
         Database db = new Database();
         try {
             db.connect();
@@ -23,7 +25,7 @@ public class DatabaseTest {
 
     @Test
     @DisplayName("connect fail")
-    public void testConnectFail() throws Exception {
+    void testConnectFail() throws Exception {
         boolean connectSuccess = true;
         try {
             // wrong url
@@ -36,7 +38,7 @@ public class DatabaseTest {
 
     @Test
     @DisplayName("closeConnection success")
-    public void testCloseConnection() throws Exception {
+    void testCloseConnection() throws Exception {
         Database db = new Database();
         boolean closeSuccess = true;
         try {
@@ -51,7 +53,7 @@ public class DatabaseTest {
 
     @Test
     @DisplayName("closeConnection fail")
-    public void testCloseConnectionFail() throws Exception {
+    void testCloseConnectionFail() throws Exception {
         Database db = new Database();
         boolean closeSuccess = true;
         try {
@@ -63,3 +65,4 @@ public class DatabaseTest {
     }
 
 }
+

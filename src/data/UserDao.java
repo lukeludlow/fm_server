@@ -2,6 +2,9 @@ package data;
 
 import model.User;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class UserDao extends Dao<User> {
     public UserDao() {
         super(User.class);
@@ -18,5 +21,21 @@ public class UserDao extends Dao<User> {
                 "values (?,?,?,?,?,?,?)";
         this.findSql = "select * from user where username = ?;";
         this.deleteSql = "delete from user where username = ?;";
+    }
+    @Override
+    public User getObject(ResultSet rs) throws SQLException {
+        if (rs.next()) {
+            User u = new User(
+                    rs.getString("username"),
+                    rs.getString("password"),
+                    rs.getString("email"),
+                    rs.getString("firstname"),
+                    rs.getString("lastname"),
+                    rs.getString("gender"),
+                    rs.getString("person_id")
+            );
+            return u;
+        }
+        return null;
     }
 }

@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Dao<T> {
+public abstract class Dao<T> {
 
     protected Class<T> type;
     protected Database db;
@@ -56,13 +56,9 @@ public class Dao<T> {
             this.db.connect();
             PreparedStatement statement = prepareFindStatement(primaryKey);
             ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                // TODO fix this
-                T t = rs.getObject(1, this.type);
-                db.closeConnection(true);
-                return t;
-            }
+            T t = getObject(rs);
             db.closeConnection(true);
+            return t;
         } catch (SQLException ex) {
             db.closeConnection(false);
             throw new DatabaseException("sql error encountered while finding in database");
@@ -70,16 +66,17 @@ public class Dao<T> {
             db.closeConnection(false);
             throw ex;
         }
-        db.closeConnection(false);
-        return null;
     }
 
-    // delete UNIQUE element
-    public void delete(String primaryKey) throws DatabaseException {
+    public abstract T getObject(ResultSet rs) throws SQLException;
+
+    // delete UNIQUE element. return 1 if found and deleted.
+    public int delete(String primaryKey) throws DatabaseException {
+        int deleteCount = 0;
         try {
             this.db.connect();
             PreparedStatement statement = prepareDeleteStatement(primaryKey);
-            statement.executeUpdate();
+            deleteCount = statement.executeUpdate();
             db.closeConnection(true);
         } catch (SQLException e) {
             db.closeConnection(false);
@@ -88,6 +85,7 @@ public class Dao<T> {
             db.closeConnection(false);
             throw e;
         }
+        return deleteCount;
     }
 
     public PreparedStatement prepareInsertStatement(T t) throws SQLException, IllegalAccessException {
