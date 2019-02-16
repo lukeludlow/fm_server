@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class AuthToken {
     private String token; // authorization token generated at login
     private String username; // user (username) to which this token belongs to
+    public String getPrimaryKey() { return getToken(); }
 }

@@ -17,4 +17,5 @@ public class Person {
     private String fatherID; // ID of person's father, possibly null
     private String motherID; // ID of person's mother, possibly null
     private String spouseID; // ID of person's spouse, possibly null
+    public String getPrimaryKey() { return getPersonID(); }
 }
