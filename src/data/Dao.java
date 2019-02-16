@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class Dao<T> {
+public class Dao<T> {
 
     protected Class<T> type;
     protected Database db;
@@ -31,7 +31,6 @@ public abstract class Dao<T> {
         this.type = type;
         this.db = db;
     }
-
 
     public void insert(T t) throws DatabaseException {
         try {
@@ -52,12 +51,13 @@ public abstract class Dao<T> {
     }
 
     // find UNIQUE element
-    public T find(Object primaryKey) throws DatabaseException {
+    public T find(String primaryKey) throws DatabaseException {
         try {
             this.db.connect();
             PreparedStatement statement = prepareFindStatement(primaryKey);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
+                // TODO fix this
                 T t = rs.getObject(1, this.type);
                 db.closeConnection(true);
                 return t;
@@ -70,11 +70,12 @@ public abstract class Dao<T> {
             db.closeConnection(false);
             throw ex;
         }
+        db.closeConnection(false);
         return null;
     }
 
     // delete UNIQUE element
-    public void delete(Object primaryKey) throws DatabaseException {
+    public void delete(String primaryKey) throws DatabaseException {
         try {
             this.db.connect();
             PreparedStatement statement = prepareDeleteStatement(primaryKey);
@@ -96,14 +97,14 @@ public abstract class Dao<T> {
         return statement;
     }
 
-    public PreparedStatement prepareFindStatement(Object primaryKey) throws SQLException {
+    public PreparedStatement prepareFindStatement(String primaryKey) throws SQLException {
         String sql = this.findSql;
         PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
-        statement.setObject(1, primaryKey);
+        statement.setString(1, primaryKey);
         return statement;
     }
 
-    public PreparedStatement prepareDeleteStatement(Object primaryKey) throws SQLException {
+    public PreparedStatement prepareDeleteStatement(String primaryKey) throws SQLException {
         String sql = this.deleteSql;
         PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
         statement.setObject(1, primaryKey);

@@ -8,7 +8,8 @@ public class UserDao extends Dao<User> {
         this.setSqlStatements();
     }
     public UserDao(Database db) {
-        super(User.class, db);
+        super(User.class);
+        this.db = db;
         this.setSqlStatements();
     }
     private void setSqlStatements() {

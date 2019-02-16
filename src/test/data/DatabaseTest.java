@@ -1,7 +1,5 @@
-package test.data;
+package data;
 
-import data.Database;
-import data.DatabaseException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.sql.DriverManager;
