@@ -14,7 +14,7 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class AuthTokenDao {
+public class OldAuthTokenDao {
     private data.Database db;
 
     public void insert(AuthToken a) throws DatabaseException {

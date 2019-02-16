@@ -12,7 +12,7 @@ import java.sql.SQLException;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EventDao {
+public class OldEventDao {
     private Database db;
 
     public void insert(Event e) throws DatabaseException {
