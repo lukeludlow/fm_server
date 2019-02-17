@@ -1,5 +1,6 @@
 package message;
 
+import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,5 +24,24 @@ import model.Event;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventResponse extends AbstractResponse {
-    private Event event;
+    private String descendant;
+    private String eventID;
+    private String personID;
+    private double latitude;
+    private double longitude;
+    private String country;
+    private String city;
+    private String eventType;
+    private int year;
+    public EventResponse(Event event) {
+        this.descendant = event.getDescendant();
+        this.eventID = event.getEventID();
+        this.personID = event.getPersonID();
+        this.latitude = event.getLatitude();
+        this.longitude = event.getLongitude();
+        this.country = event.getCountry();
+        this.city = event.getCity();
+        this.eventType = event.getEventType();
+        this.year = event.getYear();
+    }
 }

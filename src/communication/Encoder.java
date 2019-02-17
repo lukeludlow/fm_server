@@ -14,5 +14,4 @@ public class Encoder {
     public static <T> T decode(String json, Class<T> type) {
         return gson.fromJson(json, type);
     }
-
 }

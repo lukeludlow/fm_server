@@ -1,5 +1,6 @@
 package message;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ClearResponse extends AbstractResponse {
-    private static final String SUCCESS = "clear succeeded.";
+    private String message = "clear succeeded.";
 }

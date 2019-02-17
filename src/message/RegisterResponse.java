@@ -18,6 +18,7 @@ import model.Person;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterResponse extends AbstractResponse {
-    private AuthToken authtoken;
-    private Person person;
+    private String authToken;
+    private String userName;
+    private String personID;
 }

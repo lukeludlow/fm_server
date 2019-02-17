@@ -16,7 +16,5 @@ import model.Event;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FillResponse extends AbstractResponse {
-    private String successMessage;
-    private Person[] people;
-    private Event[] events;
+    private String message = "successfully added x persons and y events to the database.";
 }

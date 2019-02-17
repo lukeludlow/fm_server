@@ -3,5 +3,5 @@ package message;
 import lombok.Data;
 
 @Data
-public class AbstractRequest {
+public abstract class AbstractRequest {
 }
