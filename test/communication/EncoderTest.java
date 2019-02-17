@@ -43,13 +43,13 @@ class EncoderTest {
     };
     Event[] loadEvents = {
             new Event("111", "lukeludlow","99",66.666,-111.111,"usa","reno","party",2020),
-            new Event("0096", "treyway", "69",69.96, -6.9999,"japan","tokyo","birth",3019)
+            new Event("0096", "treyway", "69",69.69, -6.9999,"japan","tokyo","birth",3019)
     };
     String loadRequestJson = "" +
             "{" +
             "\"users\": [" +
                 "{" +
-                    "\"userName\": \"lukeludlow\", \"password\": \"hunter2\", \"email\": \"ll@live.com\", \"firstName\": \"luke\", \"lastName\": \"ludlow\", \"gender\": \"m\", \"personID\": \"99\"," +
+                    "\"userName\": \"lukeludlow\", \"password\": \"hunter2\", \"email\": \"ll@live.com\", \"firstName\": \"luke\", \"lastName\": \"ludlow\", \"gender\": \"m\", \"personID\": \"99\"" +
                 "}," +
                 "{" +
                     "\"userName\": \"treyway\", \"password\": \"scumgang2\", \"email\": \"tekashi69@gmail.com\", \"firstName\": \"tekashi\", \"lastName\": \"sixnine\", \"gender\": \"m\", \"personID\": \"69\"" +
@@ -63,7 +63,14 @@ class EncoderTest {
                     "\"personID\": \"69\", \"descendant\": \"treyway\", \"firstName\": \"tekashi\", \"lastName\": \"sixnine\", \"gender\": \"m\", \"father\": \"169\", \"mother\": \"269\", \"spouse\": \"6969\"" +
                 "}" +
             "]," +
-            "\"events\": []" +
+            "\"events\": [" +
+                "{" +
+                    "\"eventID\": \"111\", \"descendant\": \"lukeludlow\", \"personID\": \"99\", \"latitude\": 66.666, \"longitude\": -111.111, \"country\": \"usa\", \"city\": \"reno\", \"eventType\": \"party\", \"year\": 2020" +
+                "}," +
+                "{" +
+                    "\"eventID\": \"0096\", \"descendant\": \"treyway\", \"personID\": \"69\", \"latitude\": 69.69, \"longitude\": -6.9999, \"country\": \"japan\", \"city\": \"tokyo\", \"eventType\": \"birth\", \"year\": 3019" +
+                "}" +
+            "]" +
             "}";
     LoadRequest loadRequest = new LoadRequest(loadUsers, loadPeople, loadEvents);
 
@@ -94,37 +101,6 @@ class EncoderTest {
             String actual = Encoder.encode(requestObjects[i]);
             JSONAssert.assertEquals(requestJson[i], actual, JSONCompareMode.STRICT);
         }
-    }
-
-
-    @Test
-    void testEncodeLoginRequest() {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String loginRequestJson = "" +
-                "{" +
-                "\"userName\": \"susan\"," +
-                "\"password\": \"mysecret\"" +
-                "}";
-        LoginRequest request = gson.fromJson(loginRequestJson, LoginRequest.class);
-        System.out.println(gson.toJson(request));
-        System.out.println(request);
-    }
-
-    @Test
-    void testEncode() {
-        LoginRequest request = new LoginRequest("susan", "mysecret");
-        String s = Encoder.encode(request);
-        System.out.println(s);
-    }
-    @Test
-    void testDecode() {
-        String loginRequestJson = "" +
-                "{" +
-                "\"userName\": \"susan\"," +
-                "\"password\": \"mysecret\"" +
-                "}";
-        LoginRequest request = Encoder.decode(loginRequestJson, LoginRequest.class);
-        System.out.println(request);
     }
 
 }
