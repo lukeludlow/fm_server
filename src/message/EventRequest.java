@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
  * Event Request Body:
  * {
  * "eventid": "xxxxxxxx",
- * "authtoken": "xxxxxxxx"
+ * "authToken": "xxxxxxxx"
  * }
  */
 @Data
@@ -18,5 +18,5 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 public class EventRequest extends AbstractRequest {
     private String eventID;
-    private String authtoken;
+    private String authToken;
 }

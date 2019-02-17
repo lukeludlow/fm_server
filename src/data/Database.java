@@ -173,7 +173,7 @@ public class Database {
             throw e;
         } catch (SQLException e) {
             closeConnection(false);
-            throw new DatabaseException("sql error encountered while creating authtoken table");
+            throw new DatabaseException("sql error encountered while creating authToken table");
         }
     }
 

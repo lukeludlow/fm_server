@@ -25,12 +25,12 @@ class EncoderTest {
     PersonRequest personRequest = new PersonRequest("69", "secret");
     RegisterRequest registerRequest = new RegisterRequest("lukeludlow", "hunter2", "ll@live.com", "luke", "ludlow", "m");
 
-    String eventRequestJson = "{\"eventid\": \"123\", \"authtoken\": \"secret\"}";
-    String familyRequestJson = "{\"authtoken\": \"secret\"}";
+    String eventRequestJson = "{\"eventID\": \"123\", \"authToken\": \"secret\"}";
+    String familyRequestJson = "{\"authToken\": \"secret\"}";
     String fillRequestJson = "{\"userName\": \"lukeludlow\", \"generations\": 2}";
-    String historyRequestJson = "{\"authtoken\": \"secret\"}";
+    String historyRequestJson = "{\"authToken\": \"secret\"}";
     String loginRequestJson = "{\"userName\": \"lukeludlow\", \"password\": \"hunter2\"}";
-    String personRequestJson = "{\"personID\": \"69\", \"authtoken\": \"secret\"}";
+    String personRequestJson = "{\"personID\": \"69\", \"authToken\": \"secret\"}";
     String registerRequestJson = "{\"userName\": \"lukeludlow\", \"password\": \"hunter2\", \"email\": \"ll@live.com\", \"firstName\": \"luke\", \"lastName\": \"ludlow\", \"gender\": \"m\"}";
 
     User[] loadUsers = {

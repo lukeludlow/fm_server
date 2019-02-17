@@ -35,7 +35,7 @@ class AuthTokenDaoTest {
     }
 
     @Test
-    @DisplayName("insert authtoken")
+    @DisplayName("insert authToken")
     void testInsert() throws Exception {
         authtokenDao.insert(bitcoin);
         findBitcoin = authtokenDao.find(bitcoin.getAuthToken());
@@ -43,7 +43,7 @@ class AuthTokenDaoTest {
         assertEquals(bitcoin, findBitcoin);
     }
     @Test
-    @DisplayName("insert authtoken fail (insert same authtoken twice)")
+    @DisplayName("insert authToken fail (insert same authToken twice)")
     void testInsertFail() {
         assertThrows(DatabaseException.class,
                 () -> {
@@ -52,7 +52,7 @@ class AuthTokenDaoTest {
                 });
     }
     @Test
-    @DisplayName("insert authtoken fail (empty primary key)")
+    @DisplayName("insert authToken fail (empty primary key)")
     void testInsertFail2() {
         assertThrows(DatabaseException.class,
                 () -> {
@@ -87,7 +87,7 @@ class AuthTokenDaoTest {
         assertEquals(anotherBitcoin, findAnotherBitcoin);
     }
     @Test
-    @DisplayName("find fail (authtoken has not been inserted)")
+    @DisplayName("find fail (authToken has not been inserted)")
     void testFindFail() throws Exception {
         findBitcoin = authtokenDao.find(bitcoin.getAuthToken());
         assertNull(findBitcoin);
@@ -111,7 +111,7 @@ class AuthTokenDaoTest {
         assertEquals(1, deleteCount);
     }
     @Test
-    @DisplayName("delete fail (authtoken does not exist)")
+    @DisplayName("delete fail (authToken does not exist)")
     void testDeleteFail() throws Exception {
         authtokenDao.delete(bitcoin.getAuthToken());
     }

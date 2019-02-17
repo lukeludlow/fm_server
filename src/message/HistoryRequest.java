@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 /**
  * History Request Body:
  * {
- * "authtoken": "xxxxxxxx"
+ * "authToken": "xxxxxxxx"
  * }
  */
 @Data
@@ -16,5 +16,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class HistoryRequest extends AbstractRequest {
-    private String authtoken;
+    private String authToken;
 }
