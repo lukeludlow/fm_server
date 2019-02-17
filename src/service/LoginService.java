@@ -8,7 +8,7 @@ import message.LoginResponse;
  */
 public class LoginService {
     /**
-     * logs in the user and returns an auth token.
+     * logs in the user and returns an auth authToken.
      */
     public LoginResponse login(LoginRequest l) {
         return null;

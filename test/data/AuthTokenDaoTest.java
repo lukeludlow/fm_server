@@ -38,7 +38,7 @@ class AuthTokenDaoTest {
     @DisplayName("insert authtoken")
     void testInsert() throws Exception {
         authtokenDao.insert(bitcoin);
-        findBitcoin = authtokenDao.find(bitcoin.getToken());
+        findBitcoin = authtokenDao.find(bitcoin.getAuthToken());
         assertNotNull(findBitcoin);
         assertEquals(bitcoin, findBitcoin);
     }
@@ -56,7 +56,7 @@ class AuthTokenDaoTest {
     void testInsertFail2() {
         assertThrows(DatabaseException.class,
                 () -> {
-                    bitcoin.setToken(null);
+                    bitcoin.setAuthToken(null);
                     authtokenDao.insert(bitcoin);
                 });
     }
@@ -64,7 +64,7 @@ class AuthTokenDaoTest {
     @DisplayName("find success")
     void testFind() throws Exception {
         authtokenDao.insert(bitcoin);
-        findBitcoin = authtokenDao.find(bitcoin.getToken());
+        findBitcoin = authtokenDao.find(bitcoin.getAuthToken());
         assertNotNull(findBitcoin);
         assertEquals(bitcoin, findBitcoin);
     }
@@ -73,14 +73,14 @@ class AuthTokenDaoTest {
     void testFind2() throws Exception {
         authtokenDao.insert(bitcoin);
         authtokenDao.insert(anotherBitcoin);
-        findBitcoin = authtokenDao.find(bitcoin.getToken());
-        findAnotherBitcoin = authtokenDao.find(anotherBitcoin.getToken());
+        findBitcoin = authtokenDao.find(bitcoin.getAuthToken());
+        findAnotherBitcoin = authtokenDao.find(anotherBitcoin.getAuthToken());
         assertNotNull(findBitcoin);
         assertNotNull(anotherBitcoin);
         assertEquals(bitcoin, findBitcoin);
         assertEquals(anotherBitcoin, findAnotherBitcoin);
-        findBitcoin = authtokenDao.find(bitcoin.getToken());
-        findAnotherBitcoin = authtokenDao.find(anotherBitcoin.getToken());
+        findBitcoin = authtokenDao.find(bitcoin.getAuthToken());
+        findAnotherBitcoin = authtokenDao.find(anotherBitcoin.getAuthToken());
         assertNotNull(findBitcoin);
         assertNotNull(anotherBitcoin);
         assertEquals(bitcoin, findBitcoin);
@@ -89,7 +89,7 @@ class AuthTokenDaoTest {
     @Test
     @DisplayName("find fail (authtoken has not been inserted)")
     void testFindFail() throws Exception {
-        findBitcoin = authtokenDao.find(bitcoin.getToken());
+        findBitcoin = authtokenDao.find(bitcoin.getAuthToken());
         assertNull(findBitcoin);
     }
     @Test
@@ -103,17 +103,17 @@ class AuthTokenDaoTest {
     @DisplayName("delete success")
     void testDelete() throws Exception {
         authtokenDao.insert(bitcoin);
-        findBitcoin = authtokenDao.find(bitcoin.getToken());
+        findBitcoin = authtokenDao.find(bitcoin.getAuthToken());
         assertNotNull(findBitcoin);
-        int deleteCount = authtokenDao.delete(bitcoin.getToken());
-        findBitcoin = authtokenDao.find(bitcoin.getToken());
+        int deleteCount = authtokenDao.delete(bitcoin.getAuthToken());
+        findBitcoin = authtokenDao.find(bitcoin.getAuthToken());
         assertNull(findBitcoin);
         assertEquals(1, deleteCount);
     }
     @Test
     @DisplayName("delete fail (authtoken does not exist)")
     void testDeleteFail() throws Exception {
-        authtokenDao.delete(bitcoin.getToken());
+        authtokenDao.delete(bitcoin.getAuthToken());
     }
     @Test
     @DisplayName("find many (all tokens belonging to a user)")
@@ -123,7 +123,7 @@ class AuthTokenDaoTest {
         authtokenDao.insert(bitcoin);
         authtokenDao.insert(t2);
         authtokenDao.insert(t3);
-        List<AuthToken> tokens = authtokenDao.findMany(bitcoin.getUsername());
+        List<AuthToken> tokens = authtokenDao.findMany(bitcoin.getUserName());
         assertEquals(3, tokens.size());
         assertEquals(bitcoin, tokens.get(0));
         assertEquals(t2, tokens.get(1));
@@ -132,7 +132,7 @@ class AuthTokenDaoTest {
     @Test
     @DisplayName("find many fail")
     void testFindManyFail() throws Exception {
-        List<AuthToken> tokens = authtokenDao.findMany(bitcoin.getUsername());
+        List<AuthToken> tokens = authtokenDao.findMany(bitcoin.getUserName());
         assertEquals(0, tokens.size());
     }
     @Test
@@ -143,13 +143,13 @@ class AuthTokenDaoTest {
         authtokenDao.insert(bitcoin);
         authtokenDao.insert(t2);
         authtokenDao.insert(t3);
-        List<AuthToken> tokens = authtokenDao.findMany(bitcoin.getUsername());
+        List<AuthToken> tokens = authtokenDao.findMany(bitcoin.getUserName());
         assertEquals(3, tokens.size());
         assertEquals(bitcoin, tokens.get(0));
         assertEquals(t2, tokens.get(1));
         assertEquals(t3, tokens.get(2));
-        int deleteCount = authtokenDao.deleteMany(bitcoin.getUsername());
-        tokens = authtokenDao.findMany(bitcoin.getUsername());
+        int deleteCount = authtokenDao.deleteMany(bitcoin.getUserName());
+        tokens = authtokenDao.findMany(bitcoin.getUserName());
         assertEquals(3, deleteCount);
         assertEquals(0, tokens.size());
     }

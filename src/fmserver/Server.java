@@ -23,12 +23,8 @@ public class Server {
         server.setExecutor(null);
         System.out.println("creating contexts");
 
-
-
         server.createContext("/clear", new ClearHandler());
         server.createContext("/", new DefaultHandler());
-
-
 
         System.out.println("starting server");
         server.start();

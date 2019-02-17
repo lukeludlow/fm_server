@@ -1,6 +1,8 @@
 package message;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -12,7 +14,9 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class FillRequest {
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+public class FillRequest extends AbstractRequest {
     private String username;
     private int generations;
 }

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthToken {
-    private String token; // authorization token generated at login
-    private String username; // user (username) to which this token belongs to
-    public String getPrimaryKey() { return getToken(); }
+    private String authToken; // authorization authToken generated at login
+    private String userName; // user (userName) to which this authToken belongs to
+    public String getPrimaryKey() { return getAuthToken(); }
 }

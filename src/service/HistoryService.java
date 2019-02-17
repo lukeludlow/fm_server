@@ -9,7 +9,7 @@ import message.HistoryResponse;
 public class HistoryService {
     /**
      * returns ALL events for ALL family members of the current user. the current
-     * user is determined from the provided auth token.
+     * user is determined from the provided auth authToken.
      */
     public HistoryResponse history(HistoryRequest h) {
         return null;

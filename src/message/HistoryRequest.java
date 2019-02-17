@@ -1,6 +1,8 @@
 package message;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -11,6 +13,8 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class HistoryRequest {
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+public class HistoryRequest extends AbstractRequest {
     private String authtoken;
 }

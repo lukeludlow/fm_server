@@ -1,6 +1,8 @@
 package message;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import model.Event;
 import model.Person;
@@ -16,7 +18,9 @@ import model.User;
  */
 @Data
 @NoArgsConstructor
-public class LoadRequest {
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+public class LoadRequest extends AbstractRequest {
     private model.User[] users;
     private model.Person[] persons;
     private model.Event[] events;

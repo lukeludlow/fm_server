@@ -1,6 +1,8 @@
 package message;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -12,7 +14,9 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class EventRequest {
-    private String eventid;
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+public class EventRequest extends AbstractRequest {
+    private String eventID;
     private String authtoken;
 }

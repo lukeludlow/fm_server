@@ -16,7 +16,7 @@ public class PersonDao extends Dao<Person> {
     }
     private void setSqlStatements() {
         this.insertSql = "insert into people " +
-                "(person_id, descendant, firstname, lastname, gender, father_id, mother_id, spouse_id) " +
+                "(person_id, descendant, firstName, lastName, gender, father_id, mother_id, spouse_id) " +
                 "values (?,?,?,?,?,?,?,?)";
         this.findSql = "select * from people where person_id = ?";
         this.findManySql = "select * from people where descendant = ?";
@@ -29,8 +29,8 @@ public class PersonDao extends Dao<Person> {
             return new Person(
                     rs.getString("person_id"),
                     rs.getString("descendant"),
-                    rs.getString("firstname"),
-                    rs.getString("lastname"),
+                    rs.getString("firstName"),
+                    rs.getString("lastName"),
                     rs.getString("gender"),
                     rs.getString("father_id"),
                     rs.getString("mother_id"),

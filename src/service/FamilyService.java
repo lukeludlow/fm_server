@@ -9,7 +9,7 @@ import message.FamilyResponse;
 public class FamilyService {
     /**
      * returns ALL family members of the current user. the current user is
-     * determined from the provided auth token.
+     * determined from the provided auth authToken.
      */
     public FamilyResponse family(FamilyRequest f) {
         return null;
