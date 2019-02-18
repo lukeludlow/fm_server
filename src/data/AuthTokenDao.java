@@ -17,19 +17,19 @@ public class AuthTokenDao extends Dao<AuthToken> {
     }
     private void setSqlStatements() {
         this.insertSql = "insert into auth_token " +
-                "(authToken, userName) " +
+                "(token, username) " +
                 "values (?,?)";
-        this.findSql = "select * from auth_token where authToken = ?";
-        this.findManySql = "select * from auth_token where userName = ?";
-        this.deleteSql = "delete from auth_token where authToken = ?";
-        this.deleteManySql = "delete from auth_token where userName = ?";
+        this.findSql = "select * from auth_token where token = ?";
+        this.findManySql = "select * from auth_token where username = ?";
+        this.deleteSql = "delete from auth_token where token = ?";
+        this.deleteManySql = "delete from auth_token where username = ?";
     }
     @Override
     public AuthToken getObject(ResultSet rs) throws SQLException {
         if (rs.next()) {
             return new AuthToken(
-                    rs.getString("authToken"),
-                    rs.getString("userName")
+                    rs.getString("token"),
+                    rs.getString("username")
             );
         }
         return null;
