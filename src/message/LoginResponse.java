@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import model.AuthToken;
 import model.Person;
+import model.User;
 
 /**
  * Login Success Response Body:
@@ -21,4 +22,9 @@ public class LoginResponse extends AbstractResponse {
     private String authToken;
     private String userName;
     private String personID;
+    public LoginResponse(User u) {
+        this.authToken = null;
+        this.userName = u.getUserName();
+        this.personID = u.getPersonID();
+    }
 }

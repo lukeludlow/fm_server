@@ -1,5 +1,7 @@
 package service;
 
+import data.Database;
+import data.DatabaseException;
 import message.ClearResponse;
 
 /**
@@ -11,6 +13,12 @@ public class ClearService {
      * generated person and event data.
      */
     public ClearResponse clear() {
-        return null;
+        Database db = new Database();
+        try {
+            db.clearAll();
+        } catch (DatabaseException ex) {
+            return new ClearResponse("error: database exception occurred while clearing");
+        }
+        return new ClearResponse("clear succeeded.");
     }
 }
