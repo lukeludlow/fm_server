@@ -36,7 +36,7 @@ class EventDaoTest {
     }
 
     @Test
-    @DisplayName("insert event")
+    @DisplayName("insert getEvent")
     void testInsert() throws Exception {
         eventDao.insert(birthday);
         findBirthday = eventDao.find(birthday.getEventID());
@@ -44,7 +44,7 @@ class EventDaoTest {
         assertEquals(birthday, findBirthday);
     }
     @Test
-    @DisplayName("insert event fail (insert same event twice)")
+    @DisplayName("insert getEvent fail (insert same getEvent twice)")
     void testInsertFail() {
         assertThrows(DatabaseException.class,
                 () -> {
@@ -53,7 +53,7 @@ class EventDaoTest {
                 });
     }
     @Test
-    @DisplayName("insert event fail (empty primary key)")
+    @DisplayName("insert getEvent fail (empty primary key)")
     void testInsertFail2() {
         assertThrows(DatabaseException.class,
                 () -> {
@@ -89,7 +89,7 @@ class EventDaoTest {
         assertEquals(anotherEvent, findAnother);
     }
     @Test
-    @DisplayName("find fail (event has not been inserted)")
+    @DisplayName("find fail (getEvent has not been inserted)")
     void testFindFail() throws Exception {
         findBirthday = eventDao.find(birthday.getEventID());
         assertNull(findBirthday);
@@ -113,7 +113,7 @@ class EventDaoTest {
         assertEquals(1, deleteCount);
     }
     @Test
-    @DisplayName("delete fail (event does not exist")
+    @DisplayName("delete fail (getEvent does not exist")
     void testDeleteFail() throws Exception {
         eventDao.delete(birthday.getEventID());
     }

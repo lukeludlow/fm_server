@@ -10,7 +10,7 @@ import message.ClearResponse;
 public class ClearService {
     /**
      * deletes ALL data from the database, including user accounts, auth tokens, and
-     * generated person and event data.
+     * generated person and getEvent data.
      */
     public ClearResponse clear() {
         Database db = new Database();

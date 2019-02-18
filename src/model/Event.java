@@ -16,7 +16,7 @@ public class Event {
     private double longitude; // format: ###.######
     private String country;
     private String city;
-    private String eventType; // type of event (birth, baptism, christening, marriage, death, etc.)
+    private String eventType; // type of getEvent (birth, baptism, christening, marriage, death, etc.)
     private int year;
     public String getPrimaryKey() { return getEventID(); }
 }

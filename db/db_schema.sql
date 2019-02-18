@@ -2,7 +2,7 @@
 drop table if exists user;
 drop table if exists auth_token;
 drop table if exists people;
-drop table if exists event;
+drop table if exists getEvent;
 */
 
 create table if not exists user (
