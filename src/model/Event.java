@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,5 +21,9 @@ public class Event {
     private String eventType; // type of getEvent (birth, baptism, christening, marriage, death, etc.)
     private int year;
     public String getPrimaryKey() { return getEventID(); }
+    public void generateUniqueID() {
+        UUID uuid = UUID.randomUUID();
+        this.eventID = uuid.toString();
+    }
 }
 

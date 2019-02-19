@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,4 +20,8 @@ public class Person {
     private String mother; // ID of person's mother, possibly null
     private String spouse; // ID of person's spouse, possibly null
     public String getPrimaryKey() { return getPersonID(); }
+    public void generateUniqueID() {
+        UUID uuid = UUID.randomUUID();
+        this.personID = uuid.toString();
+    }
 }
