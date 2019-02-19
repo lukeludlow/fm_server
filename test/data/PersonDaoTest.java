@@ -1,15 +1,11 @@
 package data;
 
 import model.Person;
-import model.Person;
-import model.Person;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersonDaoTest {
@@ -116,7 +112,8 @@ class PersonDaoTest {
     @Test
     @DisplayName("delete fail (person does not exist")
     void testDeleteFail() throws Exception {
-        personDao.delete(luke.getPersonID());
+        int deleteCount = personDao.delete(luke.getPersonID());
+        assertEquals(0, deleteCount);
     }
     @Test
     @DisplayName("find many (all people belonging to a descendant/user)")

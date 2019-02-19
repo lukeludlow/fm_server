@@ -3,7 +3,6 @@ package data;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.lang.reflect.InvocationTargetException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -103,7 +102,6 @@ public abstract class Dao<T> {
         return deleteCount;
     }
 
-
     public int deleteMany(String key) throws DatabaseException {
         int deleteCount = 0;
         try {
@@ -124,6 +122,7 @@ public abstract class Dao<T> {
 
     // create object from ResultSet. must be overriden to work with that particular type
     public abstract T getObject(ResultSet rs) throws SQLException;
+
 
     public PreparedStatement prepareInsertStatement(T t) throws SQLException, IllegalAccessException {
         String sql = this.insertSql;
@@ -155,6 +154,7 @@ public abstract class Dao<T> {
         statement.setObject(1, key);
         return statement;
     }
+
     public void setStatementValues(PreparedStatement statement, T t) throws SQLException, IllegalAccessException {
         Field[] fields = this.type.getDeclaredFields();
         int i = 1;
@@ -162,6 +162,7 @@ public abstract class Dao<T> {
             statement.setObject(i++, runGetter(f, t));
         }
     }
+
     public Object runGetter(Field field, T t) {
         for (Method method : this.type.getMethods()) {
             if ((method.getName().startsWith("get")) && (method.getName().length() == (field.getName().length() + 3))) {

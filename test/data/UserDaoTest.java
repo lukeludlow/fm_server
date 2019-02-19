@@ -112,7 +112,8 @@ class UserDaoTest {
     @Test
     @DisplayName("delete fail (user does not exist")
     void testDeleteFail() throws Exception {
-        userDao.delete(luke.getUserName());
+        int deleteCount = userDao.delete(luke.getUserName());
+        assertEquals(0, deleteCount);
     }
 
 }

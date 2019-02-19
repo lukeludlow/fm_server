@@ -2,10 +2,8 @@ package data;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class DatabaseTest {
@@ -55,9 +53,10 @@ class DatabaseTest {
     @DisplayName("closeConnection fail")
     void testCloseConnectionFail() throws Exception {
         Database db = new Database();
-        boolean closeSuccess = true;
+        boolean closeSuccess = false;
         try {
             db.closeConnection(true);
+            closeSuccess = true;
         } catch (DatabaseException e) {
             closeSuccess = false;
         }
