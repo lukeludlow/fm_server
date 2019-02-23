@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ErrorResponse extends AbstractResponse {
-    private String message = "description of the error";
+    private String error = "description of the error";
 }
