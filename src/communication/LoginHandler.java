@@ -3,9 +3,10 @@ package communication;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import fmserver.Server;
-import message.ErrorResponse;
-import message.LoginRequest;
-import message.LoginResponse;
+import message.response.ErrorResponse;
+import message.response.ResponseException;
+import message.request.LoginRequest;
+import message.response.LoginResponse;
 import service.LoginService;
 
 import java.io.*;
@@ -35,36 +36,31 @@ public class LoginHandler implements HttpHandler {
             sb.append(line);
         }
         String json = sb.toString();
-        LoginRequest request = Encoder.decode(json, LoginRequest.class);
+        LoginRequest request = Encoder.deserialize(json, LoginRequest.class);
         System.out.printf("done\n");
-        System.out.println(request);
 
         System.out.printf("calling login service...");
         LoginService loginService = new LoginService();
-        LoginResponse response = loginService.login(request);
-        System.out.printf("done\n");
-        System.out.println(response);
-
-        if (response == null) {
+        LoginResponse response;
+        try {
+            response = loginService.login(request);
+        } catch (ResponseException ex) {
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_INTERNAL_ERROR, 0);
-            System.err.println("error: login service returned null");
-            ErrorResponse errorResponse = new ErrorResponse("login service returned null");
-            String error = Encoder.encode(errorResponse);
+            System.err.println(ex.toString());
+            ErrorResponse errorResponse = new ErrorResponse(ex);
+            String message = Encoder.serialize(errorResponse);
             OutputStream os = exchange.getResponseBody();
-            os.write(error.getBytes());
+            os.write(message.getBytes());
             os.close();
             return;
         }
-
-        System.out.printf("sending response headers...");
-        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
         System.out.printf("done\n");
+        System.out.println(response);
 
         System.out.printf("writing response body...");
+        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
         OutputStream os = exchange.getResponseBody();
-        //os.write(response.toString().getBytes());
-        String test = "test";
-        os.write(test.getBytes());
+        os.write(response.toString().getBytes());
         os.close();
         System.out.printf("done\n");
         return;

@@ -3,17 +3,17 @@ package service;
 import data.AuthTokenDao;
 import data.Database;
 import data.UserDao;
-import message.LoginRequest;
-import message.LoginResponse;
+import message.request.LoginRequest;
+import message.response.LoginResponse;
 import model.AuthToken;
 import model.User;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class LoginServiceTest {
 
@@ -60,14 +60,14 @@ class LoginServiceTest {
 
     @Test
     @DisplayName("login fail (user does not exist)")
-    void testLoginFail() {
+    void testLoginFail() throws Exception {
         actualResponse = loginService.login(loginRequest);
         assertNull(actualResponse);
     }
 
     @Test
     @DisplayName("login fail (incorrect password)")
-    void testLoginFail2() {
+    void testLoginFail2() throws Exception {
         loginRequest.setPassword("wrong");
         actualResponse = loginService.login(loginRequest);
         assertNull(actualResponse);

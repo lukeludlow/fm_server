@@ -1,8 +1,4 @@
-package message;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+package message.response;
 
 /**
  * abstract response is base class for all responses so that

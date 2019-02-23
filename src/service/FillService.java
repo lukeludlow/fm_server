@@ -1,7 +1,7 @@
 package service;
 
-import message.FillRequest;
-import message.FillResponse;
+import message.request.FillRequest;
+import message.response.FillResponse;
 
 /**
  * fill service : web api method /fill/[userName]/{generations}

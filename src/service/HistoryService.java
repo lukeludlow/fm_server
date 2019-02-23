@@ -4,8 +4,8 @@ import data.AuthTokenDao;
 import data.Database;
 import data.DatabaseException;
 import data.EventDao;
-import message.HistoryRequest;
-import message.HistoryResponse;
+import message.request.HistoryRequest;
+import message.response.HistoryResponse;
 import model.AuthToken;
 import model.Event;
 

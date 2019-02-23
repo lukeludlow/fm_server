@@ -3,10 +3,9 @@ package service;
 import data.AuthTokenDao;
 import data.Database;
 import data.PersonDao;
-import message.FamilyRequest;
-import message.FamilyResponse;
+import message.request.FamilyRequest;
+import message.response.FamilyResponse;
 import model.AuthToken;
-import model.Person;
 import model.Person;
 import org.junit.jupiter.api.Test;
 

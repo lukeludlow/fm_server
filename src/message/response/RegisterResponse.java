@@ -1,14 +1,11 @@
-package message;
+package message.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import model.AuthToken;
-import model.Person;
-import model.User;
 
 /**
- * Login Success Response Body:
+ * Register Success Response Body:
  * {
  * "authToken": "cf7a368f", // Non-empty auth authToken string
  * "userName": "susan", // User name passed in with request
@@ -18,13 +15,8 @@ import model.User;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginResponse extends AbstractResponse {
+public class RegisterResponse extends AbstractResponse {
     private String authToken;
     private String userName;
     private String personID;
-    public LoginResponse(User u) {
-        this.authToken = null;
-        this.userName = u.getUserName();
-        this.personID = u.getPersonID();
-    }
 }

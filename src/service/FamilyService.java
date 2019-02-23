@@ -1,8 +1,8 @@
 package service;
 
 import data.*;
-import message.FamilyRequest;
-import message.FamilyResponse;
+import message.request.FamilyRequest;
+import message.response.FamilyResponse;
 import model.AuthToken;
 import model.Person;
 

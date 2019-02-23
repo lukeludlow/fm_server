@@ -3,8 +3,6 @@ package communication;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import message.ClearResponse;
-import service.ClearService;
 
 import java.io.IOException;
 import java.io.InputStream;

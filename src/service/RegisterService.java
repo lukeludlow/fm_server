@@ -1,10 +1,10 @@
 package service;
 
 import data.*;
-import message.FillRequest;
-import message.FillResponse;
-import message.RegisterRequest;
-import message.RegisterResponse;
+import message.request.FillRequest;
+import message.response.FillResponse;
+import message.request.RegisterRequest;
+import message.response.RegisterResponse;
 import model.AuthToken;
 import model.Person;
 import model.User;

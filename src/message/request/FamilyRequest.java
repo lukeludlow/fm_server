@@ -1,4 +1,4 @@
-package message;
+package message.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
- * History Request Body:
+ * Family Request Body:
  * {
  * "authToken": "xxxxxxxx"
  * }
@@ -15,6 +15,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class HistoryRequest extends AbstractRequest {
+public class FamilyRequest extends AbstractRequest {
     private String authToken;
 }

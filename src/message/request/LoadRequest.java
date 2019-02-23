@@ -1,12 +1,9 @@
-package message;
+package message.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import model.Event;
-import model.Person;
-import model.User;
 
 /**
  * Load Request Body:

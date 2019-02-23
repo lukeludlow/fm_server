@@ -1,8 +1,8 @@
 package service;
 
 import data.*;
-import message.LoadRequest;
-import message.LoadResponse;
+import message.request.LoadRequest;
+import message.response.LoadResponse;
 import model.Event;
 import model.Person;
 import model.User;

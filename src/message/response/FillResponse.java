@@ -1,10 +1,8 @@
-package message;
+package message.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import model.Person;
-import model.Event;
 
 /**
  * Fill Success Response Body:

@@ -2,7 +2,7 @@ package service;
 
 import data.Database;
 import data.DatabaseException;
-import message.ClearResponse;
+import message.response.ClearResponse;
 
 /**
  * clear service : web api method /clear

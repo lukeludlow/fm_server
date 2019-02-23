@@ -1,6 +1,7 @@
 package communication;
 
-import message.*;
+import message.request.*;
+import message.response.*;
 import model.Event;
 import model.Person;
 import model.User;
@@ -93,7 +94,7 @@ class EncoderTest {
     @Test
     void testEncodeRequests() {
         for (int i = 0; i < requestObjects.length; i++) {
-            String actual = Encoder.encode(requestObjects[i]);
+            String actual = Encoder.serialize(requestObjects[i]);
             JSONAssert.assertEquals(requestJson[i], actual, JSONCompareMode.STRICT);
         }
     }
@@ -101,7 +102,7 @@ class EncoderTest {
     @Test
     void testDecodeRequests() {
         for (int i = 0; i < requestObjects.length; i++) {
-            Object actual = Encoder.decode(requestJson[i], requestObjects[i].getClass());
+            Object actual = Encoder.deserialize(requestJson[i], requestObjects[i].getClass());
             assertEquals(requestObjects[i], actual);
         }
     }
@@ -111,7 +112,7 @@ class EncoderTest {
     ////////////////////////////////
 
     ClearResponse clearResponse = new ClearResponse("clear succeeded.");
-    ErrorResponse errorResponse = new ErrorResponse("description of the error");
+//    ErrorResponse errorResponse = new ErrorResponse("description of the error");
     EventResponse eventResponse = new EventResponse(new Event("9","lukeludlow","1",40.0,-111.0,"usa","reno","birth",1999));
     FillResponse fillResponse = new FillResponse("successfully added x persons and y events to the database.");
     LoadResponse loadResponse = new LoadResponse("successfully added x users, y persons, and z events to the database.");
@@ -132,7 +133,7 @@ class EncoderTest {
     FamilyResponse familyResponse = new FamilyResponse(familyResponsePersons);
 
     String clearResponseJson = "{\"message\": \"clear succeeded.\"}";
-    String errorResponseJson = "{\"message\": \"description of the error\"}";
+//    String errorResponseJson = "{\"message\": \"description of the error\"}";
     String eventResponseJson = "" +
             "{" +
             "\"descendant\": \"lukeludlow\"," +
@@ -195,7 +196,7 @@ class EncoderTest {
 
     AbstractResponse[] responseObjects = {
             clearResponse,
-            errorResponse,
+//            errorResponse,
             eventResponse,
             fillResponse,
             loadResponse,
@@ -207,7 +208,7 @@ class EncoderTest {
     };
     String[] responseJson = {
             clearResponseJson,
-            errorResponseJson,
+//            errorResponseJson,
             eventResponseJson,
             fillResponseJson,
             loadResponseJson,
@@ -221,7 +222,7 @@ class EncoderTest {
     @Test
     void testEncodeResponses() {
         for (int i = 0; i < responseObjects.length; i++) {
-            String actual = Encoder.encode(responseObjects[i]);
+            String actual = Encoder.serialize(responseObjects[i]);
             JSONAssert.assertEquals(responseJson[i], actual, JSONCompareMode.STRICT);
         }
     }
@@ -229,7 +230,7 @@ class EncoderTest {
     @Test
     void testDecodeResponses() {
         for (int i = 0; i < responseObjects.length; i++) {
-            Object actual = Encoder.decode(responseJson[i], responseObjects[i].getClass());
+            Object actual = Encoder.deserialize(responseJson[i], responseObjects[i].getClass());
             assertEquals(responseObjects[i], actual);
         }
     }

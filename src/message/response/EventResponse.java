@@ -1,6 +1,5 @@
-package message;
+package message.response;
 
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

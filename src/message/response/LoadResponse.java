@@ -1,11 +1,8 @@
-package message;
+package message.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import model.User;
-import model.Person;
-import model.Event;
 
 /**
  * Load Success Response Body:

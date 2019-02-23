@@ -4,8 +4,8 @@ import data.AuthTokenDao;
 import data.Database;
 import data.DatabaseException;
 import data.PersonDao;
-import message.PersonResponse;
-import message.PersonRequest;
+import message.response.PersonResponse;
+import message.request.PersonRequest;
 import model.AuthToken;
 import model.Person;
 

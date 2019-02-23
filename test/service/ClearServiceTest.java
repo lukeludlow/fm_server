@@ -1,7 +1,7 @@
 package service;
 
 import data.*;
-import message.ClearResponse;
+import message.response.ClearResponse;
 import model.AuthToken;
 import model.Event;
 import model.Person;
