@@ -17,12 +17,12 @@ import model.User;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginResponse extends AbstractResponse {
-    private String authToken;
-    private String userName;
+    private String authtoken;
+    private String username;
     private String personID;
     public LoginResponse(User u) {
-        this.authToken = null;
-        this.userName = u.getUserName();
+        this.authtoken = null;
+        this.username = u.getUsername();
         this.personID = u.getPersonID();
     }
 }

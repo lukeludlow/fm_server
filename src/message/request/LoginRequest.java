@@ -17,6 +17,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class LoginRequest extends AbstractRequest {
-    private String userName;
+    private String username;
     private String password;
 }

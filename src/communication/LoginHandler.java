@@ -13,21 +13,36 @@ import java.io.*;
 import java.net.HttpURLConnection;
 
 public class LoginHandler implements HttpHandler {
-    @Override
-    public void handle(HttpExchange exchange) throws IOException {
 
-        System.out.println("login handler!");
-
-        System.out.printf("checking request method...");
-        if (!exchange.getRequestMethod().toUpperCase().equals("POST")) {
-            exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
-            exchange.getResponseBody().close();
-            System.err.println("error: login handler expected POST request");
-            return;
+    public static boolean isPost(HttpExchange exchange) throws IOException {
+        if (exchange.getRequestMethod().toUpperCase().equals("POST")) {
+            return true;
         }
-        System.out.printf(Server.ANSI_GREEN + "done\n" + Server.ANSI_RESET);
+        exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+        exchange.getResponseBody().close();
+        System.err.println("error: login handler expected POST request");
+        return false;
+    }
 
-        System.out.printf("reading request body...");
+    public static void sendResponse(HttpExchange exchange, LoginResponse response) throws IOException {
+        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+        String message = Encoder.serialize(response);
+        OutputStream os = exchange.getResponseBody();
+        os.write(message.getBytes());
+        os.close();
+    }
+
+    public static void sendErrorResponse(HttpExchange exchange, ResponseException error) throws IOException {
+        exchange.sendResponseHeaders(HttpURLConnection.HTTP_INTERNAL_ERROR, 0);
+        System.err.println(error.toString());
+        ErrorResponse response = new ErrorResponse(error);
+        String message = Encoder.serialize(response);
+        OutputStream os = exchange.getResponseBody();
+        os.write(message.getBytes());
+        os.close();
+    }
+
+    public static String readRequestBody(HttpExchange exchange) throws IOException {
         InputStream inputStream = exchange.getRequestBody();
         BufferedReader bf = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder sb = new StringBuilder();
@@ -35,35 +50,44 @@ public class LoginHandler implements HttpHandler {
         while ((line = bf.readLine()) != null) {
             sb.append(line);
         }
-        String json = sb.toString();
+        return sb.toString();
+    }
+
+    public static void printSuccess() {
+        System.out.printf(Server.ANSI_GREEN + "done\n" + Server.ANSI_RESET);
+    }
+
+    @Override
+    public void handle(HttpExchange exchange) throws IOException {
+
+        System.out.println("login handler!");
+
+        System.out.printf("checking request method...");
+        if (!isPost(exchange)) {
+            return;
+        }
+        printSuccess();
+
+        System.out.printf("reading request...");
+        String json = readRequestBody(exchange);
         LoginRequest request = Encoder.deserialize(json, LoginRequest.class);
-        System.out.printf("done\n");
+        printSuccess();
 
         System.out.printf("calling login service...");
         LoginService loginService = new LoginService();
-        LoginResponse response;
+        LoginResponse response = null;
         try {
             response = loginService.login(request);
         } catch (ResponseException ex) {
-            exchange.sendResponseHeaders(HttpURLConnection.HTTP_INTERNAL_ERROR, 0);
-            System.err.println(ex.toString());
-            ErrorResponse errorResponse = new ErrorResponse(ex);
-            String message = Encoder.serialize(errorResponse);
-            OutputStream os = exchange.getResponseBody();
-            os.write(message.getBytes());
-            os.close();
+            sendErrorResponse(exchange, ex);
             return;
         }
-        System.out.printf("done\n");
-        System.out.println(response);
+        printSuccess();
 
         System.out.printf("writing response body...");
-        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-        OutputStream os = exchange.getResponseBody();
-        os.write(response.toString().getBytes());
-        os.close();
-        System.out.printf("done\n");
-        return;
+        sendResponse(exchange, response);
+        printSuccess();
+
 
         // no authorization necessary, so don't need to get headers
         // but use this code in my other stuff!

@@ -5,6 +5,7 @@ import data.Database;
 import data.UserDao;
 import message.request.LoginRequest;
 import message.response.LoginResponse;
+import message.response.ResponseException;
 import model.AuthToken;
 import model.User;
 import org.junit.jupiter.api.AfterEach;
@@ -12,8 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class LoginServiceTest {
 
@@ -54,25 +54,38 @@ class LoginServiceTest {
     void testLogin() throws Exception {
         userDao.insert(luke);
         actualResponse = loginService.login(loginRequest);
-        actualResponse.setAuthToken("xX_secret_Xx"); // generated authtoken is always unique, so manually set it every test
+        actualResponse.setAuthtoken("xX_secret_Xx"); // generated authtoken is always unique, so manually set it every test
         assertEquals(loginResponse, actualResponse);
     }
 
     @Test
-    @DisplayName("login fail (user does not exist)")
-    void testLoginFail() throws Exception {
+    @DisplayName("login authtoken")
+    void testAuthToken() throws Exception {
+        userDao.insert(luke);
         actualResponse = loginService.login(loginRequest);
-        assertNull(actualResponse);
+        assertNotNull(actualResponse.getAuthtoken());
     }
 
     @Test
     @DisplayName("login fail (incorrect password)")
     void testLoginFail2() throws Exception {
+        userDao.insert(luke);
         loginRequest.setPassword("wrong");
-        actualResponse = loginService.login(loginRequest);
-        assertNull(actualResponse);
+        ResponseException exception = assertThrows(ResponseException.class,
+                () -> {
+                    actualResponse = loginService.login(loginRequest);
+                });
+        assertTrue(exception.getMessage().contains("incorrect password"));
     }
 
-
+    @Test
+    @DisplayName("login fail (user does not exist)")
+    void testInsertFail() {
+        ResponseException exception = assertThrows(ResponseException.class,
+                () -> {
+                    actualResponse = loginService.login(loginRequest);
+                });
+        assertTrue(exception.getMessage().contains("user not found"));
+    }
 
 }

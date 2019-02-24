@@ -15,7 +15,6 @@ import model.User;
  */
 public class LoginService {
     public LoginResponse login(LoginRequest request) throws ResponseException {
-        System.out.println("in login service");
         Database db = new Database();
         UserDao userDao = new UserDao(db);
         AuthTokenDao authTokenDao = new AuthTokenDao(db);
@@ -23,17 +22,24 @@ public class LoginService {
         AuthToken auth;
         LoginResponse response;
         try {
-            found = userDao.find(request.getUserName());
-            if (found != null && found.getPassword().equals(request.getPassword())) {
-                response = new LoginResponse(found);
-                auth = new AuthToken(found.getUserName());
-                authTokenDao.insert(auth);
-                response.setAuthToken(auth.getAuthToken());
-                return response;
-            }
+            found = userDao.find(request.getUsername());
         } catch (DatabaseException ex) {
             throw new ResponseException(ex.toString());
         }
-        throw new ResponseException("incorrect username or password");
+        if (found == null) {
+            throw new ResponseException("user not found");
+        }
+        if (!found.getPassword().equals(request.getPassword())) {
+            throw new ResponseException("incorrect password");
+        }
+        response = new LoginResponse(found);
+        try {
+            auth = new AuthToken(found.getUsername());
+            authTokenDao.insert(auth);
+            response.setAuthtoken(auth.getAuthtoken());
+        } catch (DatabaseException ex) {
+            throw new ResponseException(ex.toString());
+        }
+        return response;
     }
 }
