@@ -1,53 +1,44 @@
 package communication;
 
-import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
+import message.response.ClearResponse;
+import message.response.ResponseException;
+import service.ClearService;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 
-public class ClearHandler implements HttpHandler {
+public class ClearHandler extends AbstractHandler<ClearResponse> {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        System.out.println("ClearHandler");
-        boolean success = false;
-        if (exchange.getRequestMethod().toUpperCase().equals("POST")) {
-            System.out.println("POST");
-            Headers requestHeaders = exchange.getRequestHeaders();
-            InputStream requestBody = exchange.getRequestBody();
-            String requestString = readString(requestBody);
-            System.out.println(requestString);
-            exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-            exchange.getResponseBody().close();
-            success = true;
 
+        System.out.println("clear handler!");
 
-//            ClearService service = new ClearService();
-//            ClearResponse response = service.clear();
-
-
-
+        System.out.printf("checking request method...");
+        if (!isPost(exchange)) {
+            return;
         }
-        if (!success) {
-            exchange.sendResponseHeaders(HttpURLConnection.HTTP_INTERNAL_ERROR, 0);
-            exchange.getResponseBody().close();
+        printSuccess();
+
+        System.out.printf("calling clear service...");
+        ClearService clearService = new ClearService();
+        ClearResponse response = null;
+        try {
+            response = clearService.clear();
+        } catch (ResponseException ex) {
+            sendErrorResponse(exchange, ex);
+            return;
         }
+        printSuccess();
+
+        System.out.printf("sending response...");
+        sendResponse(exchange, response);
+        printSuccess();
+
+
 
     }
 
-    private String readString(InputStream is) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        InputStreamReader sr = new InputStreamReader(is);
-        char[] buf = new char[1024];
-        int len;
-        while ((len = sr.read(buf)) > 0) {
-            sb.append(buf, 0, len);
-        }
-        return sb.toString();
-    }
+
 
 }
