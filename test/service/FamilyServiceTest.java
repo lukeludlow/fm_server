@@ -31,7 +31,7 @@ class FamilyServiceTest {
         };
         FamilyResponse expectedResponse = new FamilyResponse(expectedData);
         FamilyService familyService = new FamilyService();
-        FamilyRequest familyRequest = new FamilyRequest(secret.getAuthToken());
+        FamilyRequest familyRequest = new FamilyRequest(secret.getAuthtoken());
         FamilyResponse actualResponse = familyService.getFamily(familyRequest);
         assertNotNull(actualResponse);
         assertEquals(expectedResponse, actualResponse);

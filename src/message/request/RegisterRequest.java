@@ -21,10 +21,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class RegisterRequest extends AbstractRequest {
-    private String userName;
+    private String username;
     private String password;
     private String email;
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
     private String gender;
 }

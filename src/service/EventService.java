@@ -23,7 +23,7 @@ public class EventService {
         try {
             // first, make sure authtoken is valid
             AuthTokenDao authTokenDao = new AuthTokenDao(db);
-            AuthToken foundToken = authTokenDao.find(e.getAuthToken());
+            AuthToken foundToken = authTokenDao.find(e.getAuthtoken());
             if (foundToken == null) {
                 // TODO return error response
                 return null;

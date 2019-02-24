@@ -30,7 +30,7 @@ public class LoadService {
             for (User u : request.getUsers()) {
                 userDao.insert(u);
             }
-            for (Person p : request.getPersons()) {
+            for (Person p : request.getPeople()) {
                 personDao.insert(p);
             }
             for (Event e : request.getEvents()) {
@@ -42,7 +42,7 @@ public class LoadService {
         }
         String message = "successfully added " +
                 request.getUsers().length + " users, " +
-                request.getPersons().length + " persons, and " +
+                request.getPeople().length + " persons, and " +
                 request.getEvents().length + " events to the database.";
         return new LoadResponse(message);
 

@@ -21,7 +21,7 @@ public class FamilyService {
         AuthTokenDao authTokenDao = new AuthTokenDao(db);
         AuthToken found = null;
         try {
-            found = authTokenDao.find(f.getAuthToken());
+            found = authTokenDao.find(f.getAuthtoken());
         } catch (DatabaseException ex) {
             System.err.println(ex.toString());
             return null;
@@ -29,7 +29,7 @@ public class FamilyService {
         if (found == null) {
             return null;
         }
-        String username = found.getUserName();
+        String username = found.getUsername();
         PersonDao userDao = new PersonDao(db);
         List<Person> people = null;
         try {

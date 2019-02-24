@@ -16,5 +16,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class HistoryRequest extends AbstractRequest {
-    private String authToken;
+    private String authtoken;
 }

@@ -25,7 +25,7 @@ public class HistoryService {
         AuthTokenDao authTokenDao = new AuthTokenDao(db);
         AuthToken found = null;
         try {
-            found = authTokenDao.find(h.getAuthToken());
+            found = authTokenDao.find(h.getAuthtoken());
         } catch (DatabaseException ex) {
             System.err.println(ex.toString());
             return null;
@@ -33,7 +33,7 @@ public class HistoryService {
         if (found == null) {
             return null;
         }
-        String username = found.getUserName();
+        String username = found.getUsername();
         EventDao eventDao = new EventDao(db);
         List<Event> events = null;
         try {

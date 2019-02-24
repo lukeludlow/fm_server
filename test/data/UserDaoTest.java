@@ -35,7 +35,7 @@ class UserDaoTest {
     @DisplayName("insert user")
     void testInsert() throws Exception {
         userDao.insert(luke);
-        findLuke = userDao.find(luke.getUserName());
+        findLuke = userDao.find(luke.getUsername());
         assertNotNull(findLuke);
         assertEquals(luke, findLuke);
     }
@@ -53,7 +53,7 @@ class UserDaoTest {
     void testInsertFail2() {
         assertThrows(DatabaseException.class,
                 () -> {
-                    luke.setUserName(null);
+                    luke.setUsername(null);
                     userDao.insert(luke);
                 });
     }
@@ -62,7 +62,7 @@ class UserDaoTest {
     @DisplayName("find success")
     void testFind() throws Exception {
         userDao.insert(luke);
-        findLuke = userDao.find(luke.getUserName());
+        findLuke = userDao.find(luke.getUsername());
         assertNotNull(findLuke);
         assertEquals(luke, findLuke);
     }
@@ -71,14 +71,14 @@ class UserDaoTest {
     void testFind2() throws Exception {
         userDao.insert(luke);
         userDao.insert(anotherUser);
-        findLuke = userDao.find(luke.getUserName());
-        findAnother = userDao.find(anotherUser.getUserName());
+        findLuke = userDao.find(luke.getUsername());
+        findAnother = userDao.find(anotherUser.getUsername());
         assertNotNull(findLuke);
         assertNotNull(anotherUser);
         assertEquals(luke, findLuke);
         assertEquals(anotherUser, findAnother);
-        findLuke = userDao.find(luke.getUserName());
-        findAnother = userDao.find(anotherUser.getUserName());
+        findLuke = userDao.find(luke.getUsername());
+        findAnother = userDao.find(anotherUser.getUsername());
         assertNotNull(findLuke);
         assertNotNull(anotherUser);
         assertEquals(luke, findLuke);
@@ -87,7 +87,7 @@ class UserDaoTest {
     @Test
     @DisplayName("find fail (user has not been inserted)")
     void testFindFail() throws Exception {
-        findLuke = userDao.find(luke.getUserName());
+        findLuke = userDao.find(luke.getUsername());
         assertNull(findLuke);
     }
     @Test
@@ -102,17 +102,17 @@ class UserDaoTest {
     @DisplayName("delete success")
     void testDelete() throws Exception {
         userDao.insert(luke);
-        findLuke = userDao.find(luke.getUserName());
+        findLuke = userDao.find(luke.getUsername());
         assertNotNull(findLuke);
-        int deleteCount = userDao.delete(luke.getUserName());
-        findLuke = userDao.find(luke.getUserName());
+        int deleteCount = userDao.delete(luke.getUsername());
+        findLuke = userDao.find(luke.getUsername());
         assertNull(findLuke);
         assertEquals(1, deleteCount);
     }
     @Test
     @DisplayName("delete fail (user does not exist")
     void testDeleteFail() throws Exception {
-        int deleteCount = userDao.delete(luke.getUserName());
+        int deleteCount = userDao.delete(luke.getUsername());
         assertEquals(0, deleteCount);
     }
 

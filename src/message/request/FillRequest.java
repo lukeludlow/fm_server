@@ -17,6 +17,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class FillRequest extends AbstractRequest {
-    private String userName;
+    private String username;
     private int generations;
 }

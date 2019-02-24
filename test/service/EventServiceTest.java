@@ -28,7 +28,7 @@ class EventServiceTest {
         AuthTokenDao authTokenDao = new AuthTokenDao(db);
         AuthToken secret = new AuthToken("xX_secret_Xx", "lukeludlow");
         authTokenDao.insert(secret);
-        EventRequest eventRequest = new EventRequest(birthday.getEventID(), secret.getAuthToken());
+        EventRequest eventRequest = new EventRequest(birthday.getEventID(), secret.getAuthtoken());
         EventResponse actualResponse = eventService.getEvent(eventRequest);
         assertNotNull(actualResponse);
         assertEquals(response, actualResponse);

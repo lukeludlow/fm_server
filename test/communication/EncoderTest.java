@@ -21,13 +21,13 @@ class EncoderTest {
     PersonRequest personRequest = new PersonRequest("69", "secret");
     RegisterRequest registerRequest = new RegisterRequest("lukeludlow", "hunter2", "ll@live.com", "luke", "ludlow", "m");
 
-    String eventRequestJson = "{\"eventID\": \"123\", \"authToken\": \"secret\"}";
-    String familyRequestJson = "{\"authToken\": \"secret\"}";
-    String fillRequestJson = "{\"userName\": \"lukeludlow\", \"generations\": 2}";
-    String historyRequestJson = "{\"authToken\": \"secret\"}";
-    String loginRequestJson = "{\"userName\": \"lukeludlow\", \"password\": \"hunter2\"}";
-    String personRequestJson = "{\"personID\": \"69\", \"authToken\": \"secret\"}";
-    String registerRequestJson = "{\"userName\": \"lukeludlow\", \"password\": \"hunter2\", \"email\": \"ll@live.com\", \"firstName\": \"luke\", \"lastName\": \"ludlow\", \"gender\": \"m\"}";
+    String eventRequestJson = "{\"eventID\": \"123\", \"authtoken\": \"secret\"}";
+    String familyRequestJson = "{\"authtoken\": \"secret\"}";
+    String fillRequestJson = "{\"username\": \"lukeludlow\", \"generations\": 2}";
+    String historyRequestJson = "{\"authtoken\": \"secret\"}";
+    String loginRequestJson = "{\"username\": \"lukeludlow\", \"password\": \"hunter2\"}";
+    String personRequestJson = "{\"personID\": \"69\", \"authtoken\": \"secret\"}";
+    String registerRequestJson = "{\"username\": \"lukeludlow\", \"password\": \"hunter2\", \"email\": \"ll@live.com\", \"firstname\": \"luke\", \"lastname\": \"ludlow\", \"gender\": \"m\"}";
 
     User[] loadUsers = {
             new User("lukeludlow", "hunter2", "ll@live.com", "luke", "ludlow", "m", "99"),
@@ -45,18 +45,18 @@ class EncoderTest {
             "{" +
             "\"users\": [" +
                 "{" +
-                    "\"userName\": \"lukeludlow\", \"password\": \"hunter2\", \"email\": \"ll@live.com\", \"firstName\": \"luke\", \"lastName\": \"ludlow\", \"gender\": \"m\", \"personID\": \"99\"" +
+                    "\"username\": \"lukeludlow\", \"password\": \"hunter2\", \"email\": \"ll@live.com\", \"firstname\": \"luke\", \"lastname\": \"ludlow\", \"gender\": \"m\", \"personID\": \"99\"" +
                 "}," +
                 "{" +
-                    "\"userName\": \"treyway\", \"password\": \"scumgang2\", \"email\": \"tekashi69@gmail.com\", \"firstName\": \"tekashi\", \"lastName\": \"sixnine\", \"gender\": \"m\", \"personID\": \"69\"" +
+                    "\"username\": \"treyway\", \"password\": \"scumgang2\", \"email\": \"tekashi69@gmail.com\", \"firstname\": \"tekashi\", \"lastname\": \"sixnine\", \"gender\": \"m\", \"personID\": \"69\"" +
                 "}" +
             "]," +
-            "\"persons\": [" +
+            "\"people\": [" +
                 "{" +
-                    "\"personID\": \"99\", \"descendant\": \"lukeludlow\", \"firstName\": \"luke\", \"lastName\": \"ludlow\", \"gender\": \"m\", \"father\": \"199\", \"mother\": \"299\", \"spouse\": \"66\"" +
+                    "\"personID\": \"99\", \"descendant\": \"lukeludlow\", \"firstname\": \"luke\", \"lastname\": \"ludlow\", \"gender\": \"m\", \"father\": \"199\", \"mother\": \"299\", \"spouse\": \"66\"" +
                 "}," +
                 "{" +
-                    "\"personID\": \"69\", \"descendant\": \"treyway\", \"firstName\": \"tekashi\", \"lastName\": \"sixnine\", \"gender\": \"m\", \"father\": \"169\", \"mother\": \"269\", \"spouse\": \"6969\"" +
+                    "\"personID\": \"69\", \"descendant\": \"treyway\", \"firstname\": \"tekashi\", \"lastname\": \"sixnine\", \"gender\": \"m\", \"father\": \"169\", \"mother\": \"269\", \"spouse\": \"6969\"" +
                 "}" +
             "]," +
             "\"events\": [" +
@@ -114,8 +114,8 @@ class EncoderTest {
     ClearResponse clearResponse = new ClearResponse("clear succeeded.");
 //    ErrorResponse errorResponse = new ErrorResponse("description of the error");
     EventResponse eventResponse = new EventResponse(new Event("9","lukeludlow","1",40.0,-111.0,"usa","reno","birth",1999));
-    FillResponse fillResponse = new FillResponse("successfully added x persons and y events to the database.");
-    LoadResponse loadResponse = new LoadResponse("successfully added x users, y persons, and z events to the database.");
+    FillResponse fillResponse = new FillResponse("successfully added x people and y events to the database.");
+    LoadResponse loadResponse = new LoadResponse("successfully added x users, y people, and z events to the database.");
     LoginResponse loginResponse = new LoginResponse("secret", "lukeludlow", "99");
     PersonResponse personResponse = new PersonResponse(new Person("1", "lukeludlow", "luke", "ludlow", "m", "none", "none", "none"));
     RegisterResponse registerResponse = new RegisterResponse("secret", "lukeludlow", "99");
@@ -146,20 +146,20 @@ class EncoderTest {
             "\"eventType\": \"birth\"," +
             "\"year\": 1999" +
             "}";
-    String fillResponseJson = "{\"message\": \"successfully added x persons and y events to the database.\"}";
-    String loadResponseJson = "{\"message\": \"successfully added x users, y persons, and z events to the database.\"}";
+    String fillResponseJson = "{\"message\": \"successfully added x people and y events to the database.\"}";
+    String loadResponseJson = "{\"message\": \"successfully added x users, y people, and z events to the database.\"}";
     String loginResponseJson = "" +
             "{" +
-            "\"authToken\": \"secret\"," +
-            "\"userName\": \"lukeludlow\"," +
+            "\"authtoken\": \"secret\"," +
+            "\"username\": \"lukeludlow\"," +
             "\"personID\": \"99\"" +
             "}";
     String personResponseJson = "" +
             "{" +
             "\"descendant\": \"lukeludlow\"," +
             "\"personID\": \"1\"," +
-            "\"firstName\": \"luke\"," +
-            "\"lastName\": \"ludlow\"," +
+            "\"firstname\": \"luke\"," +
+            "\"lastname\": \"ludlow\"," +
             "\"gender\": \"m\"," +
             "\"father\": \"none\"," +
             "\"mother\": \"none\"," +
@@ -167,8 +167,8 @@ class EncoderTest {
             "}";
     String registerResponseJson = "" +
             "{" +
-            "\"authToken\": \"secret\"," +
-            "\"userName\": \"lukeludlow\"," +
+            "\"authtoken\": \"secret\"," +
+            "\"username\": \"lukeludlow\"," +
             "\"personID\": \"99\"" +
             "}";
     String historyResponseJson = "" +
@@ -186,10 +186,10 @@ class EncoderTest {
             "{" +
             "\"data\": [" +
                 "{" +
-                    "\"personID\": \"99\", \"descendant\": \"lukeludlow\", \"firstName\": \"luke\", \"lastName\": \"ludlow\", \"gender\": \"m\", \"father\": \"199\", \"mother\": \"299\", \"spouse\": \"66\"" +
+                    "\"personID\": \"99\", \"descendant\": \"lukeludlow\", \"firstname\": \"luke\", \"lastname\": \"ludlow\", \"gender\": \"m\", \"father\": \"199\", \"mother\": \"299\", \"spouse\": \"66\"" +
                 "}," +
                 "{" +
-                    "\"personID\": \"69\", \"descendant\": \"treyway\", \"firstName\": \"tekashi\", \"lastName\": \"sixnine\", \"gender\": \"m\", \"father\": \"169\", \"mother\": \"269\", \"spouse\": \"6969\"" +
+                    "\"personID\": \"69\", \"descendant\": \"treyway\", \"firstname\": \"tekashi\", \"lastname\": \"sixnine\", \"gender\": \"m\", \"father\": \"169\", \"mother\": \"269\", \"spouse\": \"6969\"" +
                 "}" +
             "]" +
             "}";

@@ -26,7 +26,7 @@ class PersonServiceTest {
         AuthTokenDao authTokenDao = new AuthTokenDao(db);
         AuthToken secret = new AuthToken("xX_secret_Xx", "lukeludlow");
         authTokenDao.insert(secret);
-        PersonRequest personRequest = new PersonRequest(luke.getPersonID(), secret.getAuthToken());
+        PersonRequest personRequest = new PersonRequest(luke.getPersonID(), secret.getAuthtoken());
         PersonResponse actualResponse = personService.getPerson(personRequest);
         assertNotNull(actualResponse);
         assertEquals(response, actualResponse);

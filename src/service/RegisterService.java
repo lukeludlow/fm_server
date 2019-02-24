@@ -25,9 +25,9 @@ public class RegisterService {
         PersonDao personDao = new PersonDao(db);
         AuthTokenDao authTokenDao = new AuthTokenDao(db);
         String personID = UUID.randomUUID().toString();
-        User u = new User (request.getUserName(), request.getPassword(), request.getEmail(), request.getFirstName(), request.getLastName(), request.getGender(), personID);
-        Person p = new Person(personID, request.getUserName(), request.getFirstName(), request.getLastName(), request.getGender(), null, null, null);
-        AuthToken a = new AuthToken(request.getUserName());
+        User u = new User (request.getUsername(), request.getPassword(), request.getEmail(), request.getFirstname(), request.getLastname(), request.getGender(), personID);
+        Person p = new Person(personID, request.getUsername(), request.getFirstname(), request.getLastname(), request.getGender(), null, null, null);
+        AuthToken a = new AuthToken(request.getUsername());
         try {
             userDao.insert(u);
             personDao.insert(p);
@@ -39,9 +39,9 @@ public class RegisterService {
 
         // TODO actually do the fill service
         FillService fillService = new FillService();
-        FillRequest fillRequest = new FillRequest(request.getUserName(), 4);
+        FillRequest fillRequest = new FillRequest(request.getUsername(), 4);
         FillResponse fillResponse = fillService.fill(fillRequest);
 
-        return new RegisterResponse(a.getAuthToken(), u.getUserName(), p.getPersonID());
+        return new RegisterResponse(a.getAuthtoken(), u.getUsername(), p.getPersonID());
     }
 }

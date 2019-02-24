@@ -17,7 +17,7 @@ public class Server {
     private HttpServer server;
     private static final int MAX_WAITING_CONNECTIONS = 12;
 
-    private void run(String portNumber) {
+    public void run(String portNumber) {
         System.out.println("initializing http server");
         try {
             server = HttpServer.create(new InetSocketAddress(Integer.parseInt(portNumber)), MAX_WAITING_CONNECTIONS);

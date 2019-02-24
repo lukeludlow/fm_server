@@ -23,7 +23,7 @@ public class PersonService {
         try {
             // first, make sure authtoken is valid
             AuthTokenDao authTokenDao = new AuthTokenDao(db);
-            AuthToken foundToken = authTokenDao.find(request.getAuthToken());
+            AuthToken foundToken = authTokenDao.find(request.getAuthtoken());
             if (foundToken == null) {
                 // TODO return error response
                 return null;

@@ -1,6 +1,5 @@
 package model;
 
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Event {
     private String eventID;
-    private String descendant; // user (userName) to which this person belongs, possibly null
+    private String descendant; // user (username) to which this person belongs, possibly null
     private String personID; // ID of person to which this event belongs
     private double latitude; // format: ###.######
     private double longitude; // format: ###.######

@@ -19,6 +19,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 public class LoadRequest extends AbstractRequest {
     private model.User[] users;
-    private model.Person[] persons;
+    private model.Person[] people;
     private model.Event[] events;
 }

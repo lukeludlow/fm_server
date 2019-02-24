@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterResponse extends AbstractResponse {
-    private String authToken;
-    private String userName;
+    private String authtoken;
+    private String username;
     private String personID;
 }
