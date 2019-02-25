@@ -6,6 +6,7 @@ import data.DatabaseException;
 import data.EventDao;
 import message.request.EventRequest;
 import message.response.EventResponse;
+import message.response.ResponseException;
 import model.AuthToken;
 import model.Event;
 
@@ -16,25 +17,24 @@ public class EventService {
     /**
      * returns the single Event object with the specified ID.
      */
-    public EventResponse getEvent(EventRequest e) {
+    public EventResponse getEvent(EventRequest request) throws ResponseException {
         Database db = new Database();
         EventDao eventDao = new EventDao(db);
+        AuthTokenDao authTokenDao = new AuthTokenDao(db);
         Event found = null;
+        AuthToken foundToken = null;
         try {
-            // first, make sure authtoken is valid
-            AuthTokenDao authTokenDao = new AuthTokenDao(db);
-            AuthToken foundToken = authTokenDao.find(e.getAuthtoken());
+            foundToken = authTokenDao.find(request.getAuthtoken());
             if (foundToken == null) {
-                // TODO return error response
-                return null;
+                throw new ResponseException("invalid authtoken");
             }
-            found = eventDao.find(e.getEventID());
-        } catch (DatabaseException ex) {
-            System.err.println(ex.toString());
+            found = eventDao.find(request.getEventID());
+        } catch (DatabaseException e) {
+            throw new ResponseException(e.toString());
         }
-        if (found != null) {
-            return new EventResponse(found);
+        if (found == null) {
+            throw new ResponseException("event not found");
         }
-        return null;
+        return new EventResponse(found);
     }
 }

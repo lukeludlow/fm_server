@@ -1,5 +1,6 @@
 package communication;
 
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import message.response.ErrorResponse;
@@ -36,6 +37,7 @@ public abstract class AbstractHandler<T> implements HttpHandler {
      public static boolean isPost(HttpExchange exchange) throws IOException {
          System.out.printf("checking request method...");
         if (exchange.getRequestMethod().toUpperCase().equals("POST")) {
+            printSuccess();
             return true;
         }
         exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
@@ -47,6 +49,7 @@ public abstract class AbstractHandler<T> implements HttpHandler {
     public static boolean isGet(HttpExchange exchange) throws IOException {
         System.out.printf("checking request method...");
         if (exchange.getRequestMethod().toUpperCase().equals("GET")) {
+            printSuccess();
             return true;
         }
         exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
@@ -65,6 +68,18 @@ public abstract class AbstractHandler<T> implements HttpHandler {
             sb.append(line);
         }
         return sb.toString();
+    }
+
+    public static String getAuthorization(HttpExchange exchange) throws IOException {
+        System.out.printf("reading authtoken...");
+        Headers requestHeaders = exchange.getRequestHeaders();
+        if (!requestHeaders.containsKey("Authorization")) {
+            exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+            exchange.getResponseBody().close();
+            System.err.println("error: request does not contain authorization");
+            return null;
+        }
+        return requestHeaders.getFirst("Authorization");
     }
 
     public static void printSuccess() {

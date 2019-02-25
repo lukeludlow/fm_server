@@ -6,6 +6,7 @@ import data.DatabaseException;
 import data.EventDao;
 import message.request.HistoryRequest;
 import message.response.HistoryResponse;
+import message.response.ResponseException;
 import model.AuthToken;
 import model.Event;
 
@@ -19,31 +20,30 @@ public class HistoryService {
      * returns ALL events for ALL family members of the current user. the current
      * user is determined from the provided auth authToken.
      */
-    public HistoryResponse getHistory(HistoryRequest h) {
-
+    @SuppressWarnings("Duplicates")  // TODO FIXME
+    public HistoryResponse getHistory(HistoryRequest h) throws ResponseException {
         Database db = new Database();
-        AuthTokenDao authTokenDao = new AuthTokenDao(db);
-        AuthToken found = null;
-        try {
-            found = authTokenDao.find(h.getAuthtoken());
-        } catch (DatabaseException ex) {
-            System.err.println(ex.toString());
-            return null;
-        }
-        if (found == null) {
-            return null;
-        }
-        String username = found.getUsername();
+        AuthTokenDao authtokenDao = new AuthTokenDao(db);
         EventDao eventDao = new EventDao(db);
+        AuthToken found = null;
+        String username = null;
         List<Event> events = null;
         try {
-            events = eventDao.findMany(username);
+            found = authtokenDao.find(h.getAuthtoken());
         } catch (DatabaseException ex) {
-            System.err.println(ex.toString());
-            return null;
+            throw new ResponseException(ex.toString());
+        }
+        if (found == null) {
+            throw new ResponseException("invalid authtoken");
+        }
+        username = found.getUsername();
+        try {
+            events = eventDao.findMany(username);
+        } catch (DatabaseException e) {
+            throw new ResponseException(e.toString());
         }
         if (events.size() == 0) {
-            return null;
+            throw new ResponseException("user has no connected events");
         }
         return new HistoryResponse(events.toArray(new Event[0]));
     }

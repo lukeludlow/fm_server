@@ -3,6 +3,7 @@ package service;
 import data.*;
 import message.request.FamilyRequest;
 import message.response.FamilyResponse;
+import message.response.ResponseException;
 import model.AuthToken;
 import model.Person;
 
@@ -16,30 +17,30 @@ public class FamilyService {
      * returns ALL family members of the current user. the current user is
      * determined from the provided auth authToken.
      */
-    public FamilyResponse getFamily(FamilyRequest f) {
+    @SuppressWarnings("Duplicates")  // TODO FIXME
+    public FamilyResponse getFamily(FamilyRequest f) throws ResponseException {
         Database db = new Database();
-        AuthTokenDao authTokenDao = new AuthTokenDao(db);
-        AuthToken found = null;
-        try {
-            found = authTokenDao.find(f.getAuthtoken());
-        } catch (DatabaseException ex) {
-            System.err.println(ex.toString());
-            return null;
-        }
-        if (found == null) {
-            return null;
-        }
-        String username = found.getUsername();
+        AuthTokenDao authtokenDao = new AuthTokenDao(db);
         PersonDao userDao = new PersonDao(db);
+        AuthToken found = null;
+        String username = null;
         List<Person> people = null;
         try {
+            found = authtokenDao.find(f.getAuthtoken());
+        } catch (DatabaseException e) {
+            throw new ResponseException(e.toString());
+        }
+        if (found == null) {
+            throw new ResponseException("invalid authtoken");
+        }
+        username = found.getUsername();
+        try {
             people = userDao.findMany(username);
-        } catch (DatabaseException ex) {
-            System.err.println(ex.toString());
-            return null;
+        } catch (DatabaseException e) {
+            throw new ResponseException(e.toString());
         }
         if (people.size() == 0) {
-            return null;
+            throw new ResponseException("user has no connected people");
         }
         return new FamilyResponse(people.toArray(new Person[0]));
     }
