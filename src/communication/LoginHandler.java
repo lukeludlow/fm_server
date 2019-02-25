@@ -15,15 +15,13 @@ public class LoginHandler extends AbstractHandler<LoginResponse> {
 
         System.out.println("login handler!");
 
-        System.out.printf("checking request method...");
         if (!isPost(exchange)) {
             return;
         }
         printSuccess();
 
-        System.out.printf("reading request...");
         String json = readRequestBody(exchange);
-        if (!json.contains("\"username\":") || !json.contains("\"password\":")) {
+        if (!json.toLowerCase().contains("\"username\":") || !json.toLowerCase().contains("\"password\":")) {
             sendErrorResponse(exchange, new ResponseException("request body has missing or invalid value"));
             return;
         }
@@ -35,8 +33,8 @@ public class LoginHandler extends AbstractHandler<LoginResponse> {
         LoginResponse response = null;
         try {
             response = loginService.login(request);
-        } catch (ResponseException ex) {
-            sendErrorResponse(exchange, ex);
+        } catch (ResponseException e) {
+            sendErrorResponse(exchange, e);
             return;
         }
         printSuccess();

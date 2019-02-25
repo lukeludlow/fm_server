@@ -4,8 +4,9 @@ import data.AuthTokenDao;
 import data.Database;
 import data.DatabaseException;
 import data.PersonDao;
-import message.response.PersonResponse;
 import message.request.PersonRequest;
+import message.response.PersonResponse;
+import message.response.ResponseException;
 import model.AuthToken;
 import model.Person;
 
@@ -16,25 +17,24 @@ public class PersonService {
     /**
      * returns the single person object with the specified id.
      */
-    public PersonResponse getPerson(PersonRequest request) {
+    public PersonResponse getPerson(PersonRequest request) throws ResponseException {
         Database db = new Database();
         PersonDao personDao = new PersonDao(db);
+        AuthTokenDao authTokenDao = new AuthTokenDao(db);
         Person found = null;
+        AuthToken foundToken = null;
         try {
-            // first, make sure authtoken is valid
-            AuthTokenDao authTokenDao = new AuthTokenDao(db);
-            AuthToken foundToken = authTokenDao.find(request.getAuthtoken());
+            foundToken = authTokenDao.find(request.getAuthtoken());
             if (foundToken == null) {
-                // TODO return error response
-                return null;
+                throw new ResponseException("invalid authtoken");
             }
             found = personDao.find(request.getPersonID());
-        } catch (DatabaseException ex) {
-            System.err.println(ex.toString());
+        } catch (DatabaseException e) {
+            throw new ResponseException(e.toString());
         }
-        if (found != null) {
-            return new PersonResponse(found);
+        if (found ==  null) {
+            throw new ResponseException("person not found");
         }
-        return null;
+        return new PersonResponse(found);
     }
 }

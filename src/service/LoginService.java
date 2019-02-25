@@ -23,8 +23,8 @@ public class LoginService {
         LoginResponse response;
         try {
             found = userDao.find(request.getUsername());
-        } catch (DatabaseException ex) {
-            throw new ResponseException(ex.toString());
+        } catch (DatabaseException e) {
+            throw new ResponseException(e.toString());
         }
         if (found == null) {
             throw new ResponseException("user not found");
@@ -37,8 +37,8 @@ public class LoginService {
             auth = new AuthToken(found.getUsername());
             authTokenDao.insert(auth);
             response.setAuthtoken(auth.getAuthtoken());
-        } catch (DatabaseException ex) {
-            throw new ResponseException(ex.toString());
+        } catch (DatabaseException e) {
+            throw new ResponseException(e.toString());
         }
         return response;
     }

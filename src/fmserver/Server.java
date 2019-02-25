@@ -1,9 +1,7 @@
 package fmserver;
 
 import com.sun.net.httpserver.HttpServer;
-import communication.ClearHandler;
-import communication.DefaultHandler;
-import communication.LoginHandler;
+import communication.*;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -24,8 +22,12 @@ public class Server {
         server.setExecutor(null);
         System.out.println("creating contexts");
 
+
+        server.createContext("/person/", new PersonHandler());
+        server.createContext("/person", new FamilyHandler());
         server.createContext("/user/login", new LoginHandler());
         server.createContext("/clear", new ClearHandler());
+        server.createContext("/load", new LoadHandler());
         server.createContext("/", new DefaultHandler());
 
         System.out.println("starting server");

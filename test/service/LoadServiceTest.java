@@ -26,7 +26,7 @@ class LoadServiceTest {
                 new Event("0096", "treyway", "69", 69.69, -6.9999, "japan", "tokyo", "birth", 3019)
         };
         LoadRequest loadRequest = new LoadRequest(loadUsers, loadPeople, loadEvents);
-        LoadResponse expectedResponse = new LoadResponse("successfully added 2 users, 2 persons, and 2 events to the database.");
+        LoadResponse expectedResponse = new LoadResponse("successfully added 2 users, 2 people, and 2 events to the database.");
         LoadService loadService = new LoadService();
         LoadResponse actualResponse = loadService.load(loadRequest);
         assertNotNull(actualResponse);
