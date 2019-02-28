@@ -24,5 +24,11 @@ public class Event {
         UUID uuid = UUID.randomUUID();
         this.eventID = uuid.toString();
     }
+    public void setLocation(Location l) {
+        this.country = l.getCountry();
+        this.city = l.getCity();
+        this.latitude = l.getLatitude();
+        this.longitude = l.getLongitude();
+    }
 }
 

@@ -15,7 +15,7 @@ public class FillService {
      * to be generated, and must be a non-negative integer (the default is 4, which results in 31 new
      * persons each with associated events).
      */
-    public FillResponse fill(FillRequest f) {
+    public FillResponse fill(FillRequest request) {
         return null;
     }
 }
