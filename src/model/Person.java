@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Person {
+
     private String personID; // unique ID assigned to this person
     private String descendant;
     private String firstname;
@@ -16,7 +17,16 @@ public class Person {
     private String father; // ID of person's father, possibly null
     private String mother; // ID of person's mother, possibly null
     private String spouse; // ID of person's spouse, possibly null
+
     public String getPrimaryKey() {
         return getPersonID();
     }
+
+    public void setUserData(User u) {
+        this.descendant = u.getUsername();
+        this.firstname = u.getFirstname();
+        this.lastname = u.getLastname();
+        this.gender = u.getGender();
+    }
+
 }

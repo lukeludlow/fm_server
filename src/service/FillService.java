@@ -16,6 +16,15 @@ public class FillService {
      * persons each with associated events).
      */
     public FillResponse fill(FillRequest request) {
+
+        // check if user is already registered
+
+        // clear any existing data related to the user
+
+        // get user object
+
+        // fill factory
+
         return null;
     }
 }
