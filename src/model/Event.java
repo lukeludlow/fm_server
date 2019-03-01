@@ -2,14 +2,13 @@ package model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class Event {
+
     private String eventID;
     private String descendant; // user (username) to which this person belongs, possibly null
     private String personID; // ID of person to which this event belongs
@@ -19,8 +18,26 @@ public class Event {
     private String city;
     private String eventType; // type of getEvent (birth, baptism, christening, marriage, death, etc.)
     private int year;
-    public String getPrimaryKey() { return getEventID(); }
-    public void generateUniqueID() {
+
+    public Event() {
+        setUniqueID();
+    }
+//    public Event(String descendant) {
+//        this.descendant = descendant;
+//        setUniqueID();
+//    }
+//    public Event(String descendant, String personID) {
+//        this.descendant = descendant;
+//        this.personID = personID;
+//        setUniqueID();
+//    }
+//    public Event(String descendant, String personID) {
+//        this.descendant = descendant;
+//        this.personID = personID;
+//        setUniqueID();
+//    }
+
+    private void setUniqueID() {
         UUID uuid = UUID.randomUUID();
         this.eventID = uuid.toString();
     }
@@ -30,5 +47,9 @@ public class Event {
         this.latitude = l.getLatitude();
         this.longitude = l.getLongitude();
     }
+    public String getPrimaryKey() {
+        return getEventID();
+    }
+
 }
 
