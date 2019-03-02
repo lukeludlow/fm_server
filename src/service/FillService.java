@@ -25,18 +25,21 @@ public class FillService {
      */
     public FillResponse fill(FillRequest request) throws ResponseException {
 
-        // check if user is already registered
         Database db = new Database();
         UserDao userDao = new UserDao(db);
         User found = null;
+
+        // check if user is already registered
         try {
             found = userDao.find(request.getUsername());
         } catch (DatabaseException e) {
             throw new ResponseException(e.toString());
         }
+
         if (found == null) {
             throw new ResponseException("user not found");
         }
+
         // clear any existing data related to the user
         try {
             clearAllUserData(request.getUsername());
@@ -51,11 +54,11 @@ public class FillService {
             throw new ResponseException("unable to create fill factory (invalid json path)");
         }
         int DEFAULT_GENERATIONS = 4;
-        if (request.getGenerations() == -1) {
+        if (request.getGenerations() < 0) {
             request.setGenerations(DEFAULT_GENERATIONS);
         }
         factory.fill(request.getGenerations());
-        String success = "";
+        String success ;
         try {
             success = insertFamilyTree(factory.getFamilyTree());
         } catch (DatabaseException e) {

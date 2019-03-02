@@ -42,7 +42,7 @@ public class EventHandler extends AbstractHandler<EventResponse> {
         System.out.printf("calling get event service...");
         EventRequest request = new EventRequest(eventID, authtoken);
         EventService service = new EventService();
-        EventResponse response = null;
+        EventResponse response;
         try {
             response = service.getEvent(request);
         } catch (ResponseException e) {

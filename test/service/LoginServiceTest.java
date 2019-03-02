@@ -72,9 +72,7 @@ class LoginServiceTest {
         userDao.insert(luke);
         loginRequest.setPassword("wrong");
         ResponseException exception = assertThrows(ResponseException.class,
-                () -> {
-                    actualResponse = loginService.login(loginRequest);
-                });
+                () -> actualResponse = loginService.login(loginRequest));
         assertTrue(exception.getMessage().contains("incorrect password"));
     }
 
@@ -82,9 +80,7 @@ class LoginServiceTest {
     @DisplayName("login fail (user does not exist)")
     void testInsertFail() {
         ResponseException exception = assertThrows(ResponseException.class,
-                () -> {
-                    actualResponse = loginService.login(loginRequest);
-                });
+                () -> actualResponse = loginService.login(loginRequest));
         assertTrue(exception.getMessage().contains("user not found"));
     }
 
