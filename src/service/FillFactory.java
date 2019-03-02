@@ -130,6 +130,7 @@ public class FillFactory {
         Person userPerson = new Person();
         userPerson.setUserData(user);
         userPerson.setPersonID(randomID());
+        user.setPersonID(userPerson.getPersonID());
         Node userNode = new Node(userPerson);
         // randomly generate a birthdate for the user bc they don't give us that info when they register
         Calendar calendar = Calendar.getInstance();

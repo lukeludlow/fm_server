@@ -59,7 +59,6 @@ public abstract class AbstractHandler<T> implements HttpHandler {
     }
 
     public static String readRequestBody(HttpExchange exchange) throws IOException {
-        System.out.printf("reading request body...");
         InputStream inputStream = exchange.getRequestBody();
         BufferedReader bf = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder sb = new StringBuilder();

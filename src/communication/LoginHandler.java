@@ -12,14 +12,10 @@ public class LoginHandler extends AbstractHandler<LoginResponse> {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-
         System.out.println("login handler!");
-
         if (!isPost(exchange)) {
             return;
         }
-        printSuccess();
-
         String json = readRequestBody(exchange);
         if (!json.toLowerCase().contains("\"username\":") || !json.toLowerCase().contains("\"password\":")) {
             sendErrorResponse(exchange, new ResponseException("request body has missing or invalid value"));

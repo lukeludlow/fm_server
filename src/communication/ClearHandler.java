@@ -14,11 +14,9 @@ public class ClearHandler extends AbstractHandler<ClearResponse> {
 
         System.out.println("clear handler!");
 
-        System.out.printf("checking request method...");
         if (!isPost(exchange)) {
             return;
         }
-        printSuccess();
 
         System.out.printf("calling clear service...");
         ClearService clearService = new ClearService();

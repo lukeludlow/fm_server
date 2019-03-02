@@ -61,6 +61,8 @@ public class FillService {
         String success ;
         try {
             success = insertFamilyTree(factory.getFamilyTree());
+            // update the user's info in the database too
+            insertUser(request.getUsername(), factory);
         } catch (DatabaseException e) {
             throw new ResponseException("unable to insert generated data into database.\n" + e.getMessage());
         }
@@ -91,6 +93,13 @@ public class FillService {
                 tree.getAllPeople().size() +
                 " people and " + tree.getAllEvents().size() +
                 " events to the database.";
+    }
+
+    private void insertUser(String username, FillFactory factory) throws DatabaseException {
+        Database db = new Database();
+        UserDao userDao = new UserDao(db);
+        userDao.delete(username);
+        userDao.insert(factory.getUser());
     }
 
 }

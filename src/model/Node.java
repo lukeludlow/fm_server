@@ -34,7 +34,7 @@ public class Node {
 
     public void setDad(Node dad) {
         this.dad = dad;
-        this.person.setMother(dad.getPersonID());
+        this.person.setFather(dad.getPersonID());
     }
 
     public void setSpouse(Node spouse) {
