@@ -5,6 +5,7 @@ import message.request.FillRequest;
 import message.response.FillResponse;
 import message.request.RegisterRequest;
 import message.response.RegisterResponse;
+import message.response.ResponseException;
 import model.AuthToken;
 import model.Person;
 import model.User;
@@ -19,7 +20,7 @@ public class RegisterService {
      * creates a new user account, generates 4 generations of ancestor data for the new
      * user, logs the user in, and returns an auth authToken.
      */
-    public RegisterResponse register(RegisterRequest request) {
+    public RegisterResponse register(RegisterRequest request) throws ResponseException {
         Database db = new Database();
         UserDao userDao = new UserDao(db);
         PersonDao personDao = new PersonDao(db);

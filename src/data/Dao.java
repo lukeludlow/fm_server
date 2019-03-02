@@ -31,15 +31,15 @@ public abstract class Dao<T> {
             PreparedStatement statement = prepareInsertStatement(t);
             statement.executeUpdate();
             db.closeConnection(true);
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
             db.closeConnection(false);
-            throw new DatabaseException("sql error encountered while inserting into database");
-        } catch (IllegalAccessException ex) {
+            throw new DatabaseException("sql error encountered while inserting into database.\n" + e.getMessage());
+        } catch (IllegalAccessException e) {
             db.closeConnection(false);
             throw new DatabaseException("dao illegal access of model object");
-        } catch (DatabaseException ex) {
+        } catch (DatabaseException e) {
             db.closeConnection(false);
-            throw ex;
+            throw e;
         }
     }
 

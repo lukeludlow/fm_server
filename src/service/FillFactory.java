@@ -54,6 +54,7 @@ public class FillFactory {
     private void generateParents(Node child) {
         Person m = generatePerson("f");
         Person d = generatePerson("m");
+        m.setLastname(d.getLastname());
         Node mom = new Node(m);
         Node dad = new Node(d);
         generateBirthday(child, mom);
@@ -89,6 +90,7 @@ public class FillFactory {
     private void generateWeddingday(Node p1, Node p2) {
         Event wedding = generateEvent("wedding", p1.getPersonID());
         Event weddingCopy = new Event(wedding);
+        weddingCopy.setEventID(randomID());
         weddingCopy.setPersonID(p2.getPersonID());
         assert p1.hasEventType("birth");
         assert p2.hasEventType("birth");
