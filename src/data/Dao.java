@@ -25,46 +25,41 @@ public abstract class Dao<T> {
     protected String deleteSql;
     protected String deleteManySql;
 
+    public Dao(Class<T> type, Database db) {
+        this.type = type;
+        this.db = db;
+    }
+
     public void insert(T t) throws DatabaseException {
         try {
-            this.db.connect();
             PreparedStatement statement = prepareInsertStatement(t);
             statement.executeUpdate();
-            db.closeConnection(true);
         } catch (SQLException e) {
-            db.closeConnection(false);
-            throw new DatabaseException("sql error encountered while inserting into database.\n" + e.getMessage());
+            throw new DatabaseException("sql error encountered while inserting into database. " + e.getMessage());
         } catch (IllegalAccessException e) {
-            db.closeConnection(false);
-            throw new DatabaseException("dao illegal access of model object");
-        } catch (DatabaseException e) {
-            db.closeConnection(false);
-            throw e;
+            throw new DatabaseException("dao illegal access of model object." + e.getMessage());
+        } catch (NullPointerException e) {
+            throw new DatabaseException("dao tried to operate on closed connection. " + e.getMessage());
         }
     }
 
     // find UNIQUE element
     public T find(String primaryKey) throws DatabaseException {
         try {
-            this.db.connect();
             PreparedStatement statement = prepareFindStatement(primaryKey);
             ResultSet rs = statement.executeQuery();
             T t = getObject(rs);
-            db.closeConnection(true);
             return t;
-        } catch (SQLException ex) {
-            db.closeConnection(false);
-            throw new DatabaseException("sql error encountered while finding in database");
-        } catch (DatabaseException ex) {
-            db.closeConnection(false);
-            throw ex;
+        } catch (SQLException e) {
+            throw new DatabaseException("sql error encountered while finding in database. " + e.getMessage());
+        } catch (NullPointerException e) {
+            throw new DatabaseException("dao tried to operate on closed connection. " + e.getMessage());
         }
     }
 
     public List<T> findMany(String key) throws DatabaseException {
         List<T> items = new ArrayList<>();
         try {
-            this.db.connect();
             PreparedStatement statement = prepareFindManyStatement(key);
             ResultSet rs = statement.executeQuery();
             T foundObject = null;
@@ -73,14 +68,11 @@ public abstract class Dao<T> {
                 items.add(foundObject);
                 foundObject = getObject(rs);
             }
-            db.closeConnection(true);
             return items;
-        } catch (SQLException ex) {
-            db.closeConnection(false);
-            throw new DatabaseException("sql error encountered while finding in database");
-        } catch (DatabaseException ex) {
-            db.closeConnection(false);
-            throw ex;
+        } catch (SQLException e) {
+            throw new DatabaseException("sql error encountered while finding in database. " + e.getMessage());
+        } catch (NullPointerException e) {
+            throw new DatabaseException("dao tried to operate on closed connection. " + e.getMessage());
         }
     }
 
@@ -88,16 +80,12 @@ public abstract class Dao<T> {
     public int delete(String primaryKey) throws DatabaseException {
         int deleteCount = 0;
         try {
-            this.db.connect();
             PreparedStatement statement = prepareDeleteStatement(primaryKey);
             deleteCount = statement.executeUpdate();
-            db.closeConnection(true);
         } catch (SQLException e) {
-            db.closeConnection(false);
-            throw new DatabaseException("sql error encountered while deleting in database");
-        } catch (DatabaseException e) {
-            db.closeConnection(false);
-            throw e;
+            throw new DatabaseException("sql error encountered while deleting in database. " + e.getMessage());
+        } catch (NullPointerException e) {
+            throw new DatabaseException("dao tried to operate on closed connection. " + e.getMessage());
         }
         return deleteCount;
     }
@@ -105,57 +93,57 @@ public abstract class Dao<T> {
     public int deleteMany(String key) throws DatabaseException {
         int deleteCount = 0;
         try {
-            this.db.connect();
             PreparedStatement statement = prepareDeleteManyStatement(key);
             deleteCount = statement.executeUpdate();
-            db.closeConnection(true);
         } catch (SQLException e) {
-            db.closeConnection(false);
-            throw new DatabaseException("sql error encountered while deleting in database");
-        } catch (DatabaseException e) {
-            db.closeConnection(false);
-            throw e;
+            throw new DatabaseException("sql error encountered while deleting in database. " + e.getMessage());
+        } catch (NullPointerException e) {
+            throw new DatabaseException("dao tried to operate on closed connection. " + e.getMessage());
         }
         return deleteCount;
     }
 
 
     // create object from ResultSet. must be overriden to work with that particular type
-    public abstract T getObject(ResultSet rs) throws SQLException;
+    protected abstract T getObject(ResultSet rs) throws SQLException;
 
 
-    public PreparedStatement prepareInsertStatement(T t) throws SQLException, IllegalAccessException {
+    private PreparedStatement prepareInsertStatement(T t) throws SQLException, IllegalAccessException {
         String sql = this.insertSql;
         PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
         setStatementValues(statement, t);
         return statement;
     }
-    public PreparedStatement prepareFindStatement(String primaryKey) throws SQLException {
+
+    private PreparedStatement prepareFindStatement(String primaryKey) throws SQLException {
         String sql = this.findSql;
         PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
         statement.setString(1, primaryKey);
         return statement;
     }
-    public PreparedStatement prepareFindManyStatement(String key) throws SQLException {
+
+    private PreparedStatement prepareFindManyStatement(String key) throws SQLException {
         String sql = this.findManySql;
         PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
         statement.setString(1, key);
         return statement;
     }
-    public PreparedStatement prepareDeleteStatement(String primaryKey) throws SQLException {
+
+    private PreparedStatement prepareDeleteStatement(String primaryKey) throws SQLException {
         String sql = this.deleteSql;
         PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
         statement.setObject(1, primaryKey);
         return statement;
     }
-    public PreparedStatement prepareDeleteManyStatement(String key) throws SQLException {
+
+    private PreparedStatement prepareDeleteManyStatement(String key) throws SQLException {
         String sql = this.deleteManySql;
         PreparedStatement statement = this.db.getConnection().prepareStatement(sql);
         statement.setObject(1, key);
         return statement;
     }
 
-    public void setStatementValues(PreparedStatement statement, T t) throws SQLException, IllegalAccessException {
+    private void setStatementValues(PreparedStatement statement, T t) throws SQLException {
         Field[] fields = this.type.getDeclaredFields();
         int i = 1;
         for (Field f : fields) {
@@ -163,28 +151,19 @@ public abstract class Dao<T> {
         }
     }
 
-    public Object runGetter(Field field, T t) {
+    private Object runGetter(Field field, T t) {
         for (Method method : this.type.getMethods()) {
             if ((method.getName().startsWith("get")) && (method.getName().length() == (field.getName().length() + 3))) {
                 if (method.getName().toLowerCase().endsWith(field.getName().toLowerCase())) {
                     try {
                         return method.invoke(t);
                     } catch (IllegalAccessException | InvocationTargetException e) {
-                        System.out.println("Could not determine method: " + method.getName());
+                        System.err.println("could not determine method: " + method.getName());
                     }
                 }
             }
         }
         return null;
-    }
-
-    public Dao(Class<T> type) {
-        this.type = type;
-        this.db = new Database();
-    }
-    public Dao(Class<T> type, Database db) {
-        this.type = type;
-        this.db = db;
     }
 
 }

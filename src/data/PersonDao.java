@@ -5,15 +5,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PersonDao extends Dao<Person> {
-    public PersonDao() {
-        super(Person.class);
-        this.setSqlStatements();
-    }
+
     public PersonDao(Database db) {
-        super(Person.class);
+        super(Person.class, db);
         this.db = db;
         this.setSqlStatements();
     }
+
     private void setSqlStatements() {
         this.insertSql = "insert into people " +
                 "(person_id, descendant, firstname, lastname, gender, father_id, mother_id, spouse_id) " +
@@ -23,8 +21,9 @@ public class PersonDao extends Dao<Person> {
         this.deleteSql = "delete from people where person_id = ?";
         this.deleteManySql = "delete from people where descendant = ?";
     }
+
     @Override
-    public Person getObject(ResultSet rs) throws SQLException {
+    protected Person getObject(ResultSet rs) throws SQLException {
         if (rs.next()) {
             return new Person(
                     rs.getString("person_id"),
@@ -39,4 +38,5 @@ public class PersonDao extends Dao<Person> {
         }
         return null;
     }
+
 }

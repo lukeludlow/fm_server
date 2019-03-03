@@ -5,15 +5,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EventDao extends Dao<Event> {
-    public EventDao() {
-        super(Event.class);
-        this.setSqlStatements();
-    }
+
     public EventDao(Database db) {
-        super(Event.class);
+        super(Event.class, db);
         this.db = db;
         this.setSqlStatements();
     }
+
     private void setSqlStatements() {
         this.insertSql = "insert into event " +
                 "(event_id, descendant, person_id, latitude, longitude, country, city, event_type, year) " +
@@ -23,8 +21,9 @@ public class EventDao extends Dao<Event> {
         this.deleteSql = "delete from event where event_id = ?";
         this.deleteManySql = "delete from event where descendant = ?";
     }
+
     @Override
-    public Event getObject(ResultSet rs) throws SQLException {
+    protected Event getObject(ResultSet rs) throws SQLException {
         if (rs.next()) {
             return new Event(
                     rs.getString("event_id"),

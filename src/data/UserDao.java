@@ -5,15 +5,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDao extends Dao<User> {
-    public UserDao() {
-        super(User.class);
-        this.setSqlStatements();
-    }
+
     public UserDao(Database db) {
-        super(User.class);
+        super(User.class, db);
         this.db = db;
         this.setSqlStatements();
     }
+
     private void setSqlStatements() {
         this.insertSql = "insert into user " +
                 "(username, password, email, firstname, lastname, gender, person_id) " +
@@ -21,8 +19,9 @@ public class UserDao extends Dao<User> {
         this.findSql = "select * from user where userName = ?";
         this.deleteSql = "delete from user where userName = ?";
     }
+
     @Override
-    public User getObject(ResultSet rs) throws SQLException {
+    protected User getObject(ResultSet rs) throws SQLException {
         if (rs.next()) {
             return new User(
                     rs.getString("username"),
@@ -36,4 +35,5 @@ public class UserDao extends Dao<User> {
         }
         return null;
     }
+
 }

@@ -6,15 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AuthTokenDao extends Dao<AuthToken> {
-    public AuthTokenDao() {
-        super(AuthToken.class);
-        this.setSqlStatements();
-    }
+
     public AuthTokenDao(Database db) {
-        super(AuthToken.class);
+        super(AuthToken.class, db);
         this.db = db;
         this.setSqlStatements();
     }
+
     private void setSqlStatements() {
         this.insertSql = "insert into auth_token " +
                 "(token, username) " +
@@ -24,8 +22,9 @@ public class AuthTokenDao extends Dao<AuthToken> {
         this.deleteSql = "delete from auth_token where token = ?";
         this.deleteManySql = "delete from auth_token where username = ?";
     }
+
     @Override
-    public AuthToken getObject(ResultSet rs) throws SQLException {
+    protected AuthToken getObject(ResultSet rs) throws SQLException {
         if (rs.next()) {
             return new AuthToken(
                     rs.getString("token"),
@@ -34,4 +33,5 @@ public class AuthTokenDao extends Dao<AuthToken> {
         }
         return null;
     }
+
 }
