@@ -38,13 +38,13 @@ class UserDaoTest {
     @Test
     @DisplayName("insert user")
     void testInsert() throws Exception {
-        db.connect();
         try {
+            db.connect();
             userDao.insert(luke);
             findLuke = userDao.find(luke.getUsername());
-            db.closeConnection(true);
             assertNotNull(findLuke);
             assertEquals(luke, findLuke);
+            db.closeConnection(true);
         } catch (DatabaseException e) {
             db.closeConnection(false);
             throw e;
@@ -78,13 +78,13 @@ class UserDaoTest {
     @Test
     @DisplayName("find success")
     void testFind() throws Exception {
-        db.connect();
         try {
+            db.connect();
             userDao.insert(luke);
             findLuke = userDao.find(luke.getUsername());
-            db.closeConnection(true);
             assertNotNull(findLuke);
             assertEquals(luke, findLuke);
+            db.closeConnection(true);
         } catch (DatabaseException e ) {
             db.closeConnection(false);
             throw e;
@@ -94,8 +94,8 @@ class UserDaoTest {
     @Test
     @DisplayName("find success (find multiple entries multiple times)")
     void testFind2() throws Exception {
-        db.connect();
         try {
+            db.connect();
             userDao.insert(luke);
             userDao.insert(anotherUser);
             findLuke = userDao.find(luke.getUsername());
@@ -120,11 +120,11 @@ class UserDaoTest {
     @Test
     @DisplayName("find fail (user has not been inserted)")
     void testFindFail() throws Exception {
-        db.connect();
         try {
+            db.connect();
             findLuke = userDao.find(luke.getUsername());
-            db.closeConnection(true);
             assertNull(findLuke);
+            db.closeConnection(true);
         } catch (DatabaseException e) {
             db.closeConnection(false);
             throw e;
@@ -134,12 +134,12 @@ class UserDaoTest {
     @Test
     @DisplayName("find fail (wrong userName)")
     void testFindFail2() throws Exception {
-        db.connect();
         try {
+            db.connect();
             userDao.insert(luke);
             findLuke = userDao.find("xX_user_Xx");
-            db.closeConnection(true);
             assertNull(findLuke);
+            db.closeConnection(true);
         } catch (DatabaseException e) {
             db.closeConnection(false);
             throw e;
@@ -149,8 +149,8 @@ class UserDaoTest {
     @Test
     @DisplayName("delete success")
     void testDelete() throws Exception {
-        db.connect();
         try {
+            db.connect();
             userDao.insert(luke);
             findLuke = userDao.find(luke.getUsername());
             assertNotNull(findLuke);
@@ -169,11 +169,11 @@ class UserDaoTest {
     @DisplayName("delete fail (user does not exist")
     void testDeleteFail() throws Exception {
         int deleteCount;
-        db.connect();
         try {
+            db.connect();
             deleteCount = userDao.delete(luke.getUsername());
-            db.closeConnection(true);
             assertEquals(0, deleteCount);
+            db.closeConnection(true);
         } catch (DatabaseException e) {
             db.closeConnection(false);
             throw e;

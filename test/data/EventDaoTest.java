@@ -41,13 +41,13 @@ class EventDaoTest {
     @Test
     @DisplayName("insert event")
     void testInsert() throws Exception {
-        db.connect();
         try {
+            db.connect();
             eventDao.insert(birthday);
             findBirthday = eventDao.find(birthday.getEventID());
-            db.closeConnection(true);
             assertNotNull(findBirthday);
             assertEquals(birthday, findBirthday);
+            db.closeConnection(true);
         } catch (DatabaseException e) {
             db.closeConnection(false);
             throw e;
@@ -81,13 +81,13 @@ class EventDaoTest {
     @Test
     @DisplayName("find success")
     void testFind() throws Exception {
-        db.connect();
         try {
+            db.connect();
             eventDao.insert(birthday);
             findBirthday = eventDao.find(birthday.getEventID());
-            db.closeConnection(true);
             assertNotNull(findBirthday);
             assertEquals(birthday, findBirthday);
+            db.closeConnection(true);
         } catch (DatabaseException e) {
             db.closeConnection(false);
             throw e;
@@ -97,8 +97,8 @@ class EventDaoTest {
     @Test
     @DisplayName("find success (find multiple entries multiple times)")
     void testFind2() throws Exception {
-        db.connect();
         try {
+            db.connect();
             eventDao.insert(birthday);
             eventDao.insert(anotherEvent);
             findBirthday = eventDao.find(birthday.getEventID());
@@ -123,8 +123,8 @@ class EventDaoTest {
     @Test
     @DisplayName("find fail (event has not been inserted)")
     void testFindFail() throws Exception {
-        db.connect();
         try {
+            db.connect();
             findBirthday = eventDao.find(birthday.getEventID());
             assertNull(findBirthday);
             db.closeConnection(true);
@@ -137,8 +137,8 @@ class EventDaoTest {
     @Test
     @DisplayName("find fail (wrong eventID)")
     void testFindFail2() throws Exception {
-        db.connect();
         try {
+            db.connect();
             eventDao.insert(birthday);
             findBirthday = eventDao.find("xX_event_Xx");
             assertNull(findBirthday);
@@ -152,8 +152,8 @@ class EventDaoTest {
     @Test
     @DisplayName("delete success")
     void testDelete() throws Exception {
-        db.connect();
         try {
+            db.connect();
             eventDao.insert(birthday);
             findBirthday = eventDao.find(birthday.getEventID());
             assertNotNull(findBirthday);
@@ -171,8 +171,8 @@ class EventDaoTest {
     @Test
     @DisplayName("delete fail (event does not exist")
     void testDeleteFail() throws Exception {
-        db.connect();
         try {
+            db.connect();
             int deleteCount = eventDao.delete(birthday.getEventID());
             assertEquals(0, deleteCount);
             db.closeConnection(true);
@@ -185,8 +185,8 @@ class EventDaoTest {
     @Test
     @DisplayName("find many (all events belonging to a descendant/user)")
     void testFindMany() throws Exception {
-        db.connect();
         try {
+            db.connect();
             Event e2 = new Event("101", "lukeludlow", "nunya01",10.1,-10.1, "japan", "tokyo", "birth", 3019);
             Event e3 = new Event("102", "lukeludlow", "nunya02",10.2,-10.2, "japan2", "tokyo", "birth", 3012);
             eventDao.insert(birthday);
@@ -207,11 +207,11 @@ class EventDaoTest {
     @Test
     @DisplayName("find many fail")
     void testFindManyFail() throws Exception {
-        db.connect();
         try {
+            db.connect();
             List<Event> events = eventDao.findMany(birthday.getDescendant());
-            db.closeConnection(true);
             assertEquals(0, events.size());
+            db.closeConnection(true);
         } catch (DatabaseException e) {
             db.closeConnection(false);
             throw e;
@@ -221,8 +221,8 @@ class EventDaoTest {
     @Test
     @DisplayName("delete many (delete all events belonging to a descendant/user)")
     void testDeleteMany() throws Exception {
-        db.connect();
         try {
+            db.connect();
             Event e2 = new Event("101", "lukeludlow", "nunya01",10.1,-10.1, "japan", "tokyo", "birth", 3019);
             Event e3 = new Event("102", "lukeludlow", "nunya02",10.2,-10.2, "japan2", "tokyo", "birth", 3012);
             eventDao.insert(birthday);
@@ -243,4 +243,5 @@ class EventDaoTest {
             throw e;
         }
     }
+
 }
