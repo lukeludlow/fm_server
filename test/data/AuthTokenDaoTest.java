@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -192,7 +192,7 @@ class AuthTokenDaoTest {
             authtokenDao.insert(bitcoin);
             authtokenDao.insert(t2);
             authtokenDao.insert(t3);
-            List<T> tokens = authtokenDao.findMany(bitcoin.getUsername());
+            ArrayList<AuthToken> tokens = authtokenDao.findMany(bitcoin.getUsername());
             assertEquals(3, tokens.size());
             assertEquals(bitcoin, tokens.get(0));
             assertEquals(t2, tokens.get(1));
@@ -209,7 +209,7 @@ class AuthTokenDaoTest {
     void testFindManyFail() throws Exception {
         try {
             db.connect();
-            List<T> tokens = authtokenDao.findMany(bitcoin.getUsername());
+            ArrayList<AuthToken> tokens = authtokenDao.findMany(bitcoin.getUsername());
             assertEquals(0, tokens.size());
             db.closeConnection(true);
         } catch (DatabaseException e) {
@@ -228,7 +228,7 @@ class AuthTokenDaoTest {
             authtokenDao.insert(bitcoin);
             authtokenDao.insert(t2);
             authtokenDao.insert(t3);
-            List<T> tokens = authtokenDao.findMany(bitcoin.getUsername());
+            ArrayList<AuthToken> tokens = authtokenDao.findMany(bitcoin.getUsername());
             assertEquals(3, tokens.size());
             assertEquals(bitcoin, tokens.get(0));
             assertEquals(t2, tokens.get(1));

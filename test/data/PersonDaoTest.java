@@ -5,7 +5,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import java.util.List;
+
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersonDaoTest {
@@ -190,7 +192,7 @@ class PersonDaoTest {
             personDao.insert(luke);
             personDao.insert(p2);
             personDao.insert(p3);
-            List<T> people = personDao.findMany(luke.getDescendant());
+            ArrayList<Person> people = personDao.findMany(luke.getDescendant());
             assertEquals(3, people.size());
             assertEquals(luke, people.get(0));
             assertEquals(p2, people.get(1));
@@ -207,7 +209,7 @@ class PersonDaoTest {
     void testFindManyFail() throws Exception {
         try {
             db.connect();
-            List<T> people = personDao.findMany(luke.getDescendant());
+            ArrayList<Person> people = personDao.findMany(luke.getDescendant());
             assertEquals(0, people.size());
             db.closeConnection(false);
         } catch (DatabaseException e) {
@@ -226,7 +228,7 @@ class PersonDaoTest {
             personDao.insert(luke);
             personDao.insert(p2);
             personDao.insert(p3);
-            List<T> people = personDao.findMany(luke.getDescendant());
+            ArrayList<Person> people = personDao.findMany(luke.getDescendant());
             assertEquals(3, people.size());
             assertEquals(luke, people.get(0));
             assertEquals(p2, people.get(1));

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -192,7 +192,7 @@ class EventDaoTest {
             eventDao.insert(birthday);
             eventDao.insert(e2);
             eventDao.insert(e3);
-            List<T> events = eventDao.findMany(birthday.getDescendant());
+            ArrayList<Event> events = eventDao.findMany(birthday.getDescendant());
             assertEquals(3, events.size());
             assertEquals(birthday, events.get(0));
             assertEquals(e2, events.get(1));
@@ -209,7 +209,7 @@ class EventDaoTest {
     void testFindManyFail() throws Exception {
         try {
             db.connect();
-            List<T> events = eventDao.findMany(birthday.getDescendant());
+            ArrayList<Event> events = eventDao.findMany(birthday.getDescendant());
             assertEquals(0, events.size());
             db.closeConnection(true);
         } catch (DatabaseException e) {
@@ -228,7 +228,7 @@ class EventDaoTest {
             eventDao.insert(birthday);
             eventDao.insert(e2);
             eventDao.insert(e3);
-            List<T> events = eventDao.findMany(birthday.getDescendant());
+            ArrayList<Event> events = eventDao.findMany(birthday.getDescendant());
             assertEquals(3, events.size());
             assertEquals(birthday, events.get(0));
             assertEquals(e2, events.get(1));
