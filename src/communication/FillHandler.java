@@ -28,7 +28,7 @@ public class FillHandler extends AbstractHandler<FillResponse> {
         }
         String username = segments[1];
         int gen = (segments.length == 2) ? -1 : Integer.parseInt(segments[2]); // -1 for when generations parameter is not given
-        printSuccess();
+        printDone();
         System.out.printf("calling fill service...");
         FillRequest request = new FillRequest(username, gen);
         FillService service = new FillService();
@@ -39,10 +39,10 @@ public class FillHandler extends AbstractHandler<FillResponse> {
             sendErrorResponse(exchange, e);
             return;
         }
-        printSuccess();
+        printDone();
         System.out.printf("sending response...");
         sendResponse(exchange, response);
-        printSuccess();
+        printDone();
     }
 
 }

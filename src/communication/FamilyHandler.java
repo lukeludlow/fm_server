@@ -22,7 +22,7 @@ public class FamilyHandler extends AbstractHandler<FamilyResponse> {
         if (authtoken == null) {
             return;
         }
-        printSuccess();
+        printDone();
 
         System.out.printf("calling get family service...");
         FamilyRequest request = new FamilyRequest(authtoken);
@@ -34,9 +34,9 @@ public class FamilyHandler extends AbstractHandler<FamilyResponse> {
             sendErrorResponse(exchange, e);
             return;
         }
-        printSuccess();
+        printDone();
         System.out.printf("sending response...");
         sendResponse(exchange, response);
-        printSuccess();
+        printDone();
     }
 }

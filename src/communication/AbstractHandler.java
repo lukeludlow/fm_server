@@ -11,9 +11,6 @@ import java.net.HttpURLConnection;
 
 public abstract class AbstractHandler<T> implements HttpHandler {
 
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_GREEN = "\u001B[92m";
-    public static final String ANSI_RED = "\u001B[91m";
 
     public void sendResponse(HttpExchange exchange, T response) throws IOException {
         exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
@@ -37,7 +34,7 @@ public abstract class AbstractHandler<T> implements HttpHandler {
      public static boolean isPost(HttpExchange exchange) throws IOException {
          System.out.printf("checking request method...");
         if (exchange.getRequestMethod().toUpperCase().equals("POST")) {
-            printSuccess();
+            printDone();
             return true;
         }
         exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
@@ -49,7 +46,7 @@ public abstract class AbstractHandler<T> implements HttpHandler {
     public static boolean isGet(HttpExchange exchange) throws IOException {
         System.out.printf("checking request method...");
         if (exchange.getRequestMethod().toUpperCase().equals("GET")) {
-            printSuccess();
+            printDone();
             return true;
         }
         exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
@@ -81,7 +78,9 @@ public abstract class AbstractHandler<T> implements HttpHandler {
         return requestHeaders.getFirst("Authorization");
     }
 
-    public static void printSuccess() {
+    public static void printDone() {
+        final String ANSI_RESET = "\u001B[0m";
+        final String ANSI_GREEN = "\u001B[92m";
         System.out.printf(ANSI_GREEN + "done\n" + ANSI_RESET);
     }
 

@@ -23,7 +23,7 @@ public class LoginHandler extends AbstractHandler<LoginResponse> {
             return;
         }
         LoginRequest request = Encoder.deserialize(json, LoginRequest.class);
-        printSuccess();
+        printDone();
 
         System.out.printf("calling login service...");
         LoginService loginService = new LoginService();
@@ -34,11 +34,11 @@ public class LoginHandler extends AbstractHandler<LoginResponse> {
             sendErrorResponse(exchange, e);
             return;
         }
-        printSuccess();
+        printDone();
 
         System.out.printf("sending response...");
         sendResponse(exchange, response);
-        printSuccess();
+        printDone();
 
     }
 }

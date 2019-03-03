@@ -2,6 +2,7 @@ package service;
 
 import data.*;
 import message.response.ClearResponse;
+import message.response.ResponseException;
 import model.AuthToken;
 import model.Event;
 import model.Person;
@@ -53,34 +54,53 @@ class ClearServiceTest {
     @AfterEach
     void tearDown() throws Exception {
         db.clearAll();
+        if (db.getConnection() != null) {
+            db.closeResponseConnection(false);
+        }
     }
 
     @Test
     void testClear() throws Exception {
-        userDao.insert(lukeUser);
-        personDao.insert(lukePerson);
-        eventDao.insert(lukeBirthday);
-        authTokenDao.insert(lukeAuth);
-        foundUser = userDao.find(lukeUser.getPrimaryKey());
-        foundPerson = personDao.find(lukePerson.getPrimaryKey());
-        foundEvent = eventDao.find(lukeBirthday.getPrimaryKey());
-        foundToken = authTokenDao.find(lukeAuth.getPrimaryKey());
-        assertNotNull(foundUser);
-        assertNotNull(foundPerson);
-        assertNotNull(foundEvent);
-        assertNotNull(foundToken);
+        try {
+            db.connect();
+            userDao.insert(lukeUser);
+            personDao.insert(lukePerson);
+            eventDao.insert(lukeBirthday);
+            authTokenDao.insert(lukeAuth);
+            foundUser = userDao.find(lukeUser.getPrimaryKey());
+            foundPerson = personDao.find(lukePerson.getPrimaryKey());
+            foundEvent = eventDao.find(lukeBirthday.getPrimaryKey());
+            foundToken = authTokenDao.find(lukeAuth.getPrimaryKey());
+            assertNotNull(foundUser);
+            assertNotNull(foundPerson);
+            assertNotNull(foundEvent);
+            assertNotNull(foundToken);
+            db.closeResponseConnection(true);
+        } catch (DatabaseException e) {
+            db.closeResponseConnection(false);
+            throw e;
+        }
+
         actualResponse = clearService.clear();
         assertNotNull(actualResponse);
         assertEquals(clearResponse, actualResponse);
+
         // make sure everything really did get deleted
-        foundUser = userDao.find(lukeUser.getPrimaryKey());
-        foundPerson = personDao.find(lukePerson.getPrimaryKey());
-        foundEvent = eventDao.find(lukeBirthday.getPrimaryKey());
-        foundToken = authTokenDao.find(lukeAuth.getPrimaryKey());
-        assertNull(foundUser);
-        assertNull(foundPerson);
-        assertNull(foundEvent);
-        assertNull(foundToken);
+        try {
+            db.connect();
+            foundUser = userDao.find(lukeUser.getPrimaryKey());
+            foundPerson = personDao.find(lukePerson.getPrimaryKey());
+            foundEvent = eventDao.find(lukeBirthday.getPrimaryKey());
+            foundToken = authTokenDao.find(lukeAuth.getPrimaryKey());
+            assertNull(foundUser);
+            assertNull(foundPerson);
+            assertNull(foundEvent);
+            assertNull(foundToken);
+            db.closeResponseConnection(true);
+        } catch (DatabaseException | ResponseException e) {
+            db.closeResponseConnection(false);
+            throw e;
+        }
     }
 
 }

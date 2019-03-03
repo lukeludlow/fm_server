@@ -62,8 +62,8 @@ public class Database {
     }
 
     public void clearAll() throws DatabaseException {
-        connect();
         try {
+            connect();
             Statement statement = connection.createStatement();
             String sql = "delete from user";
             statement.execute(sql);
@@ -77,6 +77,22 @@ public class Database {
         } catch (SQLException e) {
             closeConnection(false);
             throw new DatabaseException("sql error encountered while clearing tables. " + e.getMessage());
+        }
+    }
+
+    public void clearAuthTokens() throws DatabaseException {
+        try {
+            connect();
+            Statement statement = connection.createStatement();
+            String sql = "delete from auth_token";
+            statement.execute(sql);
+            closeConnection(true);
+        } catch (SQLException e) {
+            closeConnection(false);
+            throw new DatabaseException("sql error encountered while clearing authtokens. " + e.getMessage());
+        } catch (NullPointerException e) {
+            closeConnection(false);
+            throw new DatabaseException("unable to clear authtokens. dao tried to operate on closed connection. " + e.getMessage());
         }
     }
 

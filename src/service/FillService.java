@@ -15,6 +15,29 @@ import java.io.IOException;
  * fill service : web api method /fill/[userName]/{generations}
  */
 public class FillService {
+
+    private Database db;
+    private UserDao userDao;
+    private PersonDao personDao;
+    private EventDao eventDao;
+    private AuthTokenDao authTokenDao;
+    private User user;
+    private FamilyTree familyTree;
+    private String success;
+    private FillFactory factory;
+
+    public FillService() {
+        db = new Database();
+        userDao = new UserDao(db);
+        personDao = new PersonDao(db);
+        eventDao = new EventDao(db);
+        authTokenDao = new AuthTokenDao(db);
+        user = null;
+        familyTree = null;
+        success = null;
+        factory = null;
+    }
+
     /**
      * populates the server's database with generated data for the specified user name.
      * the required "userName" parameter must be a user already registered with the server. if there is
@@ -24,32 +47,15 @@ public class FillService {
      * persons each with associated events).
      */
     public FillResponse fill(FillRequest request) throws ResponseException {
+        prepareFill(request.getUsername());
+        familyTree = fillHelper(request);
+        success = insertFamilyTree(familyTree);
+        return new FillResponse(success);
+    }
 
-        Database db = new Database();
-        UserDao userDao = new UserDao(db);
-        User found = null;
-
-        // check if user is already registered
+    private FamilyTree fillHelper(FillRequest request) throws ResponseException {
         try {
-            found = userDao.find(request.getUsername());
-        } catch (DatabaseException e) {
-            throw new ResponseException(e.toString());
-        }
-
-        if (found == null) {
-            throw new ResponseException("user not found");
-        }
-
-        // clear any existing data related to the user
-        try {
-            clearAllUserData(request.getUsername());
-        } catch (DatabaseException e) {
-            throw new ResponseException("failed to clear user's existing data");
-        }
-
-        FillFactory factory;
-        try {
-            factory = new FillFactory(found);
+            factory = new FillFactory(user);
         } catch (IOException e) {
             throw new ResponseException("unable to create fill factory (invalid json path)");
         }
@@ -58,48 +64,63 @@ public class FillService {
             request.setGenerations(DEFAULT_GENERATIONS);
         }
         factory.fill(request.getGenerations());
-        String success ;
+        return factory.getFamilyTree();
+    }
+
+    // check if user exists, and clear all data related to that user
+    private void prepareFill(String username) throws ResponseException {
         try {
-            success = insertFamilyTree(factory.getFamilyTree());
-            // update the user's info in the database too
-            insertUser(request.getUsername(), factory);
+            db.connect();
+            checkUserExists(username);
+            clearAllUserData(username);
+            db.closeResponseConnection(true);
         } catch (DatabaseException e) {
-            throw new ResponseException("unable to insert generated data into database.\n" + e.getMessage());
+            db.closeResponseConnection(false);
+            throw new ResponseException(e);
         }
-        return new FillResponse(success);
+    }
+
+    private String insertFamilyTree(FamilyTree tree) throws ResponseException {
+        try {
+            db.connect();
+            for (Person p : tree.getAllPeople()) {
+                personDao.insert(p);
+            }
+            for (Event e : tree.getAllEvents()) {
+                eventDao.insert(e);
+            }
+            updateUser();
+            db.closeResponseConnection(true);
+        } catch (DatabaseException e) {
+            db.closeResponseConnection(false);
+            throw new ResponseException("unable to insert generated data. " + e.getMessage());
+        }
+        String message = "successfully added " +
+                tree.getAllPeople().size() + " people and " +
+                tree.getAllEvents().size() + " events to the database.";
+        return message;
+    }
+
+    private void updateUser() throws DatabaseException {
+        userDao.delete(factory.getUser().getUsername());
+        userDao.insert(factory.getUser());
+    }
+
+     private void checkUserExists(String username) throws DatabaseException {
+        user = userDao.find(username);
+        if (user == null) {
+            throw new DatabaseException("user not found");
+        }
     }
 
     private void clearAllUserData(String username) throws DatabaseException {
-        Database db = new Database();
-        PersonDao personDao = new PersonDao(db);
-        EventDao eventDao = new EventDao(db);
-        AuthTokenDao authTokenDao = new AuthTokenDao(db);
-        personDao.deleteMany(username);
-        eventDao.deleteMany(username);
-        authTokenDao.deleteMany(username);
-    }
-
-    private String insertFamilyTree(FamilyTree tree) throws DatabaseException {
-        Database db = new Database();
-        PersonDao personDao = new PersonDao(db);
-        EventDao eventDao = new EventDao(db);
-        for (Person p : tree.getAllPeople()) {
-            personDao.insert(p);
+        try {
+            personDao.deleteMany(username);
+            eventDao.deleteMany(username);
+            authTokenDao.deleteMany(username);
+        } catch (DatabaseException e) {
+            throw new DatabaseException("failed to clear user's existing data. " + e.getMessage());
         }
-        for (Event e : tree.getAllEvents()) {
-            eventDao.insert(e);
-        }
-        return "successfully added " +
-                tree.getAllPeople().size() +
-                " people and " + tree.getAllEvents().size() +
-                " events to the database.";
-    }
-
-    private void insertUser(String username, FillFactory factory) throws DatabaseException {
-        Database db = new Database();
-        UserDao userDao = new UserDao(db);
-        userDao.delete(username);
-        userDao.insert(factory.getUser());
     }
 
 }

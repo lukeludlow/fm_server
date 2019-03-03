@@ -26,14 +26,14 @@ public class PersonHandler extends AbstractHandler<PersonResponse> {
             return;
         }
         String personID = segments[1];
-        printSuccess();
+        printDone();
 
         String authtoken = getAuthorization(exchange);
         if (authtoken == null) {
             sendErrorResponse(exchange, new ResponseException("request missing authorization"));
             return;
         }
-        printSuccess();
+        printDone();
 
         System.out.printf("calling get person service...");
         PersonRequest request = new PersonRequest(personID, authtoken);
@@ -45,10 +45,10 @@ public class PersonHandler extends AbstractHandler<PersonResponse> {
             sendErrorResponse(exchange, e);
             return;
         }
-        printSuccess();
+        printDone();
         System.out.printf("sending response...");
         sendResponse(exchange, response);
-        printSuccess();
+        printDone();
     }
 
 }

@@ -21,7 +21,7 @@ public class HistoryHandler extends AbstractHandler<HistoryResponse> {
         if (authtoken == null) {
             return;
         }
-        printSuccess();
+        printDone();
         System.out.printf("calling get history service...");
         HistoryRequest request = new HistoryRequest(authtoken);
         HistoryResponse response = null;
@@ -32,10 +32,10 @@ public class HistoryHandler extends AbstractHandler<HistoryResponse> {
             sendErrorResponse(exchange, e);
             return;
         }
-        printSuccess();
+        printDone();
         System.out.printf("sending response...");
         sendResponse(exchange, response);
-        printSuccess();
+        printDone();
     }
 
 }

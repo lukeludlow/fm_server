@@ -17,7 +17,7 @@ public class EventHandler extends AbstractHandler<EventResponse> {
         if (!isGet(exchange)) {
             return;
         }
-        printSuccess();
+        printDone();
 
         System.out.printf("reading eventID...");
         String requestUri = exchange.getRequestURI().toString();
@@ -28,7 +28,7 @@ public class EventHandler extends AbstractHandler<EventResponse> {
             return;
         }
         String eventID = segments[1];
-        printSuccess();
+        printDone();
 
         System.out.printf("reading headers...");
         Headers requestHeaders = exchange.getRequestHeaders();
@@ -37,7 +37,7 @@ public class EventHandler extends AbstractHandler<EventResponse> {
             return;
         }
         String authtoken = requestHeaders.getFirst("Authorization");
-        printSuccess();
+        printDone();
 
         System.out.printf("calling get event service...");
         EventRequest request = new EventRequest(eventID, authtoken);
@@ -49,10 +49,10 @@ public class EventHandler extends AbstractHandler<EventResponse> {
             sendErrorResponse(exchange, e);
             return;
         }
-        printSuccess();
+        printDone();
         System.out.printf("sending response...");
         sendResponse(exchange, response);
-        printSuccess();
+        printDone();
     }
 
 }

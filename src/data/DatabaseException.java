@@ -1,10 +1,10 @@
 package data;
 
 public class DatabaseException extends Exception {
-    DatabaseException(String msg) {
+    public DatabaseException(String msg) {
         super(msg);
     }
-    DatabaseException() {
+    public DatabaseException() {
         super();
     }
 }

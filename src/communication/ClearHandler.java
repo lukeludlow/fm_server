@@ -27,11 +27,11 @@ public class ClearHandler extends AbstractHandler<ClearResponse> {
             sendErrorResponse(exchange, ex);
             return;
         }
-        printSuccess();
+        printDone();
 
         System.out.printf("sending response...");
         sendResponse(exchange, response);
-        printSuccess();
+        printDone();
 
 
 

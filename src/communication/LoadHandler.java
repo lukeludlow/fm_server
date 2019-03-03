@@ -25,7 +25,7 @@ public class LoadHandler extends AbstractHandler<LoadResponse> {
             return;
         }
         LoadRequest request = Encoder.deserialize(json, LoadRequest.class);
-        printSuccess();
+        printDone();
         System.out.printf("calling load service...");
         LoadService loadService = new LoadService();
         LoadResponse response = null;
@@ -35,10 +35,10 @@ public class LoadHandler extends AbstractHandler<LoadResponse> {
             sendErrorResponse(exchange, e);
             return;
         }
-        printSuccess();
+        printDone();
         System.out.printf("sending response...");
         sendResponse(exchange, response);
-        printSuccess();
+        printDone();
     }
 
 }

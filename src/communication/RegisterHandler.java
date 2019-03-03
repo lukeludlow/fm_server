@@ -19,7 +19,7 @@ public class RegisterHandler extends AbstractHandler<RegisterResponse> {
         System.out.printf("reading request body...");
         String json = readRequestBody(exchange);
         RegisterRequest request = Encoder.deserialize(json, RegisterRequest.class);
-        printSuccess();
+        printDone();
         System.out.printf("calling register service...");
         RegisterService service = new RegisterService();
         RegisterResponse response;
@@ -29,10 +29,10 @@ public class RegisterHandler extends AbstractHandler<RegisterResponse> {
             sendErrorResponse(exchange, e);
             return;
         }
-        printSuccess();
+        printDone();
         System.out.printf("sending response...");
         sendResponse(exchange, response);
-        printSuccess();
+        printDone();
     }
 
 }
