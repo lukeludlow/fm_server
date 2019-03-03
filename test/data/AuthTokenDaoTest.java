@@ -244,4 +244,26 @@ class AuthTokenDaoTest {
         }
     }
 
+    @Test
+    @DisplayName("clear all authtokens")
+    void testClearTokens() throws Exception {
+        db.connect();
+        try {
+            authtokenDao.clearAuthTokens();
+            db.closeConnection(true);
+        } catch (DatabaseException e) {
+            db.closeConnection(false);
+            throw e;
+        }
+    }
+
+    @Test
+    @DisplayName("clear all authtokens fail (bad connection)")
+    void testClearTokensFail() throws Exception {
+        DatabaseException exception = assertThrows(DatabaseException.class,
+                () -> authtokenDao.clearAuthTokens());
+        System.out.println(exception.getMessage());
+        assertTrue(exception.getMessage().contains("unable to clear authtokens. dao tried to operate on closed connection."));
+    }
+
 }

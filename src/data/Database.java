@@ -158,17 +158,4 @@ public class Database {
         }
     }
 
-    public void clearAuthTokens() throws DatabaseException {
-        connect();
-        try {
-            Statement statement = connection.createStatement();
-            String sql = "delete from auth_token";
-            statement.execute(sql);
-            closeConnection(true);
-        } catch (SQLException e) {
-            closeConnection(false);
-            throw new DatabaseException("sql error encountered while clearing authtokens. " + e.getMessage());
-        }
-    }
-
 }
