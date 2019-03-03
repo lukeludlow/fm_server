@@ -35,6 +35,9 @@ public class EventService {
         if (found == null) {
             throw new ResponseException("event not found");
         }
+        if (!found.getDescendant().equals(foundToken.getUsername())) {
+            throw new ResponseException("not allowed to retrieve information that belongs to another user");
+        }
         return new EventResponse(found);
     }
 }

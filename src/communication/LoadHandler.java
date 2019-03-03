@@ -12,11 +12,11 @@ public class LoadHandler extends AbstractHandler<LoadResponse> {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        System.out.println("login handler!");
+        System.out.println("load handler!");
         if (!isPost(exchange)) {
             return;
         }
-        printSuccess();
+        System.out.printf("reading load request body...");
         String json = readRequestBody(exchange);
         if (!json.toLowerCase().contains("\"users\":")
                 || !json.toLowerCase().contains("\"people\":")
@@ -26,7 +26,7 @@ public class LoadHandler extends AbstractHandler<LoadResponse> {
         }
         LoadRequest request = Encoder.deserialize(json, LoadRequest.class);
         printSuccess();
-        System.out.println("calling load service...");
+        System.out.printf("calling load service...");
         LoadService loadService = new LoadService();
         LoadResponse response = null;
         try {

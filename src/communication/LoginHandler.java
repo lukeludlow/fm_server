@@ -16,6 +16,7 @@ public class LoginHandler extends AbstractHandler<LoginResponse> {
         if (!isPost(exchange)) {
             return;
         }
+        System.out.printf("reading login request body...");
         String json = readRequestBody(exchange);
         if (!json.toLowerCase().contains("\"username\":") || !json.toLowerCase().contains("\"password\":")) {
             sendErrorResponse(exchange, new ResponseException("request body has missing or invalid value"));

@@ -32,8 +32,11 @@ public class PersonService {
         } catch (DatabaseException e) {
             throw new ResponseException(e.toString());
         }
-        if (found ==  null) {
+        if (found == null) {
             throw new ResponseException("person not found");
+        }
+        if (!found.getDescendant().equals(foundToken.getUsername())) {
+            throw new ResponseException("not allowed to retrieve information that belongs to another user");
         }
         return new PersonResponse(found);
     }
