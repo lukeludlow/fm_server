@@ -4,9 +4,9 @@ import data.AuthTokenDao;
 import data.Database;
 import data.DatabaseException;
 import data.UserDao;
-import message.response.ResponseException;
 import message.request.LoginRequest;
 import message.response.LoginResponse;
+import message.response.ResponseException;
 import model.AuthToken;
 import model.User;
 
@@ -14,32 +14,64 @@ import model.User;
  * login service : web api method /user/login
  */
 public class LoginService {
+
+    private Database db;
+    private UserDao userDao;
+    private AuthTokenDao authTokenDao;
+    private User user;
+    private AuthToken authtoken;
+    private LoginResponse response;
+
+    public LoginService() {
+        db = new Database();
+        userDao = new UserDao(db);
+        authTokenDao = new AuthTokenDao(db);
+        user = null;
+        authtoken = null;
+        response = null;
+    }
+
     public LoginResponse login(LoginRequest request) throws ResponseException {
-        Database db = new Database();
-        UserDao userDao = new UserDao(db);
-        AuthTokenDao authTokenDao = new AuthTokenDao(db);
-        User found;
-        AuthToken auth;
-        LoginResponse response;
-        try {
-            found = userDao.find(request.getUsername());
-        } catch (DatabaseException e) {
-            throw new ResponseException(e.toString());
-        }
-        if (found == null) {
-            throw new ResponseException("user not found");
-        }
-        if (!found.getPassword().equals(request.getPassword())) {
-            throw new ResponseException("incorrect password");
-        }
-        response = new LoginResponse(found);
-        try {
-            auth = new AuthToken(found.getUsername());
-            authTokenDao.insert(auth);
-            response.setAuthtoken(auth.getAuthtoken());
-        } catch (DatabaseException e) {
-            throw new ResponseException(e.toString());
-        }
+        find(request);
+        checkValidity(request);
+        response = new LoginResponse();
+        response.setUsername(user.getUsername());
+        response.setPersonID(user.getPersonID());
+        response.setAuthtoken(createAuthToken(user.getUsername()));
         return response;
     }
+
+    private void find(LoginRequest request) throws ResponseException {
+        try {
+            db.connect();
+            user = userDao.find(request.getUsername());
+            db.closeResponseConnection(true);
+        } catch (DatabaseException e) {
+            db.closeResponseConnection(false);
+            throw new ResponseException(e);
+        }
+    }
+
+    private String createAuthToken(String username) throws ResponseException {
+        try {
+            db.connect();
+            authtoken = new AuthToken(username);
+            authTokenDao.insert(authtoken);
+            db.closeResponseConnection(true);
+            return authtoken.getAuthtoken();
+        } catch (DatabaseException e) {
+            db.closeResponseConnection(false);
+            throw new ResponseException(e);
+        }
+    }
+
+    private void checkValidity(LoginRequest request) throws ResponseException {
+        if (user == null) {
+            throw new ResponseException("user not found");
+        }
+        if (!user.getPassword().equals(request.getPassword())) {
+            throw new ResponseException("incorrect password");
+        }
+    }
+
 }

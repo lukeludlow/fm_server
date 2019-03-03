@@ -14,30 +14,49 @@ import model.Person;
  * person service : web api method /person/[personID]
  */
 public class PersonService {
-    /**
-     * returns the single person object with the specified id.
-     */
+
+    private Database db;
+    private PersonDao personDao;
+    private AuthTokenDao authTokenDao;
+    private Person person;
+    private AuthToken foundToken;
+
+    public PersonService() {
+        db = new Database();
+        personDao = new PersonDao(db);
+        authTokenDao = new AuthTokenDao(db);
+        person = null;
+        foundToken = null;
+    }
+
     public PersonResponse getPerson(PersonRequest request) throws ResponseException {
-        Database db = new Database();
-        PersonDao personDao = new PersonDao(db);
-        AuthTokenDao authTokenDao = new AuthTokenDao(db);
-        Person found = null;
-        AuthToken foundToken = null;
+        find(request);
+        checkValidity();
+        return new PersonResponse(person);
+    }
+
+    private void find(PersonRequest request) throws ResponseException {
         try {
+            db.connect();
             foundToken = authTokenDao.find(request.getAuthtoken());
-            if (foundToken == null) {
-                throw new ResponseException("invalid authtoken");
-            }
-            found = personDao.find(request.getPersonID());
+            person = personDao.find(request.getPersonID());
+            db.closeResponseConnection(true);
         } catch (DatabaseException e) {
-            throw new ResponseException(e.toString());
+            db.closeResponseConnection(false);
+            throw new ResponseException(e);
         }
-        if (found == null) {
+    }
+
+    private void checkValidity() throws ResponseException {
+        if (foundToken == null) {
+            throw new ResponseException("invalid authtoken");
+        }
+        if (person == null) {
             throw new ResponseException("person not found");
         }
-        if (!found.getDescendant().equals(foundToken.getUsername())) {
+        if (!person.getDescendant().equals(foundToken.getUsername())) {
             throw new ResponseException("not allowed to retrieve information that belongs to another user");
         }
-        return new PersonResponse(found);
     }
+
 }

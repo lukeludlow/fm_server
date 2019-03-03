@@ -192,7 +192,7 @@ class EventDaoTest {
             eventDao.insert(birthday);
             eventDao.insert(e2);
             eventDao.insert(e3);
-            List<Event> events = eventDao.findMany(birthday.getDescendant());
+            List<T> events = eventDao.findMany(birthday.getDescendant());
             assertEquals(3, events.size());
             assertEquals(birthday, events.get(0));
             assertEquals(e2, events.get(1));
@@ -209,7 +209,7 @@ class EventDaoTest {
     void testFindManyFail() throws Exception {
         try {
             db.connect();
-            List<Event> events = eventDao.findMany(birthday.getDescendant());
+            List<T> events = eventDao.findMany(birthday.getDescendant());
             assertEquals(0, events.size());
             db.closeConnection(true);
         } catch (DatabaseException e) {
@@ -228,7 +228,7 @@ class EventDaoTest {
             eventDao.insert(birthday);
             eventDao.insert(e2);
             eventDao.insert(e3);
-            List<Event> events = eventDao.findMany(birthday.getDescendant());
+            List<T> events = eventDao.findMany(birthday.getDescendant());
             assertEquals(3, events.size());
             assertEquals(birthday, events.get(0));
             assertEquals(e2, events.get(1));

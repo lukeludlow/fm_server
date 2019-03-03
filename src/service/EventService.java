@@ -14,30 +14,49 @@ import model.Event;
  * getEvent service : web api method /getEvent/[eventID]
  */
 public class EventService {
-    /**
-     * returns the single Event object with the specified ID.
-     */
+
+    private Database db;
+    private EventDao eventDao;
+    private AuthTokenDao authTokenDao;
+    private Event foundEvent;
+    private AuthToken foundToken;
+
+    public EventService() {
+        db = new Database();
+        eventDao = new EventDao(db);
+        authTokenDao = new AuthTokenDao(db);
+        foundEvent = null;
+        foundToken = null;
+    }
+    
     public EventResponse getEvent(EventRequest request) throws ResponseException {
-        Database db = new Database();
-        EventDao eventDao = new EventDao(db);
-        AuthTokenDao authTokenDao = new AuthTokenDao(db);
-        Event found = null;
-        AuthToken foundToken = null;
+        find(request);
+        checkValidity();
+        return new EventResponse(foundEvent);
+    }
+
+    private void find(EventRequest request) throws ResponseException {
         try {
+            db.connect();
             foundToken = authTokenDao.find(request.getAuthtoken());
-            if (foundToken == null) {
-                throw new ResponseException("invalid authtoken");
-            }
-            found = eventDao.find(request.getEventID());
+            foundEvent = eventDao.find(request.getEventID());
+            db.closeResponseConnection(true);
         } catch (DatabaseException e) {
-            throw new ResponseException(e.toString());
+            db.closeResponseConnection(false);
+            throw new ResponseException(e);
         }
-        if (found == null) {
+    }
+
+    private void checkValidity() throws ResponseException {
+        if (foundToken == null) {
+            throw new ResponseException("invalid authtoken");
+        }
+        if (foundEvent == null) {
             throw new ResponseException("event not found");
         }
-        if (!found.getDescendant().equals(foundToken.getUsername())) {
+        if (!foundEvent.getDescendant().equals(foundToken.getUsername())) {
             throw new ResponseException("not allowed to retrieve information that belongs to another user");
         }
-        return new EventResponse(found);
     }
+
 }

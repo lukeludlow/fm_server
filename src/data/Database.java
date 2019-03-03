@@ -2,6 +2,8 @@ package data;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import message.response.ResponseException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -48,6 +50,14 @@ public class Database {
             throw new DatabaseException("unable to close database connection. " + e.getMessage());
         } catch (NullPointerException e) {
             throw new DatabaseException("tried to close a null connection. " + e.getMessage());
+        }
+    }
+
+    public void closeResponseConnection(boolean commit) throws ResponseException {
+        try {
+            closeConnection(commit);
+        } catch (DatabaseException e) {
+            throw new ResponseException(e.getMessage());
         }
     }
 

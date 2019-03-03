@@ -3,7 +3,6 @@ package message.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import model.User;
 
 /**
  * Login Success Response Body:
@@ -20,9 +19,4 @@ public class LoginResponse extends AbstractResponse {
     private String authtoken;
     private String username;
     private String personID;
-    public LoginResponse(User u) {
-        this.authtoken = null;
-        this.username = u.getUsername();
-        this.personID = u.getPersonID();
-    }
 }

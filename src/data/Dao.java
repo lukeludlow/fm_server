@@ -3,14 +3,14 @@ package data;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -57,8 +57,8 @@ public abstract class Dao<T> {
         }
     }
 
-    public List<T> findMany(String key) throws DatabaseException {
-        List<T> items = new ArrayList<>();
+    public ArrayList<T> findMany(String key) throws DatabaseException {
+        ArrayList<T> items = new ArrayList<>();
         try {
             PreparedStatement statement = prepareFindManyStatement(key);
             ResultSet rs = statement.executeQuery();

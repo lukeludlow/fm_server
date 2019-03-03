@@ -9,17 +9,24 @@ import message.response.ResponseException;
  * clear service : web api method /clear
  */
 public class ClearService {
+
+    private Database db;
+
+    public ClearService() {
+        db = new Database();
+    }
+
     /**
      * deletes ALL data from the database, including user accounts, auth tokens, and
      * generated person and getEvent data.
      */
     public ClearResponse clear() throws ResponseException {
-        Database db = new Database();
         try {
             db.clearAll();
-        } catch (DatabaseException ex) {
-            throw new ResponseException(ex.toString());
+        } catch (DatabaseException e) {
+            throw new ResponseException(e);
         }
         return new ClearResponse("clear succeeded.");
     }
+
 }

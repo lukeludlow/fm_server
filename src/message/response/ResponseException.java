@@ -13,5 +13,8 @@ public class ResponseException extends Exception {
     public ResponseException(String s) {
         super(s);
     }
+    public ResponseException(Exception e) {
+        super(e.getMessage());
+    }
 }
 

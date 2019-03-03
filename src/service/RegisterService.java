@@ -13,41 +13,84 @@ import model.User;
  * register service : web api method /user/register
  */
 public class RegisterService {
+
+    private Database db;
+    private UserDao userDao;
+    private AuthTokenDao authTokenDao;
+    private String personID; // personID is created during the fill service
+    private User user;
+    private AuthToken authtoken;
+    private User foundUser;
+
+    public RegisterService() {
+        db = new Database();
+        userDao = new UserDao(db);
+        authTokenDao = new AuthTokenDao(db);
+        personID = ""; // personID is created during the fill service
+        user = null;
+        authtoken = null;
+        foundUser = null;
+    }
+
     /**
      * creates a new user account, generates 4 generations of ancestor data for the new
      * user, logs the user in, and returns an auth authToken.
      */
     public RegisterResponse register(RegisterRequest request) throws ResponseException {
-        Database db = new Database();
-        UserDao userDao = new UserDao(db);
-        PersonDao personDao = new PersonDao(db);
-        AuthTokenDao authTokenDao = new AuthTokenDao(db);
-        String personID = ""; // personID is created during the fill service
-        User u = new User (request.getUsername(), request.getPassword(), request.getEmail(), request.getFirstname(), request.getLastname(), request.getGender(), personID);
-        AuthToken a = new AuthToken(request.getUsername());
+        registerHelper(request);
+        generateAncestorData(request.getUsername());
+        return new RegisterResponse(authtoken.getAuthtoken(), user.getUsername(), findNewPersonID(user.getUsername()));
+    }
+
+    private String findNewPersonID(String username) throws ResponseException {
+        // get user's person ID. we gotta go back and get it bc fill generates a brand new person object
         User found;
         try {
-            found = userDao.find(request.getUsername());
-            if (found != null) {
-                throw new ResponseException("username already taken by another user.");
-            }
-            userDao.insert(u);
-            authTokenDao.insert(a);
+            db.connect();
+            found = userDao.find(username);
+            db.closeResponseConnection(true);
         } catch (DatabaseException e) {
-            throw new ResponseException(e.getMessage());
+            db.closeResponseConnection(false);
+            throw new ResponseException(e);
         }
-
-        FillService fillService = new FillService();
-        FillRequest fillRequest = new FillRequest(request.getUsername(), 4); // generate 4 generations of ancestor data for the new user
-        FillResponse fillResponse = fillService.fill(fillRequest);
-
-        // get user's person ID. we gotta go back and get it bc fill generates a brand new person object
-        try {
-            found = userDao.find(request.getUsername());
-        } catch (DatabaseException e) {
-            throw new ResponseException(e.getMessage());
-        }
-        personID = found.getPersonID();
-        return new RegisterResponse(a.getAuthtoken(), u.getUsername(), personID);
+        return found.getPersonID();
     }
+
+    private void generateAncestorData(String username) throws ResponseException {
+        final int DEFAULT_GENERATIONS = 4;
+        FillService fillService = new FillService();
+        FillRequest fillRequest = new FillRequest(username, DEFAULT_GENERATIONS); // generate 4 generations of ancestor data for the new user
+        FillResponse fillResponse = fillService.fill(fillRequest);
+    }
+
+    private void registerHelper(RegisterRequest request) throws ResponseException {
+        try {
+            db.connect();
+            checkIfUserExists(request.getUsername());
+            createAndInsertUser(request);
+            createAndInsertToken(request);
+            db.closeResponseConnection(true);
+        } catch (DatabaseException | ResponseException e) {
+            db.closeResponseConnection(false);
+            throw new ResponseException(e);
+        }
+    }
+
+    private void checkIfUserExists(String username) throws ResponseException, DatabaseException {
+        foundUser = userDao.find(username);
+        if (foundUser != null) {
+            throw new ResponseException("username already taken by another user.");
+        }
+    }
+
+    private void createAndInsertUser(RegisterRequest request) throws DatabaseException {
+        user = new User(request.getUsername(), request.getPassword(), request.getEmail(), request.getFirstname(), request.getLastname(), request.getGender(), personID);
+        userDao.insert(user);
+    }
+
+    private void createAndInsertToken(RegisterRequest request) throws DatabaseException {
+        authtoken = new AuthToken(request.getUsername());
+        authTokenDao.insert(authtoken);
+    }
+
 }

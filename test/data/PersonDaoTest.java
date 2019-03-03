@@ -190,7 +190,7 @@ class PersonDaoTest {
             personDao.insert(luke);
             personDao.insert(p2);
             personDao.insert(p3);
-            List<Person> people = personDao.findMany(luke.getDescendant());
+            List<T> people = personDao.findMany(luke.getDescendant());
             assertEquals(3, people.size());
             assertEquals(luke, people.get(0));
             assertEquals(p2, people.get(1));
@@ -207,7 +207,7 @@ class PersonDaoTest {
     void testFindManyFail() throws Exception {
         try {
             db.connect();
-            List<Person> people = personDao.findMany(luke.getDescendant());
+            List<T> people = personDao.findMany(luke.getDescendant());
             assertEquals(0, people.size());
             db.closeConnection(false);
         } catch (DatabaseException e) {
@@ -226,7 +226,7 @@ class PersonDaoTest {
             personDao.insert(luke);
             personDao.insert(p2);
             personDao.insert(p3);
-            List<Person> people = personDao.findMany(luke.getDescendant());
+            List<T> people = personDao.findMany(luke.getDescendant());
             assertEquals(3, people.size());
             assertEquals(luke, people.get(0));
             assertEquals(p2, people.get(1));
