@@ -38,7 +38,7 @@ public class EventService {
     private void find(EventRequest request) throws ResponseException {
         try {
             db.connect();
-            foundToken = authTokenDao.find(request.getAuthtoken());
+            foundToken = authTokenDao.find(request.getAuthToken());
             foundEvent = eventDao.find(request.getEventID());
             db.closeResponseConnection(true);
         } catch (DatabaseException e) {
@@ -54,7 +54,7 @@ public class EventService {
         if (foundEvent == null) {
             throw new ResponseException("event not found");
         }
-        if (!foundEvent.getDescendant().equals(foundToken.getUsername())) {
+        if (!foundEvent.getDescendant().equals(foundToken.getUserName())) {
             throw new ResponseException("not allowed to retrieve information that belongs to another user");
         }
     }

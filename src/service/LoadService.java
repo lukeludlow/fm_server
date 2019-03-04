@@ -34,7 +34,7 @@ public class LoadService {
         insert(request);
         String message = "successfully added " +
                 request.getUsers().length + " users, " +
-                request.getPeople().length + " people, and " +
+                request.getPersons().length + " people, and " +
                 request.getEvents().length + " events to the database.";
         return new LoadResponse(message);
     }
@@ -45,7 +45,7 @@ public class LoadService {
             for (User u : request.getUsers()) {
                 userDao.insert(u);
             }
-            for (Person p : request.getPeople()) {
+            for (Person p : request.getPersons()) {
                 personDao.insert(p);
             }
             for (Event e : request.getEvents()) {

@@ -21,50 +21,50 @@ class EncoderTest {
     PersonRequest personRequest = new PersonRequest("69", "secret");
     RegisterRequest registerRequest = new RegisterRequest("lukeludlow", "hunter2", "ll@live.com", "luke", "ludlow", "m");
 
-    String eventRequestJson = "{\"eventID\": \"123\", \"authtoken\": \"secret\"}";
-    String familyRequestJson = "{\"authtoken\": \"secret\"}";
-    String fillRequestJson = "{\"username\": \"lukeludlow\", \"generations\": 2}";
-    String historyRequestJson = "{\"authtoken\": \"secret\"}";
-    String loginRequestJson = "{\"username\": \"lukeludlow\", \"password\": \"hunter2\"}";
-    String personRequestJson = "{\"personID\": \"69\", \"authtoken\": \"secret\"}";
-    String registerRequestJson = "{\"username\": \"lukeludlow\", \"password\": \"hunter2\", \"email\": \"ll@live.com\", \"firstname\": \"luke\", \"lastname\": \"ludlow\", \"gender\": \"m\"}";
+    String eventRequestJson = "{\"eventID\": \"123\", \"authToken\": \"secret\"}";
+    String familyRequestJson = "{\"authToken\": \"secret\"}";
+    String fillRequestJson = "{\"userName\": \"lukeludlow\", \"generations\": 2}";
+    String historyRequestJson = "{\"authToken\": \"secret\"}";
+    String loginRequestJson = "{\"userName\": \"lukeludlow\", \"password\": \"hunter2\"}";
+    String personRequestJson = "{\"personID\": \"69\", \"authToken\": \"secret\"}";
+    String registerRequestJson = "{\"userName\": \"lukeludlow\", \"password\": \"hunter2\", \"email\": \"ll@live.com\", \"firstName\": \"luke\", \"lastName\": \"ludlow\", \"gender\": \"m\"}";
 
     User[] loadUsers = {
             new User("lukeludlow", "hunter2", "ll@live.com", "luke", "ludlow", "m", "99"),
             new User("treyway", "scumgang2", "tekashi69@gmail.com", "tekashi", "sixnine", "m", "69")
     };
     Person[] loadPeople = {
-            new Person("99", "lukeludlow", "luke", "ludlow", "m", "199", "299", "66"),
-            new Person("69", "treyway", "tekashi", "sixnine", "m", "169", "269", "6969")
+            new Person("lukeludlow", "99", "luke", "ludlow", "m", "199", "299", "66"),
+            new Person("treyway", "69", "tekashi", "sixnine", "m", "169", "269", "6969")
     };
     Event[] loadEvents = {
-            new Event("111", "lukeludlow","99",66.666,-111.111,"usa","reno","party",2020),
-            new Event("0096", "treyway", "69",69.69, -6.9999,"japan","tokyo","birth",3019)
+            new Event("lukeludlow", "111", "99",66.666,-111.111,"usa","reno","party",2020),
+            new Event("treyway", "0096", "69",69.69, -6.9999,"japan","tokyo","birth",3019)
     };
     String loadRequestJson = "" +
             "{" +
             "\"users\": [" +
                 "{" +
-                    "\"username\": \"lukeludlow\", \"password\": \"hunter2\", \"email\": \"ll@live.com\", \"firstname\": \"luke\", \"lastname\": \"ludlow\", \"gender\": \"m\", \"personID\": \"99\"" +
+                    "\"userName\": \"lukeludlow\", \"password\": \"hunter2\", \"email\": \"ll@live.com\", \"firstName\": \"luke\", \"lastName\": \"ludlow\", \"gender\": \"m\", \"personID\": \"99\"" +
                 "}," +
                 "{" +
-                    "\"username\": \"treyway\", \"password\": \"scumgang2\", \"email\": \"tekashi69@gmail.com\", \"firstname\": \"tekashi\", \"lastname\": \"sixnine\", \"gender\": \"m\", \"personID\": \"69\"" +
+                    "\"userName\": \"treyway\", \"password\": \"scumgang2\", \"email\": \"tekashi69@gmail.com\", \"firstName\": \"tekashi\", \"lastName\": \"sixnine\", \"gender\": \"m\", \"personID\": \"69\"" +
                 "}" +
             "]," +
-            "\"people\": [" +
+            "\"persons\": [" +
                 "{" +
-                    "\"personID\": \"99\", \"descendant\": \"lukeludlow\", \"firstname\": \"luke\", \"lastname\": \"ludlow\", \"gender\": \"m\", \"father\": \"199\", \"mother\": \"299\", \"spouse\": \"66\"" +
+                    "\"descendant\": \"lukeludlow\", \"personID\":\"99\", \"firstName\": \"luke\", \"lastName\": \"ludlow\", \"gender\": \"m\", \"father\": \"199\", \"mother\": \"299\", \"spouse\": \"66\"" +
                 "}," +
                 "{" +
-                    "\"personID\": \"69\", \"descendant\": \"treyway\", \"firstname\": \"tekashi\", \"lastname\": \"sixnine\", \"gender\": \"m\", \"father\": \"169\", \"mother\": \"269\", \"spouse\": \"6969\"" +
+                    "\"descendant\": \"treyway\", \"personID\":\"69\", \"firstName\": \"tekashi\", \"lastName\": \"sixnine\", \"gender\": \"m\", \"father\": \"169\", \"mother\": \"269\", \"spouse\": \"6969\"" +
                 "}" +
             "]," +
             "\"events\": [" +
                 "{" +
-                    "\"eventID\": \"111\", \"descendant\": \"lukeludlow\", \"personID\": \"99\", \"latitude\": 66.666, \"longitude\": -111.111, \"country\": \"usa\", \"city\": \"reno\", \"eventType\": \"party\", \"year\": 2020" +
+                    "\"descendant\": \"lukeludlow\", \"eventID\":\"111\", \"personID\": \"99\", \"latitude\": 66.666, \"longitude\": -111.111, \"country\": \"usa\", \"city\": \"reno\", \"eventType\": \"party\", \"year\": 2020" +
                 "}," +
                 "{" +
-                    "\"eventID\": \"0096\", \"descendant\": \"treyway\", \"personID\": \"69\", \"latitude\": 69.69, \"longitude\": -6.9999, \"country\": \"japan\", \"city\": \"tokyo\", \"eventType\": \"birth\", \"year\": 3019" +
+                    "\"descendant\": \"treyway\", \"eventID\":\"0096\", \"personID\": \"69\", \"latitude\": 69.69, \"longitude\": -6.9999, \"country\": \"japan\", \"city\": \"tokyo\", \"eventType\": \"birth\", \"year\": 3019" +
                 "}" +
             "]" +
             "}";
@@ -111,28 +111,28 @@ class EncoderTest {
     ////////// RESPONSES ///////////
     ////////////////////////////////
 
-    ClearResponse clearResponse = new ClearResponse("clear succeeded.");
+    ClearResponse clearResponse = new ClearResponse("Clear succeeded.");
 //    ErrorResponse errorResponse = new ErrorResponse("description of the error");
-    EventResponse eventResponse = new EventResponse(new Event("9","lukeludlow","1",40.0,-111.0,"usa","reno","birth",1999));
-    FillResponse fillResponse = new FillResponse("successfully added x people and y events to the database.");
-    LoadResponse loadResponse = new LoadResponse("successfully added x users, y people, and z events to the database.");
+    EventResponse eventResponse = new EventResponse(new Event("lukeludlow", "9", "1",40.0,-111.0,"usa","reno","birth",1999));
+    FillResponse fillResponse = new FillResponse("Successfully added X persons and Y events to the database.");
+    LoadResponse loadResponse = new LoadResponse("Successfully added X users, Y persons, and Z events to the database.");
     LoginResponse loginResponse = new LoginResponse("secret", "lukeludlow", "99");
-    PersonResponse personResponse = new PersonResponse(new Person("1", "lukeludlow", "luke", "ludlow", "m", "none", "none", "none"));
+    PersonResponse personResponse = new PersonResponse(new Person("lukeludlow", "1", "luke", "ludlow", "m", "none", "none", "none"));
     RegisterResponse registerResponse = new RegisterResponse("secret", "lukeludlow", "99");
 
     Event[] historyResponseEvents = {
-            new Event("111", "lukeludlow","99",66.666,-111.111,"usa","reno","party",2020),
-            new Event("0096", "treyway", "69",69.69, -6.9999,"japan","tokyo","birth",3019)
+            new Event("lukeludlow", "111", "99",66.666,-111.111,"usa","reno","party",2020),
+            new Event("treyway", "0096", "69",69.69, -6.9999,"japan","tokyo","birth",3019)
     };
     HistoryResponse historyResponse = new HistoryResponse(historyResponseEvents);
 
     Person[] familyResponsePersons = {
-            new Person("99", "lukeludlow", "luke", "ludlow", "m", "199", "299", "66"),
-            new Person("69", "treyway", "tekashi", "sixnine", "m", "169", "269", "6969")
+            new Person("lukeludlow", "99", "luke", "ludlow", "m", "199", "299", "66"),
+            new Person("treyway", "69", "tekashi", "sixnine", "m", "169", "269", "6969")
     };
     FamilyResponse familyResponse = new FamilyResponse(familyResponsePersons);
 
-    String clearResponseJson = "{\"message\": \"clear succeeded.\"}";
+    String clearResponseJson = "{\"message\": \"Clear succeeded.\"}";
 //    String errorResponseJson = "{\"message\": \"description of the error\"}";
     String eventResponseJson = "" +
             "{" +
@@ -146,20 +146,20 @@ class EncoderTest {
             "\"eventType\": \"birth\"," +
             "\"year\": 1999" +
             "}";
-    String fillResponseJson = "{\"message\": \"successfully added x people and y events to the database.\"}";
-    String loadResponseJson = "{\"message\": \"successfully added x users, y people, and z events to the database.\"}";
+    String fillResponseJson = "{\"message\": \"Successfully added X persons and Y events to the database.\"}";
+    String loadResponseJson = "{\"message\": \"Successfully added X users, Y persons, and Z events to the database.\"}";
     String loginResponseJson = "" +
             "{" +
-            "\"authtoken\": \"secret\"," +
-            "\"username\": \"lukeludlow\"," +
+            "\"authToken\": \"secret\"," +
+            "\"userName\": \"lukeludlow\"," +
             "\"personID\": \"99\"" +
             "}";
     String personResponseJson = "" +
             "{" +
             "\"descendant\": \"lukeludlow\"," +
             "\"personID\": \"1\"," +
-            "\"firstname\": \"luke\"," +
-            "\"lastname\": \"ludlow\"," +
+            "\"firstName\": \"luke\"," +
+            "\"lastName\": \"ludlow\"," +
             "\"gender\": \"m\"," +
             "\"father\": \"none\"," +
             "\"mother\": \"none\"," +
@@ -167,18 +167,18 @@ class EncoderTest {
             "}";
     String registerResponseJson = "" +
             "{" +
-            "\"authtoken\": \"secret\"," +
-            "\"username\": \"lukeludlow\"," +
+            "\"authToken\": \"secret\"," +
+            "\"userName\": \"lukeludlow\"," +
             "\"personID\": \"99\"" +
             "}";
     String historyResponseJson = "" +
             "{" +
             "\"data\": [" +
                 "{" +
-                    "\"eventID\": \"111\", \"descendant\": \"lukeludlow\", \"personID\": \"99\", \"latitude\": 66.666, \"longitude\": -111.111, \"country\": \"usa\", \"city\": \"reno\", \"eventType\": \"party\", \"year\": 2020" +
+                    "\"descendant\": \"lukeludlow\", \"eventID\": \"111\", \"personID\": \"99\", \"latitude\": 66.666, \"longitude\": -111.111, \"country\": \"usa\", \"city\": \"reno\", \"eventType\": \"party\", \"year\": 2020" +
                 "}," +
                 "{" +
-                    "\"eventID\": \"0096\", \"descendant\": \"treyway\", \"personID\": \"69\", \"latitude\": 69.69, \"longitude\": -6.9999, \"country\": \"japan\", \"city\": \"tokyo\", \"eventType\": \"birth\", \"year\": 3019" +
+                    "\"descendant\": \"treyway\", \"eventID\": \"0096\", \"personID\": \"69\", \"latitude\": 69.69, \"longitude\": -6.9999, \"country\": \"japan\", \"city\": \"tokyo\", \"eventType\": \"birth\", \"year\": 3019" +
                 "}" +
             "]" +
             "}";
@@ -186,10 +186,10 @@ class EncoderTest {
             "{" +
             "\"data\": [" +
                 "{" +
-                    "\"personID\": \"99\", \"descendant\": \"lukeludlow\", \"firstname\": \"luke\", \"lastname\": \"ludlow\", \"gender\": \"m\", \"father\": \"199\", \"mother\": \"299\", \"spouse\": \"66\"" +
+                    "\"descendant\": \"lukeludlow\", \"personID\": \"99\", \"firstName\": \"luke\", \"lastName\": \"ludlow\", \"gender\": \"m\", \"father\": \"199\", \"mother\": \"299\", \"spouse\": \"66\"" +
                 "}," +
                 "{" +
-                    "\"personID\": \"69\", \"descendant\": \"treyway\", \"firstname\": \"tekashi\", \"lastname\": \"sixnine\", \"gender\": \"m\", \"father\": \"169\", \"mother\": \"269\", \"spouse\": \"6969\"" +
+                    "\"descendant\": \"treyway\", \"personID\":\"69\", \"firstName\": \"tekashi\", \"lastName\": \"sixnine\", \"gender\": \"m\", \"father\": \"169\", \"mother\": \"269\", \"spouse\": \"6969\"" +
                 "}" +
             "]" +
             "}";

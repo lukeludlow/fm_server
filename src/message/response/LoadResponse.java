@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoadResponse extends AbstractResponse {
-    private String message = "successfully added x users, y persons, and z events to the database.";
+    private String message = "Successfully added X users, Y persons, and Z events to the database.";
 }

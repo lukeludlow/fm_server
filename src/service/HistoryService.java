@@ -47,8 +47,8 @@ public class HistoryService {
     private void find(HistoryRequest request) throws ResponseException {
         try {
             db.connect();
-            foundToken = authTokenDao.find(request.getAuthtoken());
-            username = foundToken.getUsername();
+            foundToken = authTokenDao.find(request.getAuthToken());
+            username = foundToken.getUserName();
             events = eventDao.findMany(username);
             db.closeResponseConnection(true);
         } catch (DatabaseException e) {

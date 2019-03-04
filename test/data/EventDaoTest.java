@@ -24,8 +24,8 @@ class EventDaoTest {
         db = new Database();
         db.clearAll();
         eventDao = new EventDao(db);
-        birthday = new Event("9","lukeludlow","1",40.0,-111.0,"usa","reno","birth",1999);
-        anotherEvent = new Event("101", "nunya", "nunya01",10.1,-10.1, "japan", "tokyo", "birth", 3019);
+        birthday = new Event("lukeludlow","9","1",40.0,-111.0,"usa","reno","birth",1999);
+        anotherEvent = new Event("nunya","101", "nunya01",10.1,-10.1, "japan", "tokyo", "birth", 3019);
         findBirthday = null;
         findAnother = null;
     }
@@ -187,8 +187,8 @@ class EventDaoTest {
     void testFindMany() throws Exception {
         try {
             db.connect();
-            Event e2 = new Event("101", "lukeludlow", "nunya01",10.1,-10.1, "japan", "tokyo", "birth", 3019);
-            Event e3 = new Event("102", "lukeludlow", "nunya02",10.2,-10.2, "japan2", "tokyo", "birth", 3012);
+            Event e2 = new Event("lukeludlow", "101", "nunya01",10.1,-10.1, "japan", "tokyo", "birth", 3019);
+            Event e3 = new Event("lukeludlow", "102", "nunya02",10.2,-10.2, "japan2", "tokyo", "birth", 3012);
             eventDao.insert(birthday);
             eventDao.insert(e2);
             eventDao.insert(e3);
@@ -223,8 +223,8 @@ class EventDaoTest {
     void testDeleteMany() throws Exception {
         try {
             db.connect();
-            Event e2 = new Event("101", "lukeludlow", "nunya01",10.1,-10.1, "japan", "tokyo", "birth", 3019);
-            Event e3 = new Event("102", "lukeludlow", "nunya02",10.2,-10.2, "japan2", "tokyo", "birth", 3012);
+            Event e2 = new Event("lukeludlow", "101", "nunya01",10.1,-10.1, "japan", "tokyo", "birth", 3019);
+            Event e3 = new Event("lukeludlow", "102", "nunya02",10.2,-10.2, "japan2", "tokyo", "birth", 3012);
             eventDao.insert(birthday);
             eventDao.insert(e2);
             eventDao.insert(e3);

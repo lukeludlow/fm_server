@@ -11,7 +11,6 @@ import java.net.HttpURLConnection;
 
 public abstract class AbstractHandler<T> implements HttpHandler {
 
-
     public void sendResponse(HttpExchange exchange, T response) throws IOException {
         exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
         String message = Encoder.serialize(response);
@@ -32,7 +31,7 @@ public abstract class AbstractHandler<T> implements HttpHandler {
     }
 
      public static boolean isPost(HttpExchange exchange) throws IOException {
-         System.out.printf("checking request method...");
+         System.out.print("checking request method...");
         if (exchange.getRequestMethod().toUpperCase().equals("POST")) {
             printDone();
             return true;
@@ -67,7 +66,7 @@ public abstract class AbstractHandler<T> implements HttpHandler {
     }
 
     public static String getAuthorization(HttpExchange exchange) throws IOException {
-        System.out.printf("reading authtoken...");
+        System.out.print("reading authtoken...");
         Headers requestHeaders = exchange.getRequestHeaders();
         if (!requestHeaders.containsKey("Authorization")) {
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
@@ -81,20 +80,7 @@ public abstract class AbstractHandler<T> implements HttpHandler {
     public static void printDone() {
         final String ANSI_RESET = "\u001B[0m";
         final String ANSI_GREEN = "\u001B[92m";
-        System.out.printf(ANSI_GREEN + "done\n" + ANSI_RESET);
+        System.out.print(ANSI_GREEN + "done\n" + ANSI_RESET);
     }
-
-//        Headers headers = exchange.getRequestHeaders();
-//        System.out.printf("checking header...");
-//        System.out.println(headers.values().toString());
-//        if (!(headers.containsKey("userName") && headers.containsKey("password"))) {
-//            exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
-//            exchange.getResponseBody().close();
-//            System.err.println("error: login request invalid header keys");
-//            return;
-//        }
-//        System.out.printf("done\n");
-//        String userName = headers.getFirst("userName");
-//        String password = headers.getFirst("password");
 
 }

@@ -18,5 +18,5 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 public class PersonRequest extends AbstractRequest {
     private String personID;
-    private String authtoken;
+    private String authToken;
 }

@@ -24,8 +24,8 @@ import model.Person;
 public class PersonResponse extends AbstractResponse {
     private String descendant;
     private String personID;
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private String gender;
     private String father;
     private String mother;
@@ -33,8 +33,8 @@ public class PersonResponse extends AbstractResponse {
     public PersonResponse(Person person) {
         this.descendant = person.getDescendant();
         this.personID = person.getPersonID();
-        this.firstname = person.getFirstname();
-        this.lastname = person.getLastname();
+        this.firstName = person.getFirstName();
+        this.lastName = person.getLastName();
         this.gender = person.getGender();
         this.father = person.getFather();
         this.mother = person.getMother();

@@ -38,7 +38,7 @@ public class PersonService {
     private void find(PersonRequest request) throws ResponseException {
         try {
             db.connect();
-            foundToken = authTokenDao.find(request.getAuthtoken());
+            foundToken = authTokenDao.find(request.getAuthToken());
             person = personDao.find(request.getPersonID());
             db.closeResponseConnection(true);
         } catch (DatabaseException e) {
@@ -54,7 +54,7 @@ public class PersonService {
         if (person == null) {
             throw new ResponseException("person not found");
         }
-        if (!person.getDescendant().equals(foundToken.getUsername())) {
+        if (!person.getDescendant().equals(foundToken.getUserName())) {
             throw new ResponseException("not allowed to retrieve information that belongs to another user");
         }
     }

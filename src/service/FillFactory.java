@@ -22,7 +22,7 @@ public class FillFactory {
 
     public FillFactory(User u) throws IOException {
         this.user = u;
-        this.descendant = u.getUsername();
+        this.descendant = u.getUserName();
         this.familyTree = new FamilyTree();
         readData();
     }
@@ -54,7 +54,7 @@ public class FillFactory {
     private void generateParents(Node child) {
         Person m = generatePerson("f");
         Person d = generatePerson("m");
-        m.setLastname(d.getLastname());
+        m.setLastName(d.getLastName());
         Node mom = new Node(m);
         Node dad = new Node(d);
         generateBirthday(child, mom);
@@ -113,13 +113,13 @@ public class FillFactory {
     private Person generatePerson(String gender) throws IllegalArgumentException {
         Person p = new Person();
         if (gender == "m") {
-            p.setFirstname(randomNameFrom(malenames));
+            p.setFirstName(randomNameFrom(malenames));
         } else if (gender == "f") {
-            p.setFirstname(randomNameFrom(femalenames));
+            p.setFirstName(randomNameFrom(femalenames));
         } else {
             throw new IllegalArgumentException("generated person's gender must be either m or f");
         }
-        p.setLastname(randomNameFrom(surnames));
+        p.setLastName(randomNameFrom(surnames));
         p.setDescendant(descendant);
         p.setPersonID(randomID());
         p.setGender(gender);

@@ -47,7 +47,7 @@ public class FillService {
      * persons each with associated events).
      */
     public FillResponse fill(FillRequest request) throws ResponseException {
-        prepareFill(request.getUsername());
+        prepareFill(request.getUserName());
         familyTree = fillHelper(request);
         success = insertFamilyTree(familyTree);
         return new FillResponse(success);
@@ -102,7 +102,7 @@ public class FillService {
     }
 
     private void updateUser() throws DatabaseException {
-        userDao.delete(factory.getUser().getUsername());
+        userDao.delete(factory.getUser().getUserName());
         userDao.insert(factory.getUser());
     }
 

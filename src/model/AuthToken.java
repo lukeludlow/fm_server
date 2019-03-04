@@ -10,15 +10,15 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthToken {
-    private String authtoken; // authorization authToken generated at login
-    private String username; // user (userName) to which this authToken belongs to
+    private String authToken; // authorization authToken generated at login
+    private String userName; // user (userName) to which this authToken belongs to
     public AuthToken(String userName) {
-        this.username = userName;
+        this.userName = userName;
         this.generateUniqueToken();
     }
     public void generateUniqueToken() {
         UUID uuid = UUID.randomUUID();
-        this.authtoken = uuid.toString();
+        this.authToken = uuid.toString();
     }
-    public String getPrimaryKey() { return getAuthtoken(); }
+    public String getPrimaryKey() { return getAuthToken(); }
 }

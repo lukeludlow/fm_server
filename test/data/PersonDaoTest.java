@@ -24,8 +24,8 @@ class PersonDaoTest {
         db = new Database();
         db.clearAll();
         personDao = new PersonDao(db);
-        luke = new Person("1", "lukeludlow", "luke", "ludlow", "m", "none", "none", "none");
-        anotherPerson = new Person("2", "p2", "p", "2", "m", "none", "none", "none");
+        luke = new Person("lukeludlow", "1", "luke", "ludlow", "m", "none", "none", "none");
+        anotherPerson = new Person("p2", "2", "p", "2", "m", "none", "none", "none");
         findLuke = null;
         findAnother = null;
     }
@@ -187,8 +187,8 @@ class PersonDaoTest {
     void testFindMany() throws Exception {
         try {
             db.connect();
-            Person p2 = new Person("2", "lukeludlow", "p", "2", "m", "none", "none", "none");
-            Person p3 = new Person("3", "lukeludlow", "p", "3", "m", "none", "none", "none");
+            Person p2 = new Person("lukeludlow", "2", "p", "2", "m", "none", "none", "none");
+            Person p3 = new Person("lukeludlow", "3", "p", "3", "m", "none", "none", "none");
             personDao.insert(luke);
             personDao.insert(p2);
             personDao.insert(p3);
@@ -223,8 +223,8 @@ class PersonDaoTest {
     void testDeleteMany() throws Exception {
         try {
             db.connect();
-            Person p2 = new Person("2", "lukeludlow", "p", "2", "m", "none", "none", "none");
-            Person p3 = new Person("3", "lukeludlow", "p", "3", "m", "none", "none", "none");
+            Person p2 = new Person("lukeludlow", "2", "p", "2", "m", "none", "none", "none");
+            Person p3 = new Person("lukeludlow", "3", "p", "3", "m", "none", "none", "none");
             personDao.insert(luke);
             personDao.insert(p2);
             personDao.insert(p3);

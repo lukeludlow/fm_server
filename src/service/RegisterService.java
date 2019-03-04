@@ -38,8 +38,8 @@ public class RegisterService {
      */
     public RegisterResponse register(RegisterRequest request) throws ResponseException {
         registerHelper(request);
-        generateAncestorData(request.getUsername());
-        return new RegisterResponse(authtoken.getAuthtoken(), user.getUsername(), findNewPersonID(user.getUsername()));
+        generateAncestorData(request.getUserName());
+        return new RegisterResponse(authtoken.getAuthToken(), user.getUserName(), findNewPersonID(user.getUserName()));
     }
 
     private String findNewPersonID(String username) throws ResponseException {
@@ -66,7 +66,7 @@ public class RegisterService {
     private void registerHelper(RegisterRequest request) throws ResponseException {
         try {
             db.connect();
-            checkIfUserExists(request.getUsername());
+            checkIfUserExists(request.getUserName());
             createAndInsertUser(request);
             createAndInsertToken(request);
             db.closeResponseConnection(true);
@@ -84,12 +84,12 @@ public class RegisterService {
     }
 
     private void createAndInsertUser(RegisterRequest request) throws DatabaseException {
-        user = new User(request.getUsername(), request.getPassword(), request.getEmail(), request.getFirstname(), request.getLastname(), request.getGender(), personID);
+        user = new User(request.getUserName(), request.getPassword(), request.getEmail(), request.getFirstName(), request.getLastName(), request.getGender(), personID);
         userDao.insert(user);
     }
 
     private void createAndInsertToken(RegisterRequest request) throws DatabaseException {
-        authtoken = new AuthToken(request.getUsername());
+        authtoken = new AuthToken(request.getUserName());
         authTokenDao.insert(authtoken);
     }
 

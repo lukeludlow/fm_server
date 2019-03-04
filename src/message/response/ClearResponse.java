@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ClearResponse extends AbstractResponse {
-    private String message = "clear succeeded.";
+    private String message = "Clear succeeded.";
 }

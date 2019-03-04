@@ -33,7 +33,7 @@ class HistoryServiceTest {
         };
         HistoryResponse expectedResponse = new HistoryResponse(expectedData);
         HistoryService historyService = new HistoryService();
-        HistoryRequest historyRequest = new HistoryRequest(secret.getAuthtoken());
+        HistoryRequest historyRequest = new HistoryRequest(secret.getAuthToken());
         HistoryResponse actualResponse = historyService.getHistory(historyRequest);
         assertNotNull(actualResponse);
         assertEquals(expectedResponse, actualResponse);

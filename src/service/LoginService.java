@@ -35,16 +35,16 @@ public class LoginService {
         find(request);
         checkValidity(request);
         response = new LoginResponse();
-        response.setUsername(user.getUsername());
+        response.setUserName(user.getUserName());
         response.setPersonID(user.getPersonID());
-        response.setAuthtoken(createAuthToken(user.getUsername()));
+        response.setAuthToken(createAuthToken(user.getUserName()));
         return response;
     }
 
     private void find(LoginRequest request) throws ResponseException {
         try {
             db.connect();
-            user = userDao.find(request.getUsername());
+            user = userDao.find(request.getUserName());
             db.closeResponseConnection(true);
         } catch (DatabaseException e) {
             db.closeResponseConnection(false);
@@ -58,7 +58,7 @@ public class LoginService {
             authtoken = new AuthToken(username);
             authTokenDao.insert(authtoken);
             db.closeResponseConnection(true);
-            return authtoken.getAuthtoken();
+            return authtoken.getAuthToken();
         } catch (DatabaseException e) {
             db.closeResponseConnection(false);
             throw new ResponseException(e);

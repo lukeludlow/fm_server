@@ -54,7 +54,7 @@ class LoginServiceTest {
     void testLogin() throws Exception {
         userDao.insert(luke);
         actualResponse = loginService.login(loginRequest);
-        actualResponse.setAuthtoken("xX_secret_Xx"); // generated authtoken is always unique, so manually set it every test
+        actualResponse.setAuthToken("xX_secret_Xx"); // generated authtoken is always unique, so manually set it every test
         assertEquals(loginResponse, actualResponse);
     }
 
@@ -63,7 +63,7 @@ class LoginServiceTest {
     void testAuthToken() throws Exception {
         userDao.insert(luke);
         actualResponse = loginService.login(loginRequest);
-        assertNotNull(actualResponse.getAuthtoken());
+        assertNotNull(actualResponse.getAuthToken());
     }
 
     @Test

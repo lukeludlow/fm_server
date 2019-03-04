@@ -16,5 +16,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class FamilyRequest extends AbstractRequest {
-    private String authtoken;
+    private String authToken;
 }

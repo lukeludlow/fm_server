@@ -16,8 +16,8 @@ public class UserDao extends Dao<User> {
         this.insertSql = "insert into user " +
                 "(username, password, email, firstname, lastname, gender, person_id) " +
                 "values (?,?,?,?,?,?,?)";
-        this.findSql = "select * from user where userName = ?";
-        this.deleteSql = "delete from user where userName = ?";
+        this.findSql = "select * from user where username = ?";
+        this.deleteSql = "delete from user where username = ?";
     }
 
     @Override

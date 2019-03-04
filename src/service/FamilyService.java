@@ -47,8 +47,8 @@ public class FamilyService {
     private void find(FamilyRequest request) throws ResponseException {
         try {
             db.connect();
-            foundToken = authTokenDao.find(request.getAuthtoken());
-            username = foundToken.getUsername();
+            foundToken = authTokenDao.find(request.getAuthToken());
+            username = foundToken.getUserName();
             people = userDao.findMany(username);
             db.closeResponseConnection(true);
         } catch (DatabaseException e) {

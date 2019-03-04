@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FillResponse extends AbstractResponse {
-    private String message = "successfully added x persons and y events to the database.";
+    private String message = "Successfully added X persons and Y events to the database.";
 }

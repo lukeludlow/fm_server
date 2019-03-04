@@ -18,5 +18,5 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 public class EventRequest extends AbstractRequest {
     private String eventID;
-    private String authtoken;
+    private String authToken;
 }

@@ -41,7 +41,7 @@ class UserDaoTest {
         try {
             db.connect();
             userDao.insert(luke);
-            findLuke = userDao.find(luke.getUsername());
+            findLuke = userDao.find(luke.getUserName());
             assertNotNull(findLuke);
             assertEquals(luke, findLuke);
             db.closeConnection(true);
@@ -69,7 +69,7 @@ class UserDaoTest {
         db.connect();
         assertThrows(DatabaseException.class,
                 () -> {
-                    luke.setUsername(null);
+                    luke.setUserName(null);
                     userDao.insert(luke);
                 });
         db.closeConnection(false);
@@ -81,7 +81,7 @@ class UserDaoTest {
         try {
             db.connect();
             userDao.insert(luke);
-            findLuke = userDao.find(luke.getUsername());
+            findLuke = userDao.find(luke.getUserName());
             assertNotNull(findLuke);
             assertEquals(luke, findLuke);
             db.closeConnection(true);
@@ -98,14 +98,14 @@ class UserDaoTest {
             db.connect();
             userDao.insert(luke);
             userDao.insert(anotherUser);
-            findLuke = userDao.find(luke.getUsername());
-            findAnother = userDao.find(anotherUser.getUsername());
+            findLuke = userDao.find(luke.getUserName());
+            findAnother = userDao.find(anotherUser.getUserName());
             assertNotNull(findLuke);
             assertNotNull(anotherUser);
             assertEquals(luke, findLuke);
             assertEquals(anotherUser, findAnother);
-            findLuke = userDao.find(luke.getUsername());
-            findAnother = userDao.find(anotherUser.getUsername());
+            findLuke = userDao.find(luke.getUserName());
+            findAnother = userDao.find(anotherUser.getUserName());
             assertNotNull(findLuke);
             assertNotNull(anotherUser);
             assertEquals(luke, findLuke);
@@ -122,7 +122,7 @@ class UserDaoTest {
     void testFindFail() throws Exception {
         try {
             db.connect();
-            findLuke = userDao.find(luke.getUsername());
+            findLuke = userDao.find(luke.getUserName());
             assertNull(findLuke);
             db.closeConnection(true);
         } catch (DatabaseException e) {
@@ -152,10 +152,10 @@ class UserDaoTest {
         try {
             db.connect();
             userDao.insert(luke);
-            findLuke = userDao.find(luke.getUsername());
+            findLuke = userDao.find(luke.getUserName());
             assertNotNull(findLuke);
-            int deleteCount = userDao.delete(luke.getUsername());
-            findLuke = userDao.find(luke.getUsername());
+            int deleteCount = userDao.delete(luke.getUserName());
+            findLuke = userDao.find(luke.getUserName());
             assertNull(findLuke);
             assertEquals(1, deleteCount);
             db.closeConnection(true);
@@ -171,7 +171,7 @@ class UserDaoTest {
         int deleteCount;
         try {
             db.connect();
-            deleteCount = userDao.delete(luke.getUsername());
+            deleteCount = userDao.delete(luke.getUserName());
             assertEquals(0, deleteCount);
             db.closeConnection(true);
         } catch (DatabaseException e) {

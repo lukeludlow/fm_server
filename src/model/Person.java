@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Person {
 
-    private String personID; // unique ID assigned to this person
     private String descendant;
-    private String firstname;
-    private String lastname;
+    private String personID; // unique ID assigned to this person
+    private String firstName;
+    private String lastName;
     private String gender; // either "f" or "m"
     private String father; // ID of person's father, possibly null
     private String mother; // ID of person's mother, possibly null
@@ -23,9 +23,9 @@ public class Person {
     }
 
     public void setUserData(User u) {
-        this.descendant = u.getUsername();
-        this.firstname = u.getFirstname();
-        this.lastname = u.getLastname();
+        this.descendant = u.getUserName();
+        this.firstName = u.getFirstName();
+        this.lastName = u.getLastName();
         this.gender = u.getGender();
     }
 

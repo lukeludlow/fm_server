@@ -14,7 +14,7 @@ public class EventDao extends Dao<Event> {
 
     private void setSqlStatements() {
         this.insertSql = "insert into event " +
-                "(event_id, descendant, person_id, latitude, longitude, country, city, event_type, year) " +
+                "(descendant, event_id, person_id, latitude, longitude, country, city, event_type, year) " +
                 "values (?,?,?,?,?,?,?,?,?)";
         this.findSql = "select * from event where event_id = ?";
         this.findManySql = "select * from event where descendant = ?";
@@ -26,8 +26,8 @@ public class EventDao extends Dao<Event> {
     protected Event getObject(ResultSet rs) throws SQLException {
         if (rs.next()) {
             return new Event(
-                    rs.getString("event_id"),
                     rs.getString("descendant"),
+                    rs.getString("event_id"),
                     rs.getString("person_id"),
                     rs.getDouble("latitude"),
                     rs.getDouble("longitude"),
