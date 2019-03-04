@@ -2,6 +2,7 @@ package service;
 
 import data.AuthTokenDao;
 import data.Database;
+import data.DatabaseException;
 import data.UserDao;
 import message.request.LoginRequest;
 import message.response.LoginResponse;
@@ -24,9 +25,9 @@ class LoginServiceTest {
     AuthTokenDao authTokenDao;
     AuthToken secret;
     AuthToken foundAuthToken;
-    LoginRequest loginRequest;
-    LoginResponse loginResponse;
-    LoginService loginService;
+    LoginRequest request;
+    LoginResponse expectedResponse;
+    LoginService service;
     LoginResponse actualResponse;
 
     @BeforeEach
@@ -39,9 +40,9 @@ class LoginServiceTest {
         secret = new AuthToken("xX_secret_Xx", "lukeludlow");
         foundUser = null;
         foundAuthToken = null;
-        loginRequest = new LoginRequest("lukeludlow", "password");
-        loginResponse = new LoginResponse("xX_secret_Xx", "lukeludlow", "99");
-        loginService = new LoginService();
+        request = new LoginRequest("lukeludlow", "password");
+        expectedResponse = new LoginResponse("xX_secret_Xx", "lukeludlow", "99");
+        service = new LoginService();
         actualResponse = null;
     }
     @AfterEach
@@ -52,27 +53,48 @@ class LoginServiceTest {
     @Test
     @DisplayName("login success")
     void testLogin() throws Exception {
-        userDao.insert(luke);
-        actualResponse = loginService.login(loginRequest);
-        actualResponse.setAuthToken("xX_secret_Xx"); // generated authtoken is always unique, so manually set it every test
-        assertEquals(loginResponse, actualResponse);
+        try {
+            db.connect();
+            userDao.insert(luke);
+            db.closeResponseConnection(true);
+        } catch (DatabaseException e) {
+            db.closeResponseConnection(false);
+            throw e;
+        }
+        actualResponse = service.login(request);
+        actualResponse.setAuthToken("xX_secret_Xx"); // generated authtoken is always unique, so manually set it for comparison
+        assertEquals(expectedResponse, actualResponse);
     }
 
     @Test
-    @DisplayName("login authtoken")
+    @DisplayName("login success (make sure random authtoken is generated)")
     void testAuthToken() throws Exception {
-        userDao.insert(luke);
-        actualResponse = loginService.login(loginRequest);
+        try {
+            db.connect();
+            userDao.insert(luke);
+            db.closeResponseConnection(true);
+        } catch (DatabaseException e) {
+            db.closeResponseConnection(false);
+            throw e;
+        }
+        actualResponse = service.login(request);
         assertNotNull(actualResponse.getAuthToken());
     }
 
     @Test
     @DisplayName("login fail (incorrect password)")
     void testLoginFail2() throws Exception {
-        userDao.insert(luke);
-        loginRequest.setPassword("wrong");
+        try {
+            db.connect();
+            userDao.insert(luke);
+            db.closeResponseConnection(true);
+        } catch (DatabaseException e) {
+            db.closeResponseConnection(false);
+            throw e;
+        }
+        request.setPassword("wrong_password");
         ResponseException exception = assertThrows(ResponseException.class,
-                () -> actualResponse = loginService.login(loginRequest));
+                () -> actualResponse = service.login(request));
         assertTrue(exception.getMessage().contains("incorrect password"));
     }
 
@@ -80,7 +102,7 @@ class LoginServiceTest {
     @DisplayName("login fail (user does not exist)")
     void testInsertFail() {
         ResponseException exception = assertThrows(ResponseException.class,
-                () -> actualResponse = loginService.login(loginRequest));
+                () -> actualResponse = service.login(request));
         assertTrue(exception.getMessage().contains("user not found"));
     }
 

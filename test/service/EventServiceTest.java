@@ -116,8 +116,19 @@ class EventServiceTest {
     @Test
     @DisplayName("get event fail (event belongs to another user")
     void testGetEventFail3() throws Exception {
-        // TODO
+        try {
+            db.connect();
+            birthday = new Event("wrong_descendant","9", "1",40.0,-111.0,"usa","reno","birth",1999);
+            eventDao.insert(birthday);
+            authTokenDao.insert(secret); // secret belongs to user lukeludlow
+            db.closeResponseConnection(true);
+        } catch (DatabaseException e) {
+            db.closeResponseConnection(false);
+            throw e;
+        }
+        ResponseException exception = assertThrows(ResponseException.class,
+                () -> actual = service.getEvent(request));
+        assertTrue(exception.getMessage().contains("not allowed to retrieve information that belongs to another user"));
     }
-
 
 }
