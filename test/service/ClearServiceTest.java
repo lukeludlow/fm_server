@@ -2,13 +2,13 @@ package service;
 
 import data.*;
 import message.response.ClearResponse;
-import message.response.ResponseException;
 import model.AuthToken;
 import model.Event;
 import model.Person;
 import model.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,7 +32,7 @@ class ClearServiceTest {
     AuthTokenDao authTokenDao;
 
     ClearService clearService;
-    ClearResponse clearResponse;
+    ClearResponse expectedResponse;
     ClearResponse actualResponse;
 
     @BeforeEach
@@ -48,7 +48,7 @@ class ClearServiceTest {
         eventDao = new EventDao(db);
         authTokenDao = new AuthTokenDao(db);
         clearService = new ClearService();
-        clearResponse = new ClearResponse("clear succeeded.");
+        expectedResponse = new ClearResponse("Clear succeeded.");
         actualResponse = null;
     }
     @AfterEach
@@ -60,7 +60,10 @@ class ClearServiceTest {
     }
 
     @Test
+    @DisplayName("clear success")
     void testClear() throws Exception {
+
+        // insert one of everything
         try {
             db.connect();
             userDao.insert(lukeUser);
@@ -71,11 +74,11 @@ class ClearServiceTest {
             foundPerson = personDao.find(lukePerson.getPrimaryKey());
             foundEvent = eventDao.find(lukeBirthday.getPrimaryKey());
             foundToken = authTokenDao.find(lukeAuth.getPrimaryKey());
+            db.closeResponseConnection(true);
             assertNotNull(foundUser);
             assertNotNull(foundPerson);
             assertNotNull(foundEvent);
             assertNotNull(foundToken);
-            db.closeResponseConnection(true);
         } catch (DatabaseException e) {
             db.closeResponseConnection(false);
             throw e;
@@ -83,7 +86,7 @@ class ClearServiceTest {
 
         actualResponse = clearService.clear();
         assertNotNull(actualResponse);
-        assertEquals(clearResponse, actualResponse);
+        assertEquals(expectedResponse, actualResponse);
 
         // make sure everything really did get deleted
         try {
@@ -92,15 +95,61 @@ class ClearServiceTest {
             foundPerson = personDao.find(lukePerson.getPrimaryKey());
             foundEvent = eventDao.find(lukeBirthday.getPrimaryKey());
             foundToken = authTokenDao.find(lukeAuth.getPrimaryKey());
+            db.closeResponseConnection(true);
             assertNull(foundUser);
             assertNull(foundPerson);
             assertNull(foundEvent);
             assertNull(foundToken);
-            db.closeResponseConnection(true);
-        } catch (DatabaseException | ResponseException e) {
+        } catch (DatabaseException e) {
             db.closeResponseConnection(false);
             throw e;
         }
+
+    }
+
+    @Test
+    @DisplayName("clear success 2 (database is already empty)")
+    void testClear2() throws Exception {
+
+        // make sure database is clear at beginning
+        try {
+            db.clearAll();
+            db.connect();
+            foundUser = userDao.find(lukeUser.getPrimaryKey());
+            foundPerson = personDao.find(lukePerson.getPrimaryKey());
+            foundEvent = eventDao.find(lukeBirthday.getPrimaryKey());
+            foundToken = authTokenDao.find(lukeAuth.getPrimaryKey());
+            db.closeResponseConnection(true);
+            assertNull(foundUser);
+            assertNull(foundPerson);
+            assertNull(foundEvent);
+            assertNull(foundToken);
+        } catch (DatabaseException e) {
+            db.closeResponseConnection(false);
+            throw e;
+        }
+
+        actualResponse = clearService.clear();
+        assertNotNull(actualResponse);
+        assertEquals(expectedResponse, actualResponse);
+
+        // make sure database is still empty
+        try {
+            db.connect();
+            foundUser = userDao.find(lukeUser.getPrimaryKey());
+            foundPerson = personDao.find(lukePerson.getPrimaryKey());
+            foundEvent = eventDao.find(lukeBirthday.getPrimaryKey());
+            foundToken = authTokenDao.find(lukeAuth.getPrimaryKey());
+            db.closeResponseConnection(true);
+            assertNull(foundUser);
+            assertNull(foundPerson);
+            assertNull(foundEvent);
+            assertNull(foundToken);
+        } catch (DatabaseException e) {
+            db.closeResponseConnection(false);
+            throw e;
+        }
+
     }
 
 }

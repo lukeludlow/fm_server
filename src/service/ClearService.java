@@ -26,7 +26,7 @@ public class ClearService {
         } catch (DatabaseException e) {
             throw new ResponseException(e);
         }
-        return new ClearResponse("clear succeeded.");
+        return new ClearResponse("Clear succeeded.");
     }
 
 }
