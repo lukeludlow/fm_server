@@ -1,10 +1,16 @@
 package data;
 
+import model.AuthToken;
+import model.Event;
+import model.Person;
+import model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class DatabaseTest {
@@ -68,30 +74,118 @@ class DatabaseTest {
         assertFalse(closeSuccess);
     }
 
-//    // TODO test clear all positive and negative
-//    // @Test
-//    // testClearAll
-//
-//    // TODO
-//    @Test
-//    @DisplayName("clear all authtokens")
-//    void testClearTokens() throws Exception {
-//        try {
-//            db.clearAuthTokens();
-//        } catch (DatabaseException e) {
-//            throw e;
-//        }
-//    }
-//
-//    // TODO
-//    @Test
-//    @DisplayName("clear all authtokens fail (bad connection)")
-//    void testClearTokensFail() throws Exception {
-//        DatabaseException exception = assertThrows(DatabaseException.class,
-//                () -> db.clearAuthTokens());
-//        System.out.println(exception.getMessage());
-//        assertTrue(exception.getMessage().contains("unable to clear authtokens. dao tried to operate on closed connection."));
-//    }
+    @Test
+    @DisplayName("clear all success")
+    void testClearAll() throws Exception {
+        try {
+            db.clearAll();
+            db.connect();
+            UserDao userDao = new UserDao(db);
+            PersonDao personDao = new PersonDao(db);
+            EventDao eventDao = new EventDao(db);
+            AuthTokenDao authTokenDao = new AuthTokenDao(db);
+            User lukeUser = new User("lukeludlow", "password", "luke@luke.com","luke","ludlow","m","123");
+            Person lukePerson = new Person("lukeludlow", "1", "luke", "ludlow", "m", "none", "none", "none");
+            Event birthday = new Event("lukeludlow","9","1",40.0,-111.0,"usa","reno","birth",1999);
+            AuthToken bitcoin = new AuthToken("69", "lukeludlow");
+            userDao.insert(lukeUser);
+            personDao.insert(lukePerson);
+            eventDao.insert(birthday);
+            authTokenDao.insert(bitcoin);
+            User foundUser;
+            Person foundPerson;
+            Event foundEvent;
+            AuthToken foundToken;
+            foundUser = userDao.find(lukeUser.getPrimaryKey());
+            foundPerson = personDao.find(lukePerson.getPrimaryKey());
+            foundEvent = eventDao.find(birthday.getPrimaryKey());
+            foundToken = authTokenDao.find(bitcoin.getPrimaryKey());
+            db.closeConnection(true);
+            assertEquals(lukeUser, foundUser);
+            assertEquals(lukePerson, foundPerson);
+            assertEquals(birthday, foundEvent);
+            assertEquals(bitcoin, foundToken);
+
+            db.clearAll();
+            db.connect();
+            foundUser = userDao.find(lukeUser.getPrimaryKey());
+            foundPerson = personDao.find(lukePerson.getPrimaryKey());
+            foundEvent = eventDao.find(birthday.getPrimaryKey());
+            foundToken = authTokenDao.find(bitcoin.getPrimaryKey());
+            db.closeConnection(true);
+            assertNull(foundUser);
+            assertNull(foundPerson);
+            assertNull(foundEvent);
+            assertNull(foundToken);
+        } catch (DatabaseException e) {
+            db.closeConnection(false);
+            throw e;
+        }
+    }
+
+    @Test
+    @DisplayName("clear all success 2")
+    void testClearAll2() throws Exception {
+        try {
+            db.clearAll();
+            db.connect();
+            UserDao userDao = new UserDao(db);
+            PersonDao personDao = new PersonDao(db);
+            EventDao eventDao = new EventDao(db);
+            AuthTokenDao authTokenDao = new AuthTokenDao(db);
+            User foundUser = userDao.find("x");
+            Person foundPerson = personDao.find("x");
+            Event foundEvent = eventDao.find("x");
+            AuthToken foundToken = authTokenDao.find("x");
+            db.closeConnection(true);
+            assertNull(foundUser);
+            assertNull(foundPerson);
+            assertNull(foundEvent);
+            assertNull(foundToken);
+        } catch (DatabaseException e) {
+            db.closeConnection(false);
+            throw e;
+        }
+    }
+
+    @Test
+    @DisplayName("clear all authtokens success")
+    void testClearTokens() throws Exception {
+        try {
+            db.clearAuthTokens();
+            db.connect();
+            AuthTokenDao authTokenDao = new AuthTokenDao(db);
+            AuthToken found = authTokenDao.find("tokenthatdoesnotexist");
+            assertNull(found);
+            db.closeConnection(true);
+        } catch (DatabaseException e) {
+            db.closeConnection(false);
+            throw e;
+        }
+    }
+
+    @Test
+    @DisplayName("clear all authtokens success 2")
+    void testClearTokens2() throws Exception {
+        try {
+            db.clearAuthTokens();
+            db.connect();
+            AuthTokenDao authTokenDao = new AuthTokenDao(db);
+            AuthToken authToken = new AuthToken("secret", "lukeludlow");
+            authTokenDao.insert(authToken);
+            AuthToken found = authTokenDao.find("secret");
+            assertEquals(authToken, found);
+            db.closeConnection(true);
+            db.clearAuthTokens();
+            db.connect();
+            found = authTokenDao.find("secret");
+            assertNull(found);
+            db.closeConnection(true);
+        } catch (DatabaseException e) {
+            db.closeConnection(false);
+            throw e;
+        }
+    }
 
 }
 

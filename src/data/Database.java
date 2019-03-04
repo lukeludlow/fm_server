@@ -90,9 +90,6 @@ public class Database {
         } catch (SQLException e) {
             closeConnection(false);
             throw new DatabaseException("sql error encountered while clearing authtokens. " + e.getMessage());
-        } catch (NullPointerException e) {
-            closeConnection(false);
-            throw new DatabaseException("unable to clear authtokens. dao tried to operate on closed connection. " + e.getMessage());
         }
     }
 
