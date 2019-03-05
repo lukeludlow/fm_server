@@ -42,6 +42,19 @@ public class RegisterService {
         return new RegisterResponse(authtoken.getAuthToken(), user.getUserName(), findNewPersonID(user.getUserName()));
     }
 
+    private void registerHelper(RegisterRequest request) throws ResponseException {
+        try {
+            db.connect();
+            checkIfUserExists(request.getUserName());
+            createAndInsertUser(request);
+            createAndInsertToken(request);
+            db.closeResponseConnection(true);
+        } catch (DatabaseException | ResponseException e) {
+            db.closeResponseConnection(false);
+            throw new ResponseException(e);
+        }
+    }
+
     private String findNewPersonID(String username) throws ResponseException {
         // get user's person ID. we gotta go back and get it bc fill generates a brand new person object
         User found;
@@ -63,23 +76,10 @@ public class RegisterService {
         FillResponse fillResponse = fillService.fill(fillRequest);
     }
 
-    private void registerHelper(RegisterRequest request) throws ResponseException {
-        try {
-            db.connect();
-            checkIfUserExists(request.getUserName());
-            createAndInsertUser(request);
-            createAndInsertToken(request);
-            db.closeResponseConnection(true);
-        } catch (DatabaseException | ResponseException e) {
-            db.closeResponseConnection(false);
-            throw new ResponseException(e);
-        }
-    }
-
     private void checkIfUserExists(String username) throws ResponseException, DatabaseException {
         foundUser = userDao.find(username);
         if (foundUser != null) {
-            throw new ResponseException("username already taken by another user.");
+            throw new ResponseException("username already taken.");
         }
     }
 

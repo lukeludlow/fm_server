@@ -41,8 +41,6 @@ public class Database {
         try {
             if (commit) {
                 connection.commit();
-            } else {
-                connection.rollback();
             }
             connection.close();
             connection = null;

@@ -48,13 +48,20 @@ public class FamilyService {
         try {
             db.connect();
             foundToken = authTokenDao.find(request.getAuthToken());
-            username = foundToken.getUserName();
+            username = getTokenUser(foundToken);
             people = userDao.findMany(username);
             db.closeResponseConnection(true);
-        } catch (DatabaseException e) {
+        } catch (DatabaseException | ResponseException e) {
             db.closeResponseConnection(false);
             throw new ResponseException(e);
         }
+    }
+
+    private String getTokenUser(AuthToken a) throws ResponseException {
+        if (a == null) {
+            throw new ResponseException("invalid authtoken");
+        }
+        return a.getUserName();
     }
 
     private void checkValidity() throws ResponseException {

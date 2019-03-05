@@ -32,9 +32,9 @@ public class LoadService {
     public LoadResponse load(LoadRequest request) throws ResponseException {
         clear();
         insert(request);
-        String message = "successfully added " +
+        String message = "Successfully added " +
                 request.getUsers().length + " users, " +
-                request.getPersons().length + " people, and " +
+                request.getPersons().length + " persons, and " +
                 request.getEvents().length + " events to the database.";
         return new LoadResponse(message);
     }
@@ -52,7 +52,7 @@ public class LoadService {
                 eventDao.insert(e);
             }
             db.closeResponseConnection(true);
-        } catch (DatabaseException ex) {
+        } catch (DatabaseException | ResponseException ex) {
             db.closeResponseConnection(false);
             throw new ResponseException(ex);
         }

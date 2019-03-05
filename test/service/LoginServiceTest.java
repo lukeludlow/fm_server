@@ -45,6 +45,7 @@ class LoginServiceTest {
         service = new LoginService();
         actualResponse = null;
     }
+
     @AfterEach
     void tearDown() throws Exception {
         db.clearAll();
