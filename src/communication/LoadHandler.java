@@ -19,7 +19,7 @@ public class LoadHandler extends AbstractHandler<LoadResponse> {
         System.out.printf("reading load request body...");
         String json = readRequestBody(exchange);
         if (!json.toLowerCase().contains("\"users\":")
-                || !json.toLowerCase().contains("\"people\":")
+                || !json.toLowerCase().contains("\"persons\":")
                 || !json.toLowerCase().contains("\"events\":")) {
             sendErrorResponse(exchange, new ResponseException("request body has missing or invalid value"));
             return;

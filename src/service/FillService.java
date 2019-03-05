@@ -95,8 +95,8 @@ public class FillService {
             db.closeResponseConnection(false);
             throw new ResponseException("unable to insert generated data. " + e.getMessage());
         }
-        String message = "successfully added " +
-                tree.getAllPeople().size() + " people and " +
+        String message = "Successfully added " +
+                tree.getAllPeople().size() + " persons and " +
                 tree.getAllEvents().size() + " events to the database.";
         return message;
     }

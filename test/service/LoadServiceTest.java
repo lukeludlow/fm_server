@@ -1,5 +1,6 @@
 package service;
 
+import communication.Encoder;
 import message.request.LoadRequest;
 import message.response.LoadResponse;
 import model.Event;
@@ -9,6 +10,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -70,6 +74,14 @@ class LoadServiceTest {
         assertEquals(expectedResponse, actual);
     }
 
+    @Test
+    @DisplayName("load the big example json")
+    void testLoadService2() throws Exception {
+        String json = new String(Files.readAllBytes(Paths.get("json/example.json")));
+        request = Encoder.deserialize(json, LoadRequest.class);
+        actual = service.load(request);
+        System.out.println(actual);
+    }
 
     // TODO
     // @Test
