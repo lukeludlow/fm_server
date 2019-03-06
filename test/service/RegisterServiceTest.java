@@ -81,7 +81,6 @@ class RegisterServiceTest {
         }
         ResponseException exception = assertThrows(ResponseException.class,
                 () -> actual = service.register(request));
-        System.out.println(exception.getMessage());
         assertTrue(exception.getMessage().contains("username already taken."));
     }
 

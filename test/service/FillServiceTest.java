@@ -47,7 +47,6 @@ class FillServiceTest {
         insertLukeUser();
         request = new FillRequest("lukeludlow", 0);
         response = service.fill(request);
-        System.out.println(response.getMessage());
         String expected = "Successfully added 1 persons and 1 events to the database.";
         assertEquals(expected, response.getMessage());
     }
@@ -57,7 +56,6 @@ class FillServiceTest {
         insertLukeUser();
         request = new FillRequest("lukeludlow", 4);
         response = service.fill(request);
-        System.out.println(response.getMessage());
         String expected = "Successfully added 31 persons and 91 events to the database.";
         assertEquals(expected, response.getMessage());
     }
@@ -75,7 +73,6 @@ class FillServiceTest {
         insertLukeUser();
         request = new FillRequest("lukeludlow", -20);
         response = service.fill(request);
-        System.out.println(response.getMessage());
         // invalid generations param just gets changed to the default value (4).
         String expected = "Successfully added 31 persons and 91 events to the database.";
         assertEquals(expected, response.getMessage());

@@ -80,12 +80,8 @@ class LoadServiceTest {
         String json = new String(Files.readAllBytes(Paths.get("json/example.json")));
         request = Encoder.deserialize(json, LoadRequest.class);
         actual = service.load(request);
-        System.out.println(actual);
+        expectedResponse = new LoadResponse("Successfully added 1 users, 3 persons, and 2 events to the database.");
+        assertEquals(expectedResponse, actual);
     }
-
-    // TODO
-    // @Test
-    // make sure load service clears any existing data
-
 
 }
