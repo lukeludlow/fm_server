@@ -20,8 +20,8 @@ public class FamilyService {
     private Database db;
     private AuthTokenDao authTokenDao;
     private PersonDao userDao;
-    private AuthToken foundToken;
     private String username;
+    private AuthToken foundToken;
     private ArrayList<Person> people;
 
     public FamilyService() {
@@ -38,13 +38,12 @@ public class FamilyService {
      * determined from the provided auth authToken.
      */
     public FamilyResponse getFamily(FamilyRequest request) throws ResponseException {
-        find(request);
+        findMany(request);
         checkValidity();
         return new FamilyResponse(people.toArray(new Person[0]));
     }
 
-    // TODO fix duplicates
-    private void find(FamilyRequest request) throws ResponseException {
+    private void findMany(FamilyRequest request) throws ResponseException {
         try {
             db.connect();
             foundToken = authTokenDao.find(request.getAuthToken());

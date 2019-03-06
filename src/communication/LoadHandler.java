@@ -5,18 +5,19 @@ import message.request.LoadRequest;
 import message.response.LoadResponse;
 import message.response.ResponseException;
 import service.LoadService;
-
 import java.io.IOException;
 
 public class LoadHandler extends AbstractHandler<LoadResponse> {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+
         System.out.println("load handler!");
         if (!isPost(exchange)) {
             return;
         }
-        System.out.printf("reading load request body...");
+
+        System.out.print("reading load request body...");
         String json = readRequestBody(exchange);
         if (!json.toLowerCase().contains("\"users\":")
                 || !json.toLowerCase().contains("\"persons\":")
@@ -26,7 +27,8 @@ public class LoadHandler extends AbstractHandler<LoadResponse> {
         }
         LoadRequest request = Encoder.deserialize(json, LoadRequest.class);
         printDone();
-        System.out.printf("calling load service...");
+
+        System.out.print("calling load service...");
         LoadService loadService = new LoadService();
         LoadResponse response = null;
         try {
@@ -36,9 +38,11 @@ public class LoadHandler extends AbstractHandler<LoadResponse> {
             return;
         }
         printDone();
-        System.out.printf("sending response...");
+
+        System.out.print("sending response...");
         sendResponse(exchange, response);
         printDone();
+
     }
 
 }

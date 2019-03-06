@@ -5,24 +5,23 @@ import message.request.HistoryRequest;
 import message.response.HistoryResponse;
 import message.response.ResponseException;
 import service.HistoryService;
-
 import java.io.IOException;
 
 public class HistoryHandler extends AbstractHandler<HistoryResponse> {
 
-    @SuppressWarnings("Duplicates")  // TODO FIXME
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+
         System.out.println("history handler!");
         if (!isGet(exchange)) {
             return;
         }
+
+        System.out.print("reading authtoken...");
         String authtoken = getAuthorization(exchange);
-        if (authtoken == null) {
-            return;
-        }
         printDone();
-        System.out.printf("calling get history service...");
+
+        System.out.print("calling get history service...");
         HistoryRequest request = new HistoryRequest(authtoken);
         HistoryResponse response = null;
         HistoryService service = new HistoryService();
@@ -33,9 +32,10 @@ public class HistoryHandler extends AbstractHandler<HistoryResponse> {
             return;
         }
         printDone();
-        System.out.printf("sending response...");
+        System.out.print("sending response...");
         sendResponse(exchange, response);
         printDone();
+
     }
 
 }

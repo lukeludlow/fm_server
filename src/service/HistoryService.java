@@ -38,13 +38,12 @@ public class HistoryService {
      * user is determined from the provided auth authToken.
      */
     public HistoryResponse getHistory(HistoryRequest request) throws ResponseException {
-        find(request);
+        findMany(request);
         checkValidity();
         return new HistoryResponse(events.toArray(new Event[0]));
     }
 
-    // TODO fix duplicates
-    private void find(HistoryRequest request) throws ResponseException {
+    private void findMany(HistoryRequest request) throws ResponseException {
         try {
             db.connect();
             foundToken = authTokenDao.find(request.getAuthToken());

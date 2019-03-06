@@ -5,19 +5,19 @@ import message.request.PersonRequest;
 import message.response.PersonResponse;
 import message.response.ResponseException;
 import service.PersonService;
-
 import java.io.IOException;
 
 public class PersonHandler extends AbstractHandler<PersonResponse> {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        System.out.printf("get person handler!");
+
+        System.out.print("get person handler!");
         if (!isGet(exchange)) {
             return;
         }
 
-        System.out.printf("reading personID...");
+        System.out.print("reading personID...");
         String requestUri = exchange.getRequestURI().toString();
         requestUri = requestUri.replaceFirst("/","");
         String[] segments = requestUri.split("/");
@@ -28,14 +28,11 @@ public class PersonHandler extends AbstractHandler<PersonResponse> {
         String personID = segments[1];
         printDone();
 
+        System.out.print("reading authtoken...");
         String authtoken = getAuthorization(exchange);
-        if (authtoken == null) {
-            sendErrorResponse(exchange, new ResponseException("request missing authorization"));
-            return;
-        }
         printDone();
 
-        System.out.printf("calling get person service...");
+        System.out.print("calling get person service...");
         PersonRequest request = new PersonRequest(personID, authtoken);
         PersonService service = new PersonService();
         PersonResponse response = null;
@@ -46,9 +43,11 @@ public class PersonHandler extends AbstractHandler<PersonResponse> {
             return;
         }
         printDone();
-        System.out.printf("sending response...");
+
+        System.out.print("sending response...");
         sendResponse(exchange, response);
         printDone();
+
     }
 
 }

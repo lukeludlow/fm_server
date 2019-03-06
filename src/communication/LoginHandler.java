@@ -5,18 +5,19 @@ import message.request.LoginRequest;
 import message.response.LoginResponse;
 import message.response.ResponseException;
 import service.LoginService;
-
 import java.io.IOException;
 
 public class LoginHandler extends AbstractHandler<LoginResponse> {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+
         System.out.println("login handler!");
         if (!isPost(exchange)) {
             return;
         }
-        System.out.printf("reading login request body...");
+
+        System.out.print("reading login request body...");
         String json = readRequestBody(exchange);
         if (!json.toLowerCase().contains("\"username\":") || !json.toLowerCase().contains("\"password\":")) {
             sendErrorResponse(exchange, new ResponseException("request body has missing or invalid value"));
@@ -25,7 +26,7 @@ public class LoginHandler extends AbstractHandler<LoginResponse> {
         LoginRequest request = Encoder.deserialize(json, LoginRequest.class);
         printDone();
 
-        System.out.printf("calling login service...");
+        System.out.print("calling login service...");
         LoginService loginService = new LoginService();
         LoginResponse response = null;
         try {
@@ -36,7 +37,7 @@ public class LoginHandler extends AbstractHandler<LoginResponse> {
         }
         printDone();
 
-        System.out.printf("sending response...");
+        System.out.print("sending response...");
         sendResponse(exchange, response);
         printDone();
 

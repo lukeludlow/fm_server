@@ -1,25 +1,23 @@
 package communication;
 
-import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import message.request.EventRequest;
 import message.response.EventResponse;
 import message.response.ResponseException;
 import service.EventService;
-
 import java.io.IOException;
 
 public class EventHandler extends AbstractHandler<EventResponse> {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+
         System.out.printf("get event handler!");
         if (!isGet(exchange)) {
             return;
         }
-        printDone();
 
-        System.out.printf("reading eventID...");
+        System.out.print("reading eventID...");
         String requestUri = exchange.getRequestURI().toString();
         requestUri = requestUri.replaceFirst("/","");
         String[] segments = requestUri.split("/");
@@ -30,16 +28,11 @@ public class EventHandler extends AbstractHandler<EventResponse> {
         String eventID = segments[1];
         printDone();
 
-        System.out.printf("reading headers...");
-        Headers requestHeaders = exchange.getRequestHeaders();
-        if (!requestHeaders.containsKey("Authorization")) {
-            sendErrorResponse(exchange, new ResponseException("request header missing authorization"));
-            return;
-        }
-        String authtoken = requestHeaders.getFirst("Authorization");
+        System.out.print("reading authtoken...");
+        String authtoken = getAuthorization(exchange);
         printDone();
 
-        System.out.printf("calling get event service...");
+        System.out.print("calling get event service...");
         EventRequest request = new EventRequest(eventID, authtoken);
         EventService service = new EventService();
         EventResponse response;
@@ -50,9 +43,11 @@ public class EventHandler extends AbstractHandler<EventResponse> {
             return;
         }
         printDone();
-        System.out.printf("sending response...");
+
+        System.out.print("sending response...");
         sendResponse(exchange, response);
         printDone();
+
     }
 
 }

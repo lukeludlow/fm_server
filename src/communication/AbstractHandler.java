@@ -5,7 +5,6 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import message.response.ErrorResponse;
 import message.response.ResponseException;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 
@@ -17,7 +16,6 @@ public abstract class AbstractHandler<T> implements HttpHandler {
         OutputStream os = exchange.getResponseBody();
         os.write(message.getBytes());
         os.close();
-
     }
 
     public void sendErrorResponse(HttpExchange exchange, ResponseException error) throws IOException {
@@ -43,7 +41,7 @@ public abstract class AbstractHandler<T> implements HttpHandler {
     }
 
     public static boolean isGet(HttpExchange exchange) throws IOException {
-        System.out.printf("checking request method...");
+        System.out.print("checking request method...");
         if (exchange.getRequestMethod().toUpperCase().equals("GET")) {
             printDone();
             return true;
@@ -66,7 +64,6 @@ public abstract class AbstractHandler<T> implements HttpHandler {
     }
 
     public static String getAuthorization(HttpExchange exchange) throws IOException {
-        System.out.print("reading authtoken...");
         Headers requestHeaders = exchange.getRequestHeaders();
         if (!requestHeaders.containsKey("Authorization")) {
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
